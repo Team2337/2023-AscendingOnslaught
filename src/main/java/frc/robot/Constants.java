@@ -519,6 +519,8 @@ public final class Constants {
   public static final double INTAKE_FORWARD_SPEED = 1;
   public static final double INTAKE_REVERSE_SPEED = -0.5;
 
+  public static final int WRIST_MOTOR_ID = 16;
+
   public static final int SHOOTER_BEAM_ID = 2;
 
   public static final int LEDSTRIP_PWM_ID = 1;

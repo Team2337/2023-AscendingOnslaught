@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -18,14 +19,27 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.HeadingToTargetCommand;
-import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.DoNothingCommand;
+import frc.robot.commands.claw.CloseClaw;
+import frc.robot.commands.claw.OpenClaw;
+import frc.robot.commands.claw.StopClaw;
+import frc.robot.commands.intake.ReverseIntake;
+import frc.robot.commands.intake.StartIntake;
+import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.swerve.SwerveDriveCommand;
-import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
-import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
 import frc.robot.commands.vision.PeriodicRelocalizeCommand;
-import frc.robot.subsystems.*;
+import frc.robot.commands.wrist.WristJoystickCommand;
+import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
+import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
+import frc.robot.subsystems.AutoDrive;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Heading;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
   private final XboxController driverController = new XboxController(0);
@@ -38,6 +52,9 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
   private final Vision vision = new Vision();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
+  private final Intake intake = new Intake();
+  private final Claw claw = new Claw();
+  private final Wrist wrist = new Wrist();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -51,6 +68,7 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new HeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     vision.setDefaultCommand(new PeriodicRelocalizeCommand(drivetrain, vision));
+    wrist.setDefaultCommand(new WristJoystickCommand(wrist, operatorController));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -229,6 +247,14 @@ public class RobotContainer {
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
+    operatorA.onTrue(new StartIntake(intake));
+    operatorA.onFalse(new StopIntake(intake));
+    operatorB.onTrue(new ReverseIntake(intake));
+    operatorB.onFalse(new StopIntake(intake));
+
+    operatorX.onTrue(new OpenClaw(claw).withTimeout(1));
+    operatorX.onFalse(new CloseClaw(claw).withTimeout(1));
+   
 
     /** Driverstation Controls * */
   }
