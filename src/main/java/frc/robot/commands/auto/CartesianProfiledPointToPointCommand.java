@@ -68,7 +68,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     );
     strafeController = new ProfiledPIDController(
       strafeP, 0.0, 0.0,
-      new TrapezoidProfile.Constraints(strafeVelocity, Math.pow(strafeAcceleration, 2))
+      new TrapezoidProfile.Constraints(strafeVelocity, strafeAcceleration)
     );
 
     forwardController.setTolerance(Units.inchesToMeters(2));
@@ -154,10 +154,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     SmartDashboard.putNumber("ProfiledP2P/Forward Output", forwardOutput);
     SmartDashboard.putNumber("ProfiledP2P/Strafe Output", strafeOutput);
 
-    SmartDashboard.putNumber("ProfiledP2P/Forward Position (inches)", Units.metersToInches(forwardController.getSetpoint().position));
     SmartDashboard.putNumber("ProfiledP2P/Forward Error (inches)", Units.metersToInches(forwardController.getPositionError()));
-
-    SmartDashboard.putNumber("ProfiledP2P/Strafe Position (inches)", Units.metersToInches(strafeController.getSetpoint().position));
     SmartDashboard.putNumber("ProfiledP2P/Strafe Error (inches)", Units.metersToInches(strafeController.getPositionError()));
 
     SmartDashboard.putBoolean("ProfiledP2P/forwardController atGoal", forwardController.atGoal());

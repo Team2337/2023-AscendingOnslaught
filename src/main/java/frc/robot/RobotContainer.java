@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
+import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.HeadingToTargetCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -51,7 +52,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
-        new HeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
+        new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     vision.setDefaultCommand(new PeriodicRelocalizeCommand(drivetrain, vision));
 
     // Configure the button bindings
@@ -60,6 +61,7 @@ public class RobotContainer {
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
     
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -126,6 +128,15 @@ public class RobotContainer {
             Constants.Auto.kStartAtZero.toFieldCoordinate(),
             drivetrain.getGyroscopeRotation()));
   }
+
+  public void resetRobot2023() {
+    // Other option here is Constants.STARTING_ANGLE for booting against Hub
+    pigeon.setYaw(0, 250);
+    drivetrain.resetPosition(
+        new Pose2d(
+            Constants.Auto.zeroPoint,
+            new Rotation2d(0)));
+  } 
 
   public void resetRobotTeleop() {
     pigeon.setYaw(0, 250);

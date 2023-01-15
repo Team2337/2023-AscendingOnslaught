@@ -21,15 +21,15 @@ import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 
-public class Test extends SequentialCommandGroup{
-    public Test(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
+public class AngleTest extends SequentialCommandGroup{
+    public AngleTest(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
         addCommands(
             new WaitCommand(1),
             new CartesianProfiledPointToPointCommand(
-                new Translation2d(3, 0), 
+                new Translation2d(3, 3), 
                 drivetrain::getTranslation, 
-                1.75, 
-                1.75, 
+                3, 
+                3, 
                 Units.inchesToMeters(30), 
                 Units.inchesToMeters(30), 
                 autoDrive, 
