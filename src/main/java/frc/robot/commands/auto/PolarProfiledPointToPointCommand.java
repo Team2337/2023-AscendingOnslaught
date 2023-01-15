@@ -17,7 +17,7 @@ import frc.robot.subsystems.Heading;
  * Generate movement values to drive the robot between it's current position and
  * the specified point. Depends on the robot facing the Hub.
  */
-public class ProfiledPointToPointCommand extends HeadingToTargetCommand implements AutoDrivableCommand {
+public class PolarProfiledPointToPointCommand extends HeadingToTargetCommand implements AutoDrivableCommand {
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
@@ -42,15 +42,15 @@ public class ProfiledPointToPointCommand extends HeadingToTargetCommand implemen
   private boolean monitorIntake = false;
   private boolean endWithIntake = false;
 
-  public ProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, AutoDrive autoDrive, Heading heading) {
+  public PolarProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, AutoDrive autoDrive, Heading heading) {
     this(target, translationSupplier, () -> false, forwardP, strafeP, forwardAcceleration, strafeAcceleration, false, autoDrive, heading);
   }
 
-  public ProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, double driveP, double strafeP, double forwardAcceleration, double strafeAcceleration, AutoDrive autoDrive, Heading heading) {
+  public PolarProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, double driveP, double strafeP, double forwardAcceleration, double strafeAcceleration, AutoDrive autoDrive, Heading heading) {
     this(target, translationSupplier, () -> false, forwardP, strafeP, forwardAcceleration, strafeAcceleration, false, autoDrive, heading);
   }
 
-  public ProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, Supplier<Boolean> intakeSensorSupplier, double driveP, double strafeP, double forwardAcceleration, double strafeAcceleration, boolean monitorIntake, AutoDrive autoDrive, Heading heading) {
+  public PolarProfiledPointToPointCommand(PolarCoordinate target, Supplier<Translation2d> translationSupplier, Supplier<Boolean> intakeSensorSupplier, double driveP, double strafeP, double forwardAcceleration, double strafeAcceleration, boolean monitorIntake, AutoDrive autoDrive, Heading heading) {
     super(
       target.getReferencePoint(),
       translationSupplier,

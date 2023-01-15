@@ -282,6 +282,8 @@ public final class Constants {
 
     // Starting Locations
 
+    public static final Translation2d zeroPoint = new Translation2d(0, 0);
+
     public static final PolarCoordinate kPosition1LeftStart = new PolarCoordinate(
       // Starting angle of -35
       Units.inchesToMeters(97),

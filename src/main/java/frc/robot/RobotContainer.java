@@ -9,6 +9,8 @@ import java.util.Map;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,6 +59,7 @@ public class RobotContainer {
 
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
     
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -64,6 +67,7 @@ public class RobotContainer {
     startingPosChooser.addOption("Left Pos1", "Left");
     startingPosChooser.addOption("Middle Pos2", "Middle");
     startingPosChooser.addOption("Far Right", "Far Right");
+    startingPosChooser.addOption("Zero", "Zero");
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
@@ -145,6 +149,11 @@ public class RobotContainer {
 
   public void resetRobotChooser(String startPos, double startingAngle) {
     switch (startPos) {
+
+      case "Zero":
+        pigeon.setYaw(0);
+        drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
+        break;
 
       case "Left":
         pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // -32.25 deg

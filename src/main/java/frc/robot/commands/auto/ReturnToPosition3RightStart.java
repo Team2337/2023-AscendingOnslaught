@@ -12,7 +12,7 @@ public class ReturnToPosition3RightStart extends SequentialCommandGroup {
 
   public ReturnToPosition3RightStart(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
     addCommands(
-      new ProfiledPointToPointCommand(Constants.Auto.kPosition3RightStart, drivetrain::getTranslation, 0.5, 0.025, Units.inchesToMeters(60), 4, autoDrive, heading),
+      new PolarProfiledPointToPointCommand(Constants.Auto.kPosition3RightStart, drivetrain::getTranslation, 0.5, 0.025, Units.inchesToMeters(60), 4, autoDrive, heading),
       new WaitCommand(1)
     );
   }
