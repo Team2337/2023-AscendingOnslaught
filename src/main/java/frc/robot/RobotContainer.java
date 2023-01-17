@@ -119,7 +119,7 @@ public class RobotContainer {
      * }
      */
   }
-
+/* 
   public void resetRobot() {
     // Other option here is Constants.STARTING_ANGLE for booting against Hub
     pigeon.setYaw(0, 250);
@@ -128,7 +128,7 @@ public class RobotContainer {
             Constants.Auto.kStartAtZero.toFieldCoordinate(),
             drivetrain.getGyroscopeRotation()));
   }
-
+*/
   public void resetRobot2023() {
     // Other option here is Constants.STARTING_ANGLE for booting against Hub
     pigeon.setYaw(0, 250);
@@ -137,7 +137,7 @@ public class RobotContainer {
             Constants.Auto.zeroPoint,
             new Rotation2d(0)));
   } 
-
+/* 
   public void resetRobotTeleop() {
     pigeon.setYaw(0, 250);
     drivetrain.resetPosition(
@@ -145,18 +145,8 @@ public class RobotContainer {
             Constants.Auto.kResetToZero.toFieldCoordinate(),
             drivetrain.getGyroscopeRotation()));
   }
+*/
 
-  public void resetRobotAuto() {
-    pigeon.setYaw(-35, 250);
-    drivetrain.resetPosition(
-        new Pose2d(Constants.Auto.kPosition1LeftStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
-  }
-
-  public void resetRobotAuto(double startingAngle) {
-    pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250);
-    drivetrain.resetPosition(
-        new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
-  }
 
   public void resetRobotChooser(String startPos, double startingAngle) {
     switch (startPos) {
@@ -167,33 +157,28 @@ public class RobotContainer {
         break;
 
       case "Left":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // -32.25 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition1LeftStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Middle":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 45 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition2MiddleStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Right":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 75 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Far Right":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 90 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPositionFarRightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       default:
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 80 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
     }
   }

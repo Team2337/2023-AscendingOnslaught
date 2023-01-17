@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.enableMaintainHeading();
 
     if (!autonomousRan) {
-      m_robotContainer.resetRobotTeleop();
+      // m_robotContainer.resetRobotTeleop();
     }
 
     m_robotContainer.instantiateSubsystemsTeleop();

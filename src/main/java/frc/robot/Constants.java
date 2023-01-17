@@ -265,189 +265,45 @@ public final class Constants {
   public static final double VISION_TARGET_OFFSET_FROM_HUB_CENTER_METERS = Units.feetToMeters(2);
 
   public static final class Auto {
-    /**
-     * Our polar coordinates for our balls are based off of the center of the field.
-     * Note that the angles are measured where the opposing alliance wall
-     * is our 0 degrees line (positive X axis). 180 is added to our thetas in order
-     * to get them to be on our side of the field, as opposed to the opposing side.
-     */
-    public static final double kPickupDistanceInches = 8.0;
-    public static final double kPickupD1DistanceInches = 44.0;
-    public static final double kPickupR2DistanceInches = 34.0;
-    public static final double kPickupR3DistanceInches = 34.0;
-    public static final double kPickupR4DistanceInches = 14.0;
-    public static final double kPickupR5DistanceInches = 26.0;
-    public static final double kRunOverDistanceInches = 4.0;
-    public static final double kPuntDistanceInches = 4;
+    public static final double lengthOfField = Units.inchesToMeters(678.42);
+    public static final double heightOfField = Units.inchesToMeters(315.6);
+    public static final double hybridNodeLength = Units.inchesToMeters(14.28);
+    public static final double centerOfRobot = Units.inchesToMeters(18);
+    public static final double robotOffset = Units.inchesToMeters(20);
 
-    // Starting Locations
+    // Blue April Tag Locations
+    public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
+    public static final Translation2d blueMiddle7 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19));
+    public static final Translation2d blueBottom8 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19));
+    public static final Translation2d blueSubstation4 = new Translation2d(Units.inchesToMeters(636.96), Units.inchesToMeters(265.74));
+
+    // Red April Tag Locations
+    public static final Translation2d redTop1 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(273.41));
+    public static final Translation2d redMiddle2 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(207.43));
+    public static final Translation2d redBottom3 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(141.41));
+    public static final Translation2d redSubstation5 = new Translation2d(Units.inchesToMeters(636.96), Units.inchesToMeters(49.86));
 
     public static final Translation2d zeroPoint = new Translation2d(0, 0);
 
-    public static final PolarCoordinate kPosition1LeftStart = new PolarCoordinate(
-      // Starting angle of -35
-      Units.inchesToMeters(97),
-      Rotation2d.fromDegrees(147.75)
-    );
-    public static final PolarCoordinate kPosition2MiddleStart = new PolarCoordinate(
-      // Starting angle of 45
-      Units.inchesToMeters(94),
-      Rotation2d.fromDegrees(-137)
-    );
-    public static final PolarCoordinate kPosition3RightStart = new PolarCoordinate(
-      // Starting angle of 67.42
-      Units.inchesToMeters(93),
-      Rotation2d.fromDegrees(-99.75)
-    );
-    public static final PolarCoordinate kPositionFarRightStart = new PolarCoordinate(
-      // Starting angle of -90
-      Units.inchesToMeters(93),
-      Rotation2d.fromDegrees(-90)
-    );
-    public static final PolarCoordinate kResetToZero = new PolarCoordinate(
-      Units.inchesToMeters(133),
-      Rotation2d.fromDegrees(180)
-    );
+    // Blue Starting Locations
+    public static final Translation2d blueGridLeftRobotLeft = new Translation2d(blueTop6.getX() + centerOfRobot + hybridNodeLength, blueTop6.getY() + robotOffset);
+    public static final Translation2d blueGridLeftRobotCenter = new Translation2d(blueTop6.getX() + centerOfRobot + hybridNodeLength, blueTop6.getY());
+    public static final Translation2d blueGridLeftRobotRight = new Translation2d(blueTop6.getX() + centerOfRobot + hybridNodeLength, blueTop6.getY() - robotOffset);
+    public static final Translation2d blueGridMiddleRobotCenter = new Translation2d(blueMiddle7.getX() + centerOfRobot + hybridNodeLength, blueMiddle7.getY());
+    public static final Translation2d blueGridRightRobotLeft = new Translation2d(blueBottom8.getX() + centerOfRobot + hybridNodeLength, blueBottom8.getY() + robotOffset);
+    public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobot + hybridNodeLength, blueBottom8.getY());
+    public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobot + hybridNodeLength, blueBottom8.getY() - robotOffset);
 
-    /**
-     * Alliance Balls + Shooting Positions
-     */
+    // Red Starting Locations
+    public static final Translation2d redGridLeftRobotLeft = new Translation2d(redTop1.getX() + centerOfRobot + hybridNodeLength, redTop1.getY() + robotOffset);
+    public static final Translation2d redGridLeftRobotCenter = new Translation2d(redTop1.getX() + centerOfRobot + hybridNodeLength, redTop1.getY());
+    public static final Translation2d redGridLeftRobotRight = new Translation2d(redTop1.getX() + centerOfRobot + hybridNodeLength, redTop1.getY() - robotOffset);
+    public static final Translation2d redGridMiddleRobotCenter = new Translation2d(redMiddle2.getX() + centerOfRobot + hybridNodeLength, redMiddle2.getY());
+    public static final Translation2d redGridRightRobotLeft = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() + robotOffset);
+    public static final Translation2d redGridRightRobotCenter = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY());
+    public static final Translation2d redGridRightRobotRight = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() - robotOffset);
+    
 
-    // Ball R1 = Ball nearest to the left starting location
-    public static final PolarCoordinate kBallR1 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(147.75)
-    );
-    public static final PolarCoordinate kBallR1Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR1.getRadiusMeters() - Units.inchesToMeters(kPickupDistanceInches),
-      Rotation2d.fromDegrees(147.75)
-    );
-    public static final PolarCoordinate kBallR1RunOver = new PolarCoordinate(
-      Constants.Auto.kBallR1.getRadiusMeters() - Units.inchesToMeters(kRunOverDistanceInches),
-      Constants.Auto.kBallR1.getTheta()
-    );
-    //Shoot postition between ball R2 and ball D2
-    public static final PolarCoordinate kFourBallShootPosition = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(-155)
-    );
-    //Shoot postition between ball R2 and ball D2
-    public static final PolarCoordinate kFiveBallShootPosition = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(-155)
-    );
-    // Ball R2 = Ball nearest to the middle starting location
-    public static final PolarCoordinate kBallR2 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(-145.75) //215.25
-    );
-    public static final PolarCoordinate kBallR2Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR2.getRadiusMeters() - Units.inchesToMeters(kPickupR2DistanceInches),
-      Constants.Auto.kBallR2.getTheta()
-    );
-    public static final PolarCoordinate kBallR2RunOver = new PolarCoordinate(
-      Constants.Auto.kBallR2.getRadiusMeters() - Units.inchesToMeters(kRunOverDistanceInches),
-      Constants.Auto.kBallR2.getTheta()
-    );
-    // Ball R3 = Ball nearest to the right starting location
-    public static final PolarCoordinate kBallR3 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(-99.75)
-    );
-    public static final PolarCoordinate kBallR3Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR3.getRadiusMeters() - Units.inchesToMeters(kPickupDistanceInches),
-      Constants.Auto.kBallR3.getTheta()
-    );
-    public static final PolarCoordinate kBallR3MidPickup = new PolarCoordinate(
-      Constants.Auto.kBallR3.getRadiusMeters() - Units.inchesToMeters(kPickupR3DistanceInches),
-      Constants.Auto.kBallR3.getTheta()
-    );
-    public static final PolarCoordinate kBallR3RunOver = new PolarCoordinate(
-      Constants.Auto.kBallR3.getRadiusMeters() - Units.inchesToMeters(kRunOverDistanceInches),
-      Constants.Auto.kBallR3.getTheta()
-    );
-    public static final PolarCoordinate kBallR2ShootPosition = new PolarCoordinate(
-      Constants.Auto.kBallR2.getRadiusMeters(),
-      Constants.Auto.kBallR2.getTheta()
-    );
-    public static final PolarCoordinate kMidFiveBallShootPosition = new PolarCoordinate(
-      Constants.Auto.kBallR2.getRadiusMeters(),
-      Rotation2d.fromDegrees(-130)
-    );
-    public static final PolarCoordinate kBallR4 = new PolarCoordinate(
-      Units.inchesToMeters(305.66),
-      Rotation2d.fromDegrees(-157.35) //-157.35
-    );
-    // Point between ball R1 and ball R4 when running four ball auto from left side
-    public static final PolarCoordinate TransitionBetweenBallR1AndBallR4 = new PolarCoordinate(
-      Units.inchesToMeters(170),
-      Rotation2d.fromDegrees(179)
-    );
-    public static final PolarCoordinate TransitionBetweenBallR2AndBallR4 = new PolarCoordinate(
-      Units.inchesToMeters(250),
-      Rotation2d.fromDegrees(-149)
-    );
-    public static final PolarCoordinate kBallR4Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR4.getRadiusMeters() - Units.inchesToMeters(kPickupR4DistanceInches),
-      Rotation2d.fromDegrees(-153) //-156
-    );
-    public static final PolarCoordinate kMidFiveBallR4Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR4.getRadiusMeters() - Units.inchesToMeters(kPickupR4DistanceInches),
-      Rotation2d.fromDegrees(-150.75) //-156
-    );
-    public static final PolarCoordinate kBallR4PickupForLeftStart = new PolarCoordinate(
-      Constants.Auto.kBallR4.getRadiusMeters() - Units.inchesToMeters(kPickupR4DistanceInches),
-      Rotation2d.fromDegrees(-161)
-    );
-    public static final PolarCoordinate kBallR4RunOver = new PolarCoordinate(
-      Constants.Auto.kBallR4.getRadiusMeters() - Units.inchesToMeters(kRunOverDistanceInches),
-      Rotation2d.fromDegrees(-158.35)
-    );
-    public static final PolarCoordinate kBallR5Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR4.getRadiusMeters() - Units.inchesToMeters(kPickupR5DistanceInches),
-      Rotation2d.fromDegrees(-157.35) //-157.35
-    );
-    public static final PolarCoordinate kBallR7 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(102.75)
-    );
-    public static final PolarCoordinate kBallR7Pickup = new PolarCoordinate(
-      Constants.Auto.kBallR7.getRadiusMeters() - Units.inchesToMeters(kPickupDistanceInches),
-      Constants.Auto.kBallR7.getTheta()
-    );
-
-    /*
-     * Opponent balls
-     */
-    public static final PolarCoordinate kBallD1 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(127.25)
-    );
-    public static final PolarCoordinate kBallD1Pickup = new PolarCoordinate(
-      Units.inchesToMeters(153) - Units.inchesToMeters(kPickupD1DistanceInches),
-      Rotation2d.fromDegrees(127.25)
-    );
-    public static final PolarCoordinate kBallD1RunOver = new PolarCoordinate(
-      Units.inchesToMeters(153) - Units.inchesToMeters(kRunOverDistanceInches),
-      Rotation2d.fromDegrees(127.25)
-    );
-    public static final PolarCoordinate kBallD2 = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(-169.95)
-    );
-    public static final PolarCoordinate kBallD2Punt = new PolarCoordinate(
-      Units.inchesToMeters(153) - Units.inchesToMeters(kPuntDistanceInches),
-      Rotation2d.fromDegrees(-169.95)
-    );
-    public static final PolarCoordinate kBallD2Pickup = new PolarCoordinate(
-      Units.inchesToMeters(153) - Units.inchesToMeters(kPickupDistanceInches),
-      Rotation2d.fromDegrees(-169.95)
-    );
-
-    public static final PolarCoordinate kStartAtZero = new PolarCoordinate(
-      Units.inchesToMeters(153),
-      Rotation2d.fromDegrees(180)
-    );
   }
 
   // Robot-specific configuration for our swerve drive algorithm
