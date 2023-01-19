@@ -1,0 +1,19 @@
+{
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "2337"
+  },
+  "retained": {
+    "limelight": {
+      "open": true
+    }
+  },
+  "transitory": {
+    "Shuffleboard": {
+      "open": true
+    },
+    "limelight": {
+      "open": true
+    }
+  }
+}

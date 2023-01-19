@@ -9,6 +9,8 @@ import java.util.Map;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
+import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.HeadingToTargetCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -49,7 +52,7 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
-        new HeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
+        new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     vision.setDefaultCommand(new PeriodicRelocalizeCommand(drivetrain, vision));
 
     // Configure the button bindings
@@ -57,6 +60,8 @@ public class RobotContainer {
 
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
     
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -64,6 +69,7 @@ public class RobotContainer {
     startingPosChooser.addOption("Left Pos1", "Left");
     startingPosChooser.addOption("Middle Pos2", "Middle");
     startingPosChooser.addOption("Far Right", "Far Right");
+    startingPosChooser.addOption("Zero", "Zero");
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
@@ -113,7 +119,7 @@ public class RobotContainer {
      * }
      */
   }
-
+/* 
   public void resetRobot() {
     // Other option here is Constants.STARTING_ANGLE for booting against Hub
     pigeon.setYaw(0, 250);
@@ -122,7 +128,16 @@ public class RobotContainer {
             Constants.Auto.kStartAtZero.toFieldCoordinate(),
             drivetrain.getGyroscopeRotation()));
   }
-
+*/
+  public void resetRobot2023() {
+    // Other option here is Constants.STARTING_ANGLE for booting against Hub
+    pigeon.setYaw(0, 250);
+    drivetrain.resetPosition(
+        new Pose2d(
+            Constants.Auto.zeroPoint,
+            new Rotation2d(0)));
+  } 
+/* 
   public void resetRobotTeleop() {
     pigeon.setYaw(0, 250);
     drivetrain.resetPosition(
@@ -130,50 +145,40 @@ public class RobotContainer {
             Constants.Auto.kResetToZero.toFieldCoordinate(),
             drivetrain.getGyroscopeRotation()));
   }
+*/
 
-  public void resetRobotAuto() {
-    pigeon.setYaw(-35, 250);
-    drivetrain.resetPosition(
-        new Pose2d(Constants.Auto.kPosition1LeftStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
-  }
-
-  public void resetRobotAuto(double startingAngle) {
-    pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250);
-    drivetrain.resetPosition(
-        new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
-  }
 
   public void resetRobotChooser(String startPos, double startingAngle) {
     switch (startPos) {
 
+      case "Zero":
+        pigeon.setYaw(0);
+        drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
+        break;
+
       case "Left":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // -32.25 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition1LeftStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Middle":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 45 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition2MiddleStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Right":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 75 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       case "Far Right":
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 90 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPositionFarRightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
 
       default:
-        pigeon.setYaw(startingAngle + drivetrain.getGyroscopeRotation().getDegrees(), 250); // 80 deg
-        drivetrain.resetPosition(
-            new Pose2d(Constants.Auto.kPosition3RightStart.toFieldCoordinate(), drivetrain.getGyroscopeRotation()));
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
     }
   }

@@ -57,6 +57,7 @@ public class FXSwerveModule {
     driveMotor.setSensorPhase(true);
     driveMotor.setInverted(moduleConfiguration.isDriveInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise);
     driveMotor.setNeutralMode(NeutralMode.Brake);
+    driveMotor.setSelectedSensorPosition(0);
 
     // Reduce CAN status frame rates
     driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 250, 250);
@@ -145,7 +146,7 @@ public class FXSwerveModule {
   }
 
   public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(kDriveSensorPositionCoefficient, getAngle());
+    return new SwerveModulePosition(driveMotor.getSelectedSensorPosition() * kDriveSensorPositionCoefficient, getAngle());
   }
 
   /**

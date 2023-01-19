@@ -133,11 +133,11 @@ public class Drivetrain extends SubsystemBase {
       ),
     };
 
+    
     modulePositions[0] = modules[0].getPosition();
     modulePositions[1] = modules[1].getPosition();
     modulePositions[2] = modules[2].getPosition();
     modulePositions[3] = modules[3].getPosition();
-    
 
     odometry = new SwerveDrivePoseEstimator(
      kinematics, 
@@ -254,6 +254,11 @@ public class Drivetrain extends SubsystemBase {
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND);
 
+    modulePositions[0] = modules[0].getPosition();
+    modulePositions[1] = modules[1].getPosition();
+    modulePositions[2] = modules[2].getPosition();
+    modulePositions[3] = modules[3].getPosition();
+
     for (int i = 0; i < states.length; i++) {
       FXSwerveModule module = modules[i];
       SwerveModuleState moduleState = states[i];
@@ -281,9 +286,15 @@ public class Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
     */
-
+    SmartDashboard.putNumber("Pose X", Units.metersToInches(pose.getX()));
+    SmartDashboard.putNumber("Pose Y", Units.metersToInches(pose.getY()));
     SmartDashboard.putNumber("Gyro", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
+    SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
+    SmartDashboard.putNumber("Module 1", Units.metersToInches(modules[1].getPosition().distanceMeters));
+    SmartDashboard.putNumber("Module 2", Units.metersToInches(modules[2].getPosition().distanceMeters));
+    SmartDashboard.putNumber("Module 3", Units.metersToInches(modules[3].getPosition().distanceMeters));
+
   }
 
 }

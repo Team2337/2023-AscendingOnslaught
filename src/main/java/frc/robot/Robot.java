@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    m_robotContainer.resetRobot();
+    m_robotContainer.resetRobot2023();
   }
 
   /*
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.enableMaintainHeading();
 
     if (!autonomousRan) {
-      m_robotContainer.resetRobotTeleop();
+      // m_robotContainer.resetRobotTeleop();
     }
 
     m_robotContainer.instantiateSubsystemsTeleop();
