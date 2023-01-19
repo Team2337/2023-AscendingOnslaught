@@ -15,6 +15,7 @@ import frc.robot.nerdyfiles.vision.LimelightUtilities;
 public class Vision extends SubsystemBase {
 
   private enum LimelightKey {
+    Pose("botpose"),
     Pipeline("pipeline"),
     LEDMode("ledMode"),
     X("tx"),
@@ -76,6 +77,8 @@ public class Vision extends SubsystemBase {
   private LEDMode currentLEDMode;
   private double tx = 0.0;
   private double ty = 0.0;
+  private double[] tpose;
+  private double[] defaultPose = {0, 0};
   private double latency = 0.0;
   private boolean hasValidTarget = false;
   private double distanceToTargetMeters = 0.0;
@@ -103,6 +106,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
+    tpose = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose").getDoubleArray(defaultPose);
     currentPipeline = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline));
     currentLEDMode = LEDMode.withValue(getIntValue(LimelightKey.LEDMode));
     tx = getDoubleValue(LimelightKey.X);
@@ -125,6 +129,8 @@ public class Vision extends SubsystemBase {
       SmartDashboard.putNumber("Vision/ty", getTy());
       SmartDashboard.putNumber("Vision/latency", getLatency());
       SmartDashboard.putBoolean("Vision/Valid Target", hasActiveTarget());
+      SmartDashboard.putNumber("Vision/Robot Pose X", Units.metersToInches(getVisionPoseX()));
+      SmartDashboard.putNumber("Vision/Robot Pose Y", Units.metersToInches(getVisionPoseY()));
     }
     SmartDashboard.putNumber("Vision/Distance To Target (inches)", Units.metersToInches(distanceToTargetMeters));
   }
@@ -221,6 +227,18 @@ public class Vision extends SubsystemBase {
    */
   public double getTy() {
     return ty;
+  }
+
+  public double[] getVisionPose() {
+    return tpose;
+  }
+
+  public double getVisionPoseX() {
+    return tpose[0];
+  }
+
+  public double getVisionPoseY() {
+    return tpose[1];
   }
 
   public double getLatency() {

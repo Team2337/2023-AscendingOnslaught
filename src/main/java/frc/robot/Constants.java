@@ -68,7 +68,7 @@ public final class Constants {
     public static final boolean KICKER = false;
     public static final boolean PDH = false;
     public static final boolean SHOOTER = false;
-    public static final boolean VISION = false;
+    public static final boolean VISION = true;
   }
 
   // Driver dashboard
@@ -235,7 +235,7 @@ public final class Constants {
         CENTERING_BEAM_ID = 8;
         INTAKE_BEAM_ID = 9;
 
-        LIMELIGHT_CAMERA_HEIGHT_METERS = Units.inchesToMeters(37.5); // 38
+        LIMELIGHT_CAMERA_HEIGHT_METERS = Units.inchesToMeters(25.5); // 38
         LIMEILGHT_CAMERA_ANGLE = new Rotation2d(Units.degreesToRadians(28.43)); // 27.95
 
         CLIMBER_SLOPE = 171149;
@@ -338,7 +338,6 @@ public final class Constants {
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
     public static final Translation2d redLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) + robotChargeStationYOffset);
     public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
-
   }
 
   // Robot-specific configuration for our swerve drive algorithm
