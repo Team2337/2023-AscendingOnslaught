@@ -15,6 +15,7 @@ public class blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3 extends Sequentia
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueBottomStagingMark, 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 3, 
                 3, 
                 Units.inchesToMeters(30), 
@@ -25,6 +26,7 @@ public class blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3 extends Sequentia
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueGridRightRobotCenter, 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 3, 
                 3, 
                 Units.inchesToMeters(30), 
@@ -35,6 +37,7 @@ public class blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3 extends Sequentia
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueMiddleStagingMark, 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 3, 
                 3, 
                 Units.inchesToMeters(30), 
@@ -45,6 +48,7 @@ public class blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3 extends Sequentia
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueGridRightRobotLeft, 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 3, 
                 3, 
                 Units.inchesToMeters(30), 

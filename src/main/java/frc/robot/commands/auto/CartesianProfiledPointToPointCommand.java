@@ -1,17 +1,16 @@
 package frc.robot.commands.auto;
 
 import java.util.function.Supplier;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
-import frc.robot.commands.HeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
-import frc.robot.coordinates.PolarCoordinate;
-import frc.robot.nerdyfiles.utilities.Utilities;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Heading;
 
@@ -23,8 +22,8 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
-  private static final double forwardVelocity = Units.inchesToMeters(100);
-  private static final double strafeVelocity = Units.inchesToMeters(100);
+  private static final double forwardVelocity = Units.inchesToMeters(50);
+  private static final double strafeVelocity = Units.inchesToMeters(50);
 
   private Translation2d target;
   private Heading heading;
@@ -33,13 +32,16 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   private ProfiledPIDController forwardController;
   private ProfiledPIDController strafeController;
   private Supplier<Translation2d> translationSupplier;
+  private Supplier<Rotation2d> rotationSupplier;
 
   private double forwardOutput = 0.0;
   private double strafeOutput = 0.0;
+  private double currentRotation;
 
   public CartesianProfiledPointToPointCommand(
     Translation2d target,
     Supplier<Translation2d> translationSupplier,
+    Supplier<Rotation2d> rotationSupplier,
     double driveP,
     double strafeP,
     double forwardAcceleration,
@@ -61,6 +63,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     this.heading = heading;
     this.autoDrive = autoDrive;
     this.translationSupplier = translationSupplier;
+    this.rotationSupplier = rotationSupplier;
 
     forwardController = new ProfiledPIDController(
       driveP, 0.0, 0.0,
@@ -92,6 +95,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     strafeController.reset(robotCoordinate.getY());
     forwardController.reset(robotCoordinate.getX());
     // TODO: check X and Y
+    currentRotation = -rotationSupplier.get().getRadians();
 
   }
 
@@ -100,6 +104,8 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     super.execute();
     log();
     Translation2d robotCoordinate = translationSupplier.get();
+    currentRotation = -rotationSupplier.get().getRadians();
+  
     forwardOutput = forwardController.calculate(
       robotCoordinate.getX(),
       target.getX()
@@ -109,16 +115,19 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
       target.getY()
     );
 
+    double rotatedForwardOutput = forwardOutput * Math.cos(currentRotation) + strafeOutput * Math.sin(currentRotation);
+    double rotatedStrafeOutput = strafeOutput * Math.cos(currentRotation) - forwardOutput * Math.sin(currentRotation);
+
     // Clamp to some max speed (should be between [0.0, 1.0])
     final double maxSpeed = 1.0;
     forwardOutput = MathUtil.clamp(
-      forwardOutput,
+      rotatedForwardOutput,
       -maxSpeed,
       maxSpeed
     );
 
     strafeOutput = MathUtil.clamp(
-      strafeOutput,
+      rotatedStrafeOutput,
       -maxSpeed,
       maxSpeed
     );

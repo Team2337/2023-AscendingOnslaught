@@ -129,8 +129,8 @@ public class Vision extends SubsystemBase {
       SmartDashboard.putNumber("Vision/ty", getTy());
       SmartDashboard.putNumber("Vision/latency", getLatency());
       SmartDashboard.putBoolean("Vision/Valid Target", hasActiveTarget());
-      SmartDashboard.putNumber("Vision/Robot Pose X", Units.metersToInches(getVisionPoseX()));
-      SmartDashboard.putNumber("Vision/Robot Pose Y", Units.metersToInches(getVisionPoseY()));
+    //  SmartDashboard.putNumber("Vision/Robot Pose X", Units.metersToInches(getVisionPoseX()));
+    //SmartDashboard.putNumber("Vision/Robot Pose Y", Units.metersToInches(getVisionPoseY()));
     }
     SmartDashboard.putNumber("Vision/Distance To Target (inches)", Units.metersToInches(distanceToTargetMeters));
   }

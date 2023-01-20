@@ -196,6 +196,10 @@ public class Drivetrain extends SubsystemBase {
     return getPose().getTranslation();
   }
 
+  public Rotation2d getRotation() {
+    return getPose().getRotation();
+  }
+
   public SwerveDriveKinematics getKinematics() {
     return kinematics;
   }
@@ -288,6 +292,7 @@ public class Drivetrain extends SubsystemBase {
     */
     SmartDashboard.putNumber("Pose X", Units.metersToInches(pose.getX()));
     SmartDashboard.putNumber("Pose Y", Units.metersToInches(pose.getY()));
+    SmartDashboard.putNumber("Pose Rotation", pose.getRotation().getDegrees());
     SmartDashboard.putNumber("Gyro", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
     SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
