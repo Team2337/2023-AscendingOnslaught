@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.coordinates.PolarCoordinate;
 import frc.robot.nerdyfiles.swerve.configuration.ModuleConfiguration;
 import frc.robot.nerdyfiles.swerve.configuration.SdsModuleConfigurations;
 

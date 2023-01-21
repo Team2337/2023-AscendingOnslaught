@@ -27,6 +27,6 @@ public class MaintainHeadingCommand extends CommandBase{
 
   @Override
   public boolean isFinished() {
-    return false;
+    return heading.atMaintainHeading() || !heading.isEnabled();
   }
 }
