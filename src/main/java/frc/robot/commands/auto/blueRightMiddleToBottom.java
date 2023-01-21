@@ -11,7 +11,7 @@ import frc.robot.subsystems.Heading;
 public class blueRightMiddleToBottom extends SequentialCommandGroup{
     public blueRightMiddleToBottom(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
         addCommands(
-            new WaitCommand(5),
+            new WaitCommand(2),
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueBottomStagingMark, 
                 drivetrain::getTranslation, 
@@ -23,7 +23,7 @@ public class blueRightMiddleToBottom extends SequentialCommandGroup{
                 autoDrive, 
                 heading
                 ),
-            new WaitCommand(5),
+            new WaitCommand(1),
             new CartesianProfiledPointToPointCommand(
                 Constants.Auto.blueGridRightRobotCenter, 
                 drivetrain::getTranslation, 

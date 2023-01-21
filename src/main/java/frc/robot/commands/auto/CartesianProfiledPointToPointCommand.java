@@ -37,6 +37,8 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   private double forwardOutput = 0.0;
   private double strafeOutput = 0.0;
   private double currentRotation;
+  private double rotatedForwardOutput;
+  private double rotatedStrafeOutput;
 
   public CartesianProfiledPointToPointCommand(
     Translation2d target,
@@ -94,8 +96,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     Translation2d robotCoordinate = translationSupplier.get();
     strafeController.reset(robotCoordinate.getY());
     forwardController.reset(robotCoordinate.getX());
-    // TODO: check X and Y
-    currentRotation = -rotationSupplier.get().getRadians();
+   // currentRotation = rotationSupplier.get().getRadians();
 
   }
 
@@ -104,7 +105,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     super.execute();
     log();
     Translation2d robotCoordinate = translationSupplier.get();
-    currentRotation = -rotationSupplier.get().getRadians();
+    // currentRotation = rotationSupplier.get().getRadians();
   
     forwardOutput = forwardController.calculate(
       robotCoordinate.getX(),
@@ -115,19 +116,20 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
       target.getY()
     );
 
-    double rotatedForwardOutput = forwardOutput * Math.cos(currentRotation) + strafeOutput * Math.sin(currentRotation);
-    double rotatedStrafeOutput = strafeOutput * Math.cos(currentRotation) - forwardOutput * Math.sin(currentRotation);
+    // Replaced with isFieldOriented = true on AutoDrive.State
+    // rotatedForwardOutput = forwardOutput * Math.cos(currentRotation) + strafeOutput * Math.sin(currentRotation);
+    // rotatedStrafeOutput = strafeOutput * Math.cos(currentRotation) - forwardOutput * Math.sin(currentRotation);
 
     // Clamp to some max speed (should be between [0.0, 1.0])
     final double maxSpeed = 1.0;
     forwardOutput = MathUtil.clamp(
-      rotatedForwardOutput,
+      forwardOutput,
       -maxSpeed,
       maxSpeed
     );
 
     strafeOutput = MathUtil.clamp(
-      rotatedStrafeOutput,
+      strafeOutput,
       -maxSpeed,
       maxSpeed
     );
@@ -136,7 +138,8 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   public AutoDrive.State calculate(double forward, double strafe, boolean isFieldOriented) {
     return new AutoDrive.State(
       forwardOutput,
-      strafeOutput
+      strafeOutput,
+      true
     );
   }
 

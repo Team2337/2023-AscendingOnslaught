@@ -87,7 +87,8 @@ public class SwerveDriveCommand extends CommandBase {
           vxMetersPerSecond,
           vyMetersPerSecond,
           omegaRadiansPerSecond,
-          drivetrain.getGyroscopeRotation()
+          // drivetrain.getGyroscopeRotation();
+          drivetrain.getRotation()
         )
       );
     } else {
