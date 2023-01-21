@@ -18,7 +18,7 @@ import frc.robot.subsystems.Heading;
  * Generate movement values to drive the robot between it's current position and
  * the specified point. Depends on the robot facing the Hub.
  */
-public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
+public class VectorProfileToPointCommand extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
@@ -40,7 +40,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   private double rotatedForwardOutput;
   private double rotatedStrafeOutput;
 
-  public CartesianProfiledPointToPointCommand(
+  public VectorProfileToPointCommand(
     Translation2d target,
     Supplier<Translation2d> translationSupplier,
     Supplier<Rotation2d> rotationSupplier,
