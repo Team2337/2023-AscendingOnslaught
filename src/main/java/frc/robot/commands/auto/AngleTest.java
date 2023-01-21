@@ -28,6 +28,7 @@ public class AngleTest extends SequentialCommandGroup{
             new CartesianProfiledPointToPointCommand(
                 new Translation2d(3, 3), 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 3, 
                 3, 
                 Units.inchesToMeters(30), 

@@ -11,6 +11,7 @@ import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -62,7 +63,8 @@ public class RobotContainer {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
     autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
-    
+    autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
+
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.setDefaultOption("Right Pos3", "Right");
@@ -70,10 +72,16 @@ public class RobotContainer {
     startingPosChooser.addOption("Middle Pos2", "Middle");
     startingPosChooser.addOption("Far Right", "Far Right");
     startingPosChooser.addOption("Zero", "Zero");
+    startingPosChooser.addOption("Right Middle", "Right Middle");
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
     startingAngleChooser.addOption("Launchpad (0 degrees)", 0.0);
+    startingAngleChooser.addOption("180 degrees", 180.0);
+    startingAngleChooser.addOption("45", 45.0);
+    startingAngleChooser.addOption("90", 90.0);
+    startingAngleChooser.addOption("-45", -45.0);
+    startingAngleChooser.addOption("-90", -90.0);
     startingAngleChooser.addOption("Left fender (-20 degrees)", -20.0);
     startingAngleChooser.addOption("Right fender (70 degrees)", 70.0);
     startingAngleChooser.setDefaultOption("Cargo exit (25 degrees)", 25.0);
@@ -155,6 +163,11 @@ public class RobotContainer {
         pigeon.setYaw(0);
         drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
         break;
+      
+      case "Right Middle":
+      pigeon.setYaw(0);
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotCenter, Rotation2d.fromDegrees(90)));
+      break;
 
       case "Left":
       pigeon.setYaw(0);

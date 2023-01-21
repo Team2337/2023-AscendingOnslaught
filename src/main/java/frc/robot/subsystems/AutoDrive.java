@@ -60,12 +60,17 @@ public class AutoDrive extends SubsystemBase {
   public static class State {
     public double forward;
     public double strafe;
-    // Auto drive commands should ALWAYS generate robot-centric moves
-    public final boolean isFieldOriented = false;
+    public boolean isFieldOriented = false;
 
     public State(double forward, double strafe) {
       this.forward = forward;
       this.strafe = strafe;
+      this.isFieldOriented = false;
+    }
+    public State(double forward, double strafe, boolean isFieldOriented) {
+      this.forward = forward;
+      this.strafe = strafe;
+      this.isFieldOriented = isFieldOriented;
     }
   }
 

@@ -28,6 +28,7 @@ public class Test extends SequentialCommandGroup{
             new CartesianProfiledPointToPointCommand(
                 new Translation2d(3, 0), 
                 drivetrain::getTranslation, 
+                drivetrain::getRotation, 
                 1.75, 
                 1.75, 
                 Units.inchesToMeters(30), 
