@@ -66,6 +66,9 @@ public class SwerveDriveCommand extends CommandBase {
     // values coming from our controllers)
     if (DriverStation.isTeleopEnabled() && rotation != 0 && heading.isEnabled()) {
       heading.disableMaintainHeading();
+    } else if (DriverStation.isTeleopEnabled() && rotation == 0 && !heading.isEnabled()) {
+      heading.setMaintainHeading(drivetrain.getGyroscopeRotation());
+      heading.enableMaintainHeading();
     }
 
     /**

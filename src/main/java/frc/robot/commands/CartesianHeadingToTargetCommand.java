@@ -82,12 +82,6 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
         firstTime = true;
         heading.changePValue(false);
       }
-      // PolarCoordinate coordinate = getRobotCoordinate();
-      // The angle is the angle outward from our center point. In order to face our center
-      // point, we need to rotate our angle by 180 degrees.
-      heading.setMaintainHeading(
-        new Rotation2d().fromDegrees(0)//coordinate.getTheta().rotateBy(Rotation2d.fromDegrees(180))
-      );
     }
   }
 }
