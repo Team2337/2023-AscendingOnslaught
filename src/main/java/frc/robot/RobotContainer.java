@@ -168,7 +168,7 @@ public class RobotContainer {
       
       case "Right Middle":
       pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotCenter, Rotation2d.fromDegrees(90)));
+      drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotCenter, Rotation2d.fromDegrees(180)));
       break;
 
       case "Left":
