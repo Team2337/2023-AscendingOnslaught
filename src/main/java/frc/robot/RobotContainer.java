@@ -217,7 +217,7 @@ public class RobotContainer {
     JoystickButton driverBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
-    driverA.whenPressed(heading::enableMaintainHeading);
+    driverStart.onTrue(new MaintainHeadingCommand(0, heading));
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
