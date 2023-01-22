@@ -22,8 +22,8 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
-  private static final double forwardVelocity = Units.inchesToMeters(50);
-  private static final double strafeVelocity = Units.inchesToMeters(50);
+  private static final double forwardVelocity = Units.inchesToMeters(160);
+  private static final double strafeVelocity = Units.inchesToMeters(160);
 
   private Translation2d target;
   private Heading heading;

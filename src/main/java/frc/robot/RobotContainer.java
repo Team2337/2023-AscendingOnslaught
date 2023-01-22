@@ -66,6 +66,8 @@ public class RobotContainer {
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
     autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
     autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -163,7 +165,7 @@ public class RobotContainer {
 
       case "Zero":
         pigeon.setYaw(0);
-        drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
+        drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, Rotation2d.fromDegrees(0)));
         break;
       
       case "Right Middle":
