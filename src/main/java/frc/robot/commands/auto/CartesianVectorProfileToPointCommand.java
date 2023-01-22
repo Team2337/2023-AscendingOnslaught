@@ -30,9 +30,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   private ProfiledPIDController driveController;
   private Supplier<Translation2d> translationSupplier;
 
-  private double driveOutput = 0;
-  private double forwardOutput = 0.0;
-  private double strafeOutput = 0.0;
+  private Translation2d driveVector = new Translation2d(0,0);
 
   public CartesianVectorProfileToPointCommand(
     Translation2d target,
@@ -87,32 +85,32 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   public void execute() {
     super.execute();
     log();
-    Translation2d robotCoordinate = translationSupplier.get();
-    double forwardDiff = target.getX() - robotCoordinate.getX();
-    double strafeDiff = target.getY() - robotCoordinate.getY();
-    double degreesToTarget = Math.atan2(strafeDiff,forwardDiff);
 
-    driveOutput = -driveController.calculate(
-      robotCoordinate.getDistance(target),
+    // get the distance/angle from the current location to the target
+    Translation2d vectorToTarget = target.minus(translationSupplier.get());
+
+    // turn negative controller output (decrease distance) into positive drive forward
+    double driveOutput = -1 * driveController.calculate(
+      vectorToTarget.getNorm(),
       0 // goal = 0 distance to target
     );
 
-    // Clamp to some max speed (should be between [0.0, 1.0])
-    final double maxSpeed = 1.0;
+    // Clamp to some max power (should be between [0.0, 1.0])
+    final double maxPower = 1.0;
     driveOutput = MathUtil.clamp(
       driveOutput,
-      -maxSpeed,
-      maxSpeed
+      -maxPower,
+      maxPower
     );
 
-    forwardOutput = driveOutput * Math.cos(degreesToTarget);
-    strafeOutput = driveOutput * Math.sin(degreesToTarget);
+    // turn drive @ angle into forward and strafe values
+    driveVector = new Translation2d(driveOutput, vectorToTarget.getAngle());
   }
 
   public AutoDrive.State calculate(double forward, double strafe, boolean isFieldOriented) {
     return new AutoDrive.State(
-      forwardOutput,
-      strafeOutput,
+      driveVector.getX(),
+      driveVector.getY(),
       true
     );
   }
@@ -120,7 +118,6 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
-
     autoDrive.clearDelegate();
   }
 
@@ -130,20 +127,20 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   }
 
   private void log() {
-    
     SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.getX()));
     SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.getY()));
 
     SmartDashboard.putNumber("VectorProfile2P/Robot X (in)", Units.metersToInches(translationSupplier.get().getX()));
     SmartDashboard.putNumber("VectorProfile2P/Robot Y (in)", Units.metersToInches(translationSupplier.get().getY()));
 
-    SmartDashboard.putNumber("VectorProfile2P/Drive Output", driveOutput);
-    SmartDashboard.putNumber("VectorProfile2P/Drive Error (in)", Units.metersToInches(driveController.getPositionError()));
     SmartDashboard.putNumber("VectorProfile2P/Dist to Target (in)", Units.metersToInches(translationSupplier.get().getDistance(target)));
-    SmartDashboard.putBoolean("VectorProfile2P/forwardController atGoal", driveController.atGoal());
+    SmartDashboard.putNumber("VectorProfile2P/Angle to Target (deg)", driveVector.getAngle().getDegrees());
+    SmartDashboard.putNumber("VectorProfile2P/Controller Error", driveController.getPositionError());
+    SmartDashboard.putBoolean("VectorProfile2P/Controller At Goal", driveController.atGoal());
     
-    SmartDashboard.putNumber("VectorProfile2P/Forward Output", forwardOutput);
-    SmartDashboard.putNumber("VectorProfile2P/Strafe Output", strafeOutput);
+    SmartDashboard.putNumber("VectorProfile2P/Drive Output", driveVector.getNorm());
+    SmartDashboard.putNumber("VectorProfile2P/Forward Output", driveVector.getX());
+    SmartDashboard.putNumber("VectorProfile2P/Strafe Output", driveVector.getY());
   }
 
 }
