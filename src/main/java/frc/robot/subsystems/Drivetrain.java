@@ -2,14 +2,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -85,18 +83,6 @@ public class Drivetrain extends SubsystemBase {
    */
   public Drivetrain(PigeonIMU pigeon) {
     this.pigeon = pigeon;
-/* 
-    odometry = new SwerveDrivePoseEstimator(
-      getGyroscopeRotation(),
-      pose,
-      kinematics,
-      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(1)),
-      VecBuilder.fill(Units.degreesToRadians(0.01)),
-      VecBuilder.fill(0.25, 0.25, Units.degreesToRadians(1))
-    );
-  */
-  
-
 
     modules = new FXSwerveModule[] {
       new FXSwerveModule(
@@ -140,10 +126,10 @@ public class Drivetrain extends SubsystemBase {
     modulePositions[3] = modules[3].getPosition();
 
     odometry = new SwerveDrivePoseEstimator(
-     kinematics, 
-     getGyroscopeRotation(), 
-     modulePositions,
-     pose);
+      kinematics, 
+      getGyroscopeRotation(), 
+      modulePositions,
+      pose);
     setupShuffleboard(Constants.DashboardLogging.DRIVETRAIN);
     SmartDashboard.putData("field", field);
   }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -89,6 +90,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Starting Position", startingPos);
     startingAngle = m_robotContainer.getStartingAngle();
     SmartDashboard.putNumber("Starting Angle", startingAngle);
+    SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -130,7 +132,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
+    SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
   }
 
   @Override

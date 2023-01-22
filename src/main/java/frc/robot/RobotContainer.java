@@ -10,19 +10,17 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
-import frc.robot.commands.HeadingToTargetCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -32,7 +30,6 @@ import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
 import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
-import frc.robot.commands.vision.PeriodicRelocalizeCommand;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -73,28 +70,22 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
-    startingPosChooser.setDefaultOption("Right Pos3", "Right");
-    startingPosChooser.addOption("Left Pos1", "Left");
-    startingPosChooser.addOption("Middle Pos2", "Middle");
-    startingPosChooser.addOption("Far Right", "Far Right");
     startingPosChooser.addOption("Zero", "Zero");
-    startingPosChooser.addOption("Right Middle", "Right Middle");
+    startingPosChooser.addOption("Right Right", "Right Right");
+    startingPosChooser.setDefaultOption("Right Middle", "Right Middle");
+    startingPosChooser.addOption("Right Left", "Right Left");
+    startingPosChooser.addOption("Middle Right", "Middle Right");
+    startingPosChooser.addOption("Middle Middle", "Middle Middle");
+    startingPosChooser.addOption("Middle Left", "Middle Left");
+    startingPosChooser.addOption("Left Right", "Left Right");
+    startingPosChooser.addOption("Left Middle", "Left Middle");
+    startingPosChooser.addOption("Left Left", "Left Left");
+
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
-    startingAngleChooser.addOption("Launchpad (0 degrees)", 0.0);
-    startingAngleChooser.addOption("180 degrees", 180.0);
-    startingAngleChooser.addOption("45", 45.0);
-    startingAngleChooser.addOption("90", 90.0);
-    startingAngleChooser.addOption("-45", -45.0);
-    startingAngleChooser.addOption("-90", -90.0);
-    startingAngleChooser.addOption("Left fender (-20 degrees)", -20.0);
-    startingAngleChooser.addOption("Right fender (70 degrees)", 70.0);
-    startingAngleChooser.setDefaultOption("Cargo exit (25 degrees)", 25.0);
-    startingAngleChooser.addOption("Right Pos3 Errored Start (80 degrees)", 80.0);
-    startingAngleChooser.addOption("Left Pos1 Errored Start (-35 degrees)", -35.0);
-    startingAngleChooser.addOption("Middle Pos2 Errored Start (45 degrees)", 45.0);
-    startingAngleChooser.addOption("Test (-35 degrees)", -35.0);
+    startingAngleChooser.setDefaultOption("180 degrees", 180.0);
+    startingAngleChooser.addOption("0 degrees", 0.0);
 
     SmartDashboard.putData("StartingAngleChooser", startingAngleChooser);
 
@@ -163,42 +154,100 @@ public class RobotContainer {
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
-    switch (startPos) {
+    if (DriverStation.getAlliance() == Alliance.Blue) {
+      switch (startPos) {
 
-      case "Zero":
-        pigeon.setYaw(0);
-        drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, Rotation2d.fromDegrees(0)));
-        break;
-      
-      case "Right Middle":
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotCenter, Rotation2d.fromDegrees(180)));
-      break;
+        case "Zero":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, Rotation2d.fromDegrees(startingAngle)));
+          break;
+        
+        case "Right Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
 
-      case "Left":
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
-        break;
+        case "Right Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
 
-      case "Middle":
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
-        break;
+        case "Right Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridRightRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
 
-      case "Right":
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
-        break;
+        case "Middle Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridMiddleRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
 
-      case "Far Right":
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
-        break;
+        case "Middle Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridMiddleRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
 
-      default:
-      pigeon.setYaw(0);
-      drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(0)));
-        break;
+        case "Middle Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridMiddleRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridLeftRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridLeftRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.blueGridLeftRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        default:
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(startingAngle)));
+          break;
+      }
+    } else if (DriverStation.getAlliance() == Alliance.Red) {
+      switch (startPos) {
+
+        case "Zero":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, Rotation2d.fromDegrees(startingAngle)));
+          break;
+        
+        case "Right Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridRightRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Right Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridRightRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Right Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridRightRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Middle Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridMiddleRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Middle Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridMiddleRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Middle Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridMiddleRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Right":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridLeftRobotRight, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Middle":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridLeftRobotCenter, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        case "Left Left":
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.redGridLeftRobotLeft, Rotation2d.fromDegrees(startingAngle)));
+          break;
+
+        default:
+          drivetrain.resetPosition(new Pose2d(Constants.Auto.zeroPoint, new Rotation2d(startingAngle)));
+          break;
+      }
     }
   }
 
