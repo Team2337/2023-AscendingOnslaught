@@ -30,12 +30,12 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
 
   @Override
   public void execute() {
-    if (vision.hasActiveTarget()) {
+    if (vision.getVisionPose().length != 0) {
 
       double visionPoseX = vision.getVisionPoseX();
       double visionPoseY = vision.getVisionPoseY();
       double visionRotation = vision.getVisionRotation();
-
+      
       Pose2d pose = new Pose2d(
         new Translation2d(visionPoseX, visionPoseY),
         Rotation2d.fromDegrees(visionRotation)

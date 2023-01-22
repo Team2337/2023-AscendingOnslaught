@@ -22,7 +22,7 @@ public class InstantRelocalizeCartesianCommand extends InstantCommand {
   @Override
   public void initialize() {
 
-    if (vision.hasActiveTarget()) {
+    if (vision.getVisionPose().length != 0) {
 
       double visionPoseX = vision.getVisionPoseX();
       double visionPoseY = vision.getVisionPoseY();
