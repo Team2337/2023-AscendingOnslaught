@@ -241,6 +241,10 @@ public class Vision extends SubsystemBase {
     return tpose[1];
   }
 
+  public double getVisionRotation() {
+    return tpose[5];
+  }
+
   public double getLatency() {
     return latency;
   }

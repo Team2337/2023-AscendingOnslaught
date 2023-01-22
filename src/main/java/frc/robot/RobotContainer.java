@@ -28,8 +28,10 @@ import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
+import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
+import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.commands.vision.PeriodicRelocalizeCommand;
 import frc.robot.subsystems.*;
 
@@ -56,7 +58,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    vision.setDefaultCommand(new PeriodicRelocalizeCommand(drivetrain, vision));
+    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -228,6 +230,8 @@ public class RobotContainer {
     JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
 
     driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
+
+    driverX.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
 
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
