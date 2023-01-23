@@ -38,6 +38,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     Translation2d target,
     Supplier<Translation2d> translationSupplier,
     double driveP,
+    double maxVelocity,
     double maxAcceleration,
     AutoDrive autoDrive,
     Heading heading

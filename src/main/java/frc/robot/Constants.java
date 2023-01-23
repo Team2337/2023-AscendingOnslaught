@@ -337,6 +337,19 @@ public final class Constants {
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
     public static final Translation2d redLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) + robotChargeStationYOffset);
     public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+
+    // Blue Intermediary Points
+    public static final Translation2d blueLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(185));
+    public static final Translation2d blueLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(185));
+    public static final Translation2d blueRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(30));
+    public static final Translation2d blueRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(30));
+
+    // Red Intermediary Points
+    public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
+    public static final Translation2d redLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(285));
+    public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
+    public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
+
   }
 
   // Robot-specific configuration for our swerve drive algorithm

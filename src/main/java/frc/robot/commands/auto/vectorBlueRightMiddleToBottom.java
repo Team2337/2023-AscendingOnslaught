@@ -11,11 +11,12 @@ import frc.robot.subsystems.Heading;
 public class vectorBlueRightMiddleToBottom extends SequentialCommandGroup{
     public vectorBlueRightMiddleToBottom(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
         addCommands(
-            new WaitCommand(2),
+            // new ScoreGameObjectCommand
             new CartesianVectorProfileToPointCommand(
                 Constants.Auto.blueBottomStagingMark, 
                 drivetrain::getTranslation,
                 1.5,
+                Units.inchesToMeters(162),
                 Units.inchesToMeters(80),
                 autoDrive, 
                 heading
@@ -25,6 +26,7 @@ public class vectorBlueRightMiddleToBottom extends SequentialCommandGroup{
                 Constants.Auto.blueGridRightRobotCenter,
                 drivetrain::getTranslation,
                 1.5,
+                Units.inchesToMeters(162),
                 Units.inchesToMeters(80),
                 autoDrive,
                 heading

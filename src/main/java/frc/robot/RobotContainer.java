@@ -67,7 +67,17 @@ public class RobotContainer {
     autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
     autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
     autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
-
+    
+    autonChooser.addOption("Blue Grid Left Robot Left Grab 3 Score 3 Standard", new blueLeftyLeftScoreC9GToppyScoreC8GTopScoreC7(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Blue Grid Left Robot Left Grab 3 Score 3 Non-Standard", new blueLeftyLeftScoreC9GTopScoreC7GToppyScoreC8(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Blue Grid Left Robot Left Grab 3 Score 2 Balance", new blueLeftyLeftScoreC9GToppyScoreC8GTopBalance(autoDrive, drivetrain, heading));
+    
+    autonChooser.addOption("Blue Grid Middle Robot Left Grab 2 Score 1 Balance", new blueMiddleLeftScoreC6GTopBalance(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Blue Grid Middle Grab 1 Score 1 Balance", new blueMiddleMiddleScoreC5Balance(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Blue Grid Middle Robot Right Grab 2 Score 1 Balance", new blueMiddleRightScoreC4GMidBalance(autoDrive, drivetrain, heading));
+    
+    autonChooser.addOption("Blue Grid Right Robot Right Grab 3 Score 3 Standard", new blueRightyRightScoreC1GBotScoreC2GMidScoreC3(autoDrive, drivetrain, heading));
+    
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.addOption("Zero", "Zero");
