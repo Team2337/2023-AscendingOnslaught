@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -22,15 +24,23 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
   private static final double maxVelocity = Units.inchesToMeters(162);
+  // 0.15 = 5" error over 23ft, 14" error over 49ft 
+  // 0.1 = 4" error over 23ft, 10" error over 49 ft
+  // 0.05 = almost no error, but can oscilate near target
+  // TODO: investigate some sort of exponential backoff on the lead (i.e. go from 15% to 100%)
+  private static final double intTargetLead = 0.15; // percent, 0.0-1.0
 
-  private Translation2d target;
   private Heading heading;
   private AutoDrive autoDrive;
 
   private ProfiledPIDController driveController;
   private Supplier<Translation2d> translationSupplier;
 
-  private Translation2d driveVector = new Translation2d(0,0);
+  private Translation2d startPos;
+  private Translation2d target;
+  private Translation2d intermediateTarget = new Translation2d();
+  private Translation2d driveVector = new Translation2d();
+
 
   public CartesianVectorProfileToPointCommand(
     Translation2d target,
@@ -76,8 +86,9 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
     // Set our initial setpoint for our profiled PID controllers
     // to avoid a JUMP to their starting values on first run
-    Translation2d robotCoordinate = translationSupplier.get();
-    driveController.reset(robotCoordinate.getDistance(target));
+
+    startPos = translationSupplier.get();
+    driveController.reset(target.getDistance(startPos));
 
   }
 
@@ -86,25 +97,31 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     super.execute();
     log();
 
-    // get the distance/angle from the current location to the target
-    Translation2d vectorToTarget = target.minus(translationSupplier.get());
+    // get the distance to the target
+    Translation2d currentPos = translationSupplier.get();
+    double distanceFromTarget = target.getDistance(currentPos);
+    double percentFromTarget = distanceFromTarget / target.getDistance(startPos); // starts at 1.0 and decreases to 0.0
+
+    // target a point xx% between us and the target, interpolated along the original vector to the target
+    intermediateTarget = startPos.minus(target).times(percentFromTarget*(1-intTargetLead)).plus(target);
+    Translation2d vectorToIntermediateTarget = intermediateTarget.minus(currentPos);
 
     // turn negative controller output (decrease distance) into positive drive forward
     double driveOutput = -1 * driveController.calculate(
-      vectorToTarget.getNorm(),
+      distanceFromTarget,
       0 // goal = 0 distance to target
     );
 
     // Clamp to some max power (should be between [0.0, 1.0])
-    final double maxPower = 1.0;
-    driveOutput = MathUtil.clamp(
-      driveOutput,
-      -maxPower,
-      maxPower
-    );
+    // final double maxPower = 1.0;
+    // driveOutput = MathUtil.clamp(
+    //   driveOutput,
+    //   -maxPower,
+    //   maxPower
+    // );
 
     // turn drive @ angle into forward and strafe values
-    driveVector = new Translation2d(driveOutput, vectorToTarget.getAngle());
+    driveVector = new Translation2d(driveOutput, vectorToIntermediateTarget.getAngle());
   }
 
   public AutoDrive.State calculate(double forward, double strafe, boolean isFieldOriented) {
@@ -129,18 +146,22 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   private void log() {
     SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.getX()));
     SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.getY()));
+    SmartDashboard.putNumber("VectorProfile2P/Target Angle (deg)", target.minus(translationSupplier.get()).getAngle().getDegrees());
+    SmartDashboard.putNumber("VectorProfile2P/Target Dist (in)", Units.metersToInches(translationSupplier.get().getDistance(target)));
+
+    SmartDashboard.putNumber("VectorProfile2P/Int Target X (in)", Units.metersToInches(intermediateTarget.getX()));
+    SmartDashboard.putNumber("VectorProfile2P/Int Target Y (in)", Units.metersToInches(intermediateTarget.getY()));
+    SmartDashboard.putNumber("VectorProfile2P/Int Target Angle (deg)", driveVector.getAngle().getDegrees());
 
     SmartDashboard.putNumber("VectorProfile2P/Robot X (in)", Units.metersToInches(translationSupplier.get().getX()));
     SmartDashboard.putNumber("VectorProfile2P/Robot Y (in)", Units.metersToInches(translationSupplier.get().getY()));
 
-    SmartDashboard.putNumber("VectorProfile2P/Dist to Target (in)", Units.metersToInches(translationSupplier.get().getDistance(target)));
-    SmartDashboard.putNumber("VectorProfile2P/Angle to Target (deg)", driveVector.getAngle().getDegrees());
     SmartDashboard.putNumber("VectorProfile2P/Controller Error", driveController.getPositionError());
     SmartDashboard.putBoolean("VectorProfile2P/Controller At Goal", driveController.atGoal());
     
-    SmartDashboard.putNumber("VectorProfile2P/Drive Output", driveVector.getNorm());
-    SmartDashboard.putNumber("VectorProfile2P/Forward Output", driveVector.getX());
-    SmartDashboard.putNumber("VectorProfile2P/Strafe Output", driveVector.getY());
+    SmartDashboard.putNumber("VectorProfile2P/Output Drive", driveVector.getNorm());
+    SmartDashboard.putNumber("VectorProfile2P/Output Forward", driveVector.getX());
+    SmartDashboard.putNumber("VectorProfile2P/Output Strafe", driveVector.getY());
   }
 
 }

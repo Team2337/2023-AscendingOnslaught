@@ -98,6 +98,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.resetRobotChooser(startingPos, startingAngle);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //TODO: do we need to add a pause between setting pose and starting auton?
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
