@@ -2,10 +2,7 @@ package frc.robot.commands.auto;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -29,6 +26,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   // 0.05 = almost no error, but can oscilate near target
   // TODO: investigate some sort of exponential backoff on the lead (i.e. go from 15% to 100%)
   private static final double intTargetLead = 0.15; // percent, 0.0-1.0
+  // private static final int posePlotFrequencyMS = 200;
 
   private Heading heading;
   private AutoDrive autoDrive;
@@ -41,6 +39,12 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   private Translation2d intermediateTarget = new Translation2d();
   private Translation2d driveVector = new Translation2d();
 
+  // private Field2d field;
+  // private FieldObject2d intTargetPlot;
+  // private List<Pose2d> intTargetPlotPoses;
+  // private FieldObject2d intRobotPlot;
+  // private List<Pose2d> intRobotPlotPoses;
+  // private int posePlotCounter;
 
   public CartesianVectorProfileToPointCommand(
     Translation2d target,
@@ -49,6 +53,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     double maxAcceleration,
     AutoDrive autoDrive,
     Heading heading
+    // Field2d field
   ) {
     super(
       new Translation2d(0, 0),
@@ -64,6 +69,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     this.heading = heading;
     this.autoDrive = autoDrive;
     this.translationSupplier = translationSupplier;
+    // this.field = field;
 
     driveController = new ProfiledPIDController(
       driveP, 0.0, 0.0,
@@ -86,10 +92,17 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
     // Set our initial setpoint for our profiled PID controllers
     // to avoid a JUMP to their starting values on first run
-
+    
     startPos = translationSupplier.get();
     driveController.reset(target.getDistance(startPos));
 
+    // field.getObject("startPos").setPose(new Pose2d(startPos, new Rotation2d(0)));
+    // field.getObject("targetPos").setPose(new Pose2d(target, new Rotation2d(0)));
+    // intTargetPlot = field.getObject("intTargetPos");
+    // intRobotPlot = field.getObject("intRobotPos");
+    // intTargetPlotPoses = new ArrayList<>(intTargetPlot.getPoses());
+    // intRobotPlotPoses = new ArrayList<>(intRobotPlot.getPoses());
+    // posePlotCounter = posePlotFrequencyMS;
   }
 
   @Override
@@ -106,12 +119,23 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     intermediateTarget = startPos.minus(target).times(percentFromTarget*(1-intTargetLead)).plus(target);
     Translation2d vectorToIntermediateTarget = intermediateTarget.minus(currentPos);
 
+    // plot the intermediate points in Glass
+    // posePlotCounter -= 20;
+    // if (posePlotCounter <= 0) {
+    //   posePlotCounter = posePlotFrequencyMS;
+    //   intTargetPlotPoses.add(new Pose2d(intermediateTarget, new Rotation2d(0)));
+    //   intTargetPlot.setPoses(intTargetPlotPoses);
+    //   intRobotPlotPoses.add(new Pose2d(currentPos, new Rotation2d(0)));
+    //   intRobotPlot.setPoses(intRobotPlotPoses);
+    // }
+
     // turn negative controller output (decrease distance) into positive drive forward
     double driveOutput = -1 * driveController.calculate(
       distanceFromTarget,
       0 // goal = 0 distance to target
     );
 
+    // TODO: should we do this or not?
     // Clamp to some max power (should be between [0.0, 1.0])
     // final double maxPower = 1.0;
     // driveOutput = MathUtil.clamp(
@@ -134,6 +158,11 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
   @Override
   public void end(boolean interrupted) {
+    // intTargetPlot.close();
+    // intRobotPlot.close();
+    // field.getObject("startPos").close();
+    // field.getObject("targetPos").close();
+
     super.end(interrupted);
     autoDrive.clearDelegate();
   }

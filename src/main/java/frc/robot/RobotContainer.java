@@ -73,10 +73,18 @@ public class RobotContainer {
     autonChooser.addOption("Full Field Straight XY", new CartesianProfiledPointToPointCommand(new Translation2d(16,0), drivetrain::getTranslation, drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
     autonChooser.addOption("Full Field Diagonal Vector", new CartesianVectorProfileToPointCommand(new Translation2d(16,8), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
     autonChooser.addOption("Full Field Diagonal XY", new CartesianProfiledPointToPointCommand(new Translation2d(16,8), drivetrain::getTranslation, drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
+    autonChooser.addOption("Full Field Box Vector",
+      new CartesianVectorProfileToPointCommand(new Translation2d(15.5,0.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading)
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15.5,7.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5,7.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5,0.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15,7), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+    );
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.addOption("Zero", "Zero");
+    startingPosChooser.addOption("0.5,0.5", "0.5,0.5");
     startingPosChooser.addOption("Right Right", "Right Right");
     startingPosChooser.setDefaultOption("Right Middle", "Right Middle");
     startingPosChooser.addOption("Right Left", "Right Left");
@@ -160,6 +168,10 @@ public class RobotContainer {
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
+    if (startPos == "0.5,0.5") {
+      drivetrain.resetPosition(new Pose2d(new Translation2d(0.5,0.5), Rotation2d.fromDegrees(startingAngle)));
+      return;
+    }
     if (DriverStation.getAlliance() == Alliance.Blue) {
       switch (startPos) {
 
