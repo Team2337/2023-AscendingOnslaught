@@ -78,7 +78,7 @@ public class Vision extends SubsystemBase {
   private double tx = 0.0;
   private double ty = 0.0;
   private double[] tpose = {0, 0, 0, 0, 0, 0};
-  private double[] defaultPose = {0, 0};
+  private double[] defaultPose = {0, 0, 0, 0, 0, 0};
   private double latency = 0.0;
   private boolean hasValidTarget = false;
   private double distanceToTargetMeters = 0.0;
