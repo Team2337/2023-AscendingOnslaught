@@ -422,6 +422,9 @@ public final class Constants {
 
   public static final double CLIMBER_ROLL = 15;
 
+  public static final double SHOULDER_ARM_LENGTH = 26.5;
+  public static final double ELBOW_ARM_LENGTH = 26.5;
+
   public static enum BallColor {
     Red,
     Blue,
