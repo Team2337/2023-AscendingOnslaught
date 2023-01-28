@@ -86,11 +86,24 @@ public class Arm extends SubsystemBase {
   public double getShoulderPositionTicks() {
     return shoulderMotor.getSelectedSensorPosition();
   }
+
+    /**
+   * Converts given ticks to radians.
+   *
+   * @param ticks The ticks to convert to radians.
+   * @return Radians.  (ticks) / (2048 ticks/rev) / (75 gear-ratio) * (2*PI radians/rev) 
+   */
   //Convert ticks to Radians
-  public double convertTicksToAngles(double ticks) {
+  public double convertTicksToRadians(double ticks) {
     return ticks * (1/2048.0) * (1/75.0) * (2.0 * Math.PI);
   }
-  /** Converts Degrees to ticks */
+
+  /**
+   * Converts degrees to ticks
+   *
+   * @param angle      = The angle to be converted
+   * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
+   */
   public double convertAnglestoTicks(double angle){
     return angle * (2048.0) * (75.0) * (1.0/360.0);
   }
@@ -118,7 +131,10 @@ public class Arm extends SubsystemBase {
   }
 
 
-  //This returns the Shoulder Lamprey's Position in Degrees
+  /**
+   * This returns the Shoulder Lamprey's Position in Degrees
+   * @return - degrees, Lamprey voltage / 3.30 volts * 360 degrees
+   */
   public double getShoulderEncoderPosition(){
     return shoulderLamprey.getVoltage() * (360.0/3.30);
     
@@ -147,8 +163,8 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderEncoderPosition());
     SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowEncoderPosition());
-    SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToAngles(getShoulderPositionTicks()));
-    SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToAngles(getShoulderPositionTicks()));
+    SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
+    SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
     SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
     SmartDashboard.putNumber("Arm/Elbow Motor Encoder Ticks", getElbowPositionTicks());
     SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
