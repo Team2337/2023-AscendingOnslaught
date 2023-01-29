@@ -176,24 +176,25 @@ public final class Constants {
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
         MODULE0_ANGLE_CANCODER_ID = 1;
-        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(-131.572);
+        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(94.39);
+
         MODULE1_DRIVE_MOTOR_ID = 1;
         MODULE1_ANGLE_MOTOR_ID = 2;
         MODULE1_ANGLE_CANCODER_ID = 2;
-        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-175.078);
+        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(5.8867);
 
         MODULE2_DRIVE_MOTOR_ID = 8;
         MODULE2_ANGLE_MOTOR_ID = 9;
         MODULE2_ANGLE_CANCODER_ID = 3;
-        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(83.145);
+        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(48.259153);
 
         MODULE3_DRIVE_MOTOR_ID = 10;
         MODULE3_ANGLE_MOTOR_ID = 11;
         MODULE3_ANGLE_CANCODER_ID = 4;
-        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(3.779);
+        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(-2.7246);
 
-        DRIVETRAIN_TRACK_WIDTH_INCHES = 18.75;
-        DRIVETRAIN_WHEEL_BASE_INCHES = 18.75;
+        DRIVETRAIN_TRACK_WIDTH_INCHES = 19.75;
+        DRIVETRAIN_WHEEL_BASE_INCHES = 24.75;
         
         CENTERING_BEAM_ID = 1;
         INTAKE_BEAM_ID = 0;
