@@ -17,10 +17,15 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
+import frc.robot.commands.arm.ArmBasicJoystickCommand;
+import frc.robot.commands.arm.ArmDemoCommand;
+import frc.robot.commands.arm.ArmJoystickCommand;
+import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -43,6 +48,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
   private final Vision vision = new Vision();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
+  private final Arm arm = new Arm();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -56,7 +62,7 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
-
+    //arm.setDefaultCommand(new ArmBasicJoystickCommand(arm, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -256,9 +262,11 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+    SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
     // SwerveDriveCommand
+    
     JoystickButton driverX = new JoystickButton(driverController, XboxController.Button.kX.value);
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
     JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
@@ -282,6 +290,8 @@ public class RobotContainer {
 
     driverX.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
 
+
+
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
 
@@ -291,20 +301,36 @@ public class RobotContainer {
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-
+    
     // Operator left bumper used for vision tracking by default commands.
     // Operator right bumper below in the configureButtonBindingsTeleop() method.
     JoystickAnalogButton operatorLeftTrigger = new JoystickAnalogButton(operatorController, XboxController.Axis.kLeftTrigger.value);
     JoystickAnalogButton operatorRightTrigger = new JoystickAnalogButton(operatorController, XboxController.Axis.kRightTrigger.value);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
-
     JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
     JoystickButton yellowButton = new JoystickButton(operatorStation, 8);
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
 
+
+    operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
+    //90,0
+    operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
+    //0, 90
+    operatorY.whileTrue(new ArmSetpointCommand(arm, 5500, 28000));
+
+    operatorBack.whileTrue(new ArmSetpointCommand(arm, -Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS , -Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS));
+    //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
+    
+    operatorStart.onTrue(new ArmDemoCommand(arm));
+
+
+    
+    operatorA.whileTrue(new ArmJoystickCommand(arm, operatorController));
+    //operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
+    operatorRightBumper.whileTrue(new ArmSetpointCommand(arm, -40000, 17500));
     /** Driverstation Controls * */
   }
 
