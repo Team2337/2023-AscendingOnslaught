@@ -25,17 +25,14 @@ public class Test extends SequentialCommandGroup{
     public Test(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
         addCommands(
             new WaitCommand(1),
-            new CartesianProfiledPointToPointCommand(
-                new Translation2d(3, 0), 
-                drivetrain::getTranslation, 
-                drivetrain::getRotation, 
-                1.75, 
-                1.75, 
-                Units.inchesToMeters(30), 
-                Units.inchesToMeters(30), 
+            new CartesianVectorProfileToPointCommand(
+                new Translation2d(2, 0), 
+                drivetrain::getTranslation,
+                1.5,
+                Units.inchesToMeters(80),
                 autoDrive, 
                 heading
-                )
+            )
         );
     }        
 }
