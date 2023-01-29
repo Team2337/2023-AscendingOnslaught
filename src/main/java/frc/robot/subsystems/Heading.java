@@ -20,9 +20,9 @@ import frc.robot.nerdyfiles.utilities.Utilities;
  * at a time.
  */
 public class Heading extends SubsystemBase {
-
-  private static double NOMINAL_OUTPUT_STATIONARY = 0.06;
-  private static double NOMINAL_OUTPUT_MOVING = 0.03;
+  //TODO: Update nominal outputs when weight is on the robot
+  private static double NOMINAL_OUTPUT_STATIONARY = 0.03;
+  private static double NOMINAL_OUTPUT_MOVING = 0.01;
   private static double VISION_NOMINAL_OUTPUT_STATIONARY = 0.1;
 
   private static double P_MOVING = 0.01; //0.005

@@ -59,15 +59,16 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
+    public static final boolean ARM = false;
     public static final boolean CLIMBER = false;
     public static final boolean DELIVERY = false;
-    public static final boolean DRIVETRAIN = true;
+    public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
     public static final boolean KICKER = false;
     public static final boolean PDH = false;
     public static final boolean SHOOTER = false;
-    public static final boolean VISION = true;
+    public static final boolean VISION = false;
   }
 
   // Driver dashboard
@@ -181,7 +182,7 @@ public final class Constants {
         MODULE1_DRIVE_MOTOR_ID = 1;
         MODULE1_ANGLE_MOTOR_ID = 2;
         MODULE1_ANGLE_CANCODER_ID = 2;
-        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(5.8867);
+        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-5.8867);
 
         MODULE2_DRIVE_MOTOR_ID = 8;
         MODULE2_ANGLE_MOTOR_ID = 9;
@@ -191,7 +192,7 @@ public final class Constants {
         MODULE3_DRIVE_MOTOR_ID = 10;
         MODULE3_ANGLE_MOTOR_ID = 11;
         MODULE3_ANGLE_CANCODER_ID = 4;
-        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(-2.7246);
+        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(2.7246);
 
         DRIVETRAIN_TRACK_WIDTH_INCHES = 19.75;
         DRIVETRAIN_WHEEL_BASE_INCHES = 24.75;

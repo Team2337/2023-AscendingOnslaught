@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
 
@@ -161,21 +162,27 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderEncoderPosition());
-    SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowEncoderPosition());
-    SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
-    SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
-    SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
-    SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
-    SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
-    SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
-    SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", shoulderMotor.getStatorCurrent());
-    SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
-    SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
-    SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
+    
     // This method will be called once per scheduler run
+  }
+
+  public void log() {
+    if (Constants.DashboardLogging.ARM) {
+      SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderEncoderPosition());
+      SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowEncoderPosition());
+      SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
+      SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
+      SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
+      SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
+      SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
+      SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
+      SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
+      SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
+      SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", shoulderMotor.getStatorCurrent());
+      SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
+      SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
+      SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
+    }
   }
 
 }
