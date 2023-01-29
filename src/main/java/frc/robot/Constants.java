@@ -425,6 +425,14 @@ public final class Constants {
   public static final double SHOULDER_ARM_LENGTH = 26.5;
   public static final double ELBOW_ARM_LENGTH = 26.5;
 
+/**
+ * Based on a 75:1 Gear Ratio
+ */
+  public static final double TICKS_PER_DEGREES = 426.66667;
+
+  public static final double ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//-54.0);
+  public static final double SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//115.0);
+
   public static enum BallColor {
     Red,
     Blue,

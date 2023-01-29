@@ -39,8 +39,8 @@ public class Arm extends SubsystemBase {
     shoulderMotor.config_kP(0, shoulderkP);
     shoulderMotor.config_kI(0, shoulderkI);
     shoulderMotor.config_kD(0, shoulderkD);
-    shoulderMotor.configForwardSoftLimitThreshold(36500);
-    shoulderMotor.configReverseSoftLimitThreshold(-43000);
+    shoulderMotor.configForwardSoftLimitThreshold(100000);
+    shoulderMotor.configReverseSoftLimitThreshold(0);
     shoulderMotor.configForwardSoftLimitEnable(true);
     shoulderMotor.configReverseSoftLimitEnable(true);
     shoulderMotor.configAllowableClosedloopError(0, 0);
@@ -49,9 +49,9 @@ public class Arm extends SubsystemBase {
     shoulderMotor.setSelectedSensorPosition(0);
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
-    shoulderMotor.configClosedLoopPeakOutput(0, 0.2);
-    shoulderMotor.configPeakOutputForward(.2, 10);
-    shoulderMotor.configPeakOutputReverse(-.2, 10);
+    shoulderMotor.configClosedLoopPeakOutput(0, 0.1);
+    shoulderMotor.configPeakOutputForward(.1, 10);
+    shoulderMotor.configPeakOutputReverse(-.1, 10);
     shoulderMotor.setInverted(TalonFXInvertType.Clockwise);
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -65,9 +65,9 @@ public class Arm extends SubsystemBase {
     elbowMotor.setSelectedSensorPosition(0);
     elbowMotor.configNominalOutputForward(0);
     elbowMotor.configNominalOutputReverse(0);
-    elbowMotor.configClosedLoopPeakOutput(0, .2);
-    elbowMotor.configPeakOutputForward(.2, 10);
-    elbowMotor.configPeakOutputReverse(-.2, 10);
+    elbowMotor.configClosedLoopPeakOutput(0, .1);
+    elbowMotor.configPeakOutputForward(.1, 10);
+    elbowMotor.configPeakOutputReverse(-.1, 10);
     elbowMotor.setInverted(TalonFXInvertType.Clockwise);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
     
@@ -165,8 +165,8 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowEncoderPosition());
     SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
     SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
-    SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
-    SmartDashboard.putNumber("Arm/Elbow Motor Encoder Ticks", getElbowPositionTicks());
+    SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
+    SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
     SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
     SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
     SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());

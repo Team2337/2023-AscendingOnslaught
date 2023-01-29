@@ -315,17 +315,16 @@ public class RobotContainer {
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
 
 
-    //operatorA.whileTrue(new ArmSetpointCommand(arm, 10000, 72500));
-    //0,0?
     operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
     //90,0
-    operatorX.whileTrue(new ArmSetpointCommand(arm, -40000, -40000));
+    operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     //0, 90
     operatorY.whileTrue(new ArmSetpointCommand(arm, 5500, 28000));
 
+    operatorBack.whileTrue(new ArmSetpointCommand(arm, -Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS , -Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS));
     //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
-
-    //operatorController.povDown().onTrue(new TestSequentialCommand(arm));
+    
+    operatorStart.onTrue(new ArmDemoCommand(arm));
 
 
     

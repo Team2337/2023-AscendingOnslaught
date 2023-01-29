@@ -8,6 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 public class ArmSetpointCommand extends CommandBase {
@@ -23,8 +24,12 @@ public class ArmSetpointCommand extends CommandBase {
     double elbowI = 0;
     double elbowD = 0;
 
-    double elbowSetpoint;
-    double shoulderSetpoint;
+    double ticksPerDegree = 426.6667;
+
+
+
+    double elbowSetpoint = 0;
+    double shoulderSetpoint = 0;
     
     
     //Seems to start slowing down at 45 degrees, will probably have to change due to gearings and such.
@@ -43,16 +48,14 @@ public class ArmSetpointCommand extends CommandBase {
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
-        arm.holdShoulderPosition(shoulderSetpoint);
-        arm.holdElbowPosition(elbowSetpoint);
-        SmartDashboard.putString("hello", "I'll be right there!");
-        
+        arm.holdShoulderPosition(shoulderSetpoint + Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
+        arm.holdElbowPosition(elbowSetpoint + Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
     }
 
     
     @Override
     public void execute() {
-        
+    
     }
 
     @Override
