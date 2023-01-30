@@ -11,6 +11,7 @@ import frc.robot.coordinates.PolarCoordinate;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision.LimelightColor;
 
 /**
  * Update the Heading subsystem to keep the robot facing a single point. By
@@ -26,6 +27,7 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
   private final Vision vision;
   private boolean firstTime = false;
   private Supplier<Boolean> driverRightBumperSupplier;
+  private LimelightColor color;
 
   public CartesianHeadingToTargetCommand(Supplier<Translation2d> robotTranslationSupplier, Supplier<Boolean> overrideSupplier, Supplier<Boolean> driverRightBumperSupplier, Drivetrain drivetrain, Heading heading, Vision vision) {
     this(Constants.kHub, robotTranslationSupplier, overrideSupplier, driverRightBumperSupplier, drivetrain, heading, vision);
@@ -53,6 +55,12 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
 
   @Override
   public void execute() {
+    if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
+      color = LimelightColor.BLUE;
+    } else {
+      color = LimelightColor.ORANGE;
+    }
+
     if (overrideSupplier.get()) {
       if (firstTime) {
         heading.enableMaintainHeading();
@@ -60,7 +68,7 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
         heading.changePValue(true);
       }
       // We're in "vision drive" - drive to pull the Limelight tx value to zero
-      double towardsCenterDegrees = (vision.getTx() * -1);
+      double towardsCenterDegrees = (vision.getTx(color) * -1);
       if (Math.abs(towardsCenterDegrees) < 0.25) {
         towardsCenterDegrees = 0;
       }
