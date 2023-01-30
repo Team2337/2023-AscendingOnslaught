@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -33,6 +34,9 @@ public class Arm extends SubsystemBase {
   double shoulderkI = 0.0;
   double shoulderkD = 0.0;
 
+  double shoulderOffset = 0;
+  double elbowOffset = 0;
+
   
   /** Creates a new ExampleSubsystem. */
   public Arm() {
@@ -50,9 +54,9 @@ public class Arm extends SubsystemBase {
     shoulderMotor.setSelectedSensorPosition(0);
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
-    shoulderMotor.configClosedLoopPeakOutput(0, 0.1);
-    shoulderMotor.configPeakOutputForward(.1, 10);
-    shoulderMotor.configPeakOutputReverse(-.1, 10);
+    shoulderMotor.configClosedLoopPeakOutput(0, Constants.Arm.CLOSED_LOOP_PEAK_OUTPUT);
+    shoulderMotor.configPeakOutputForward(Constants.Arm.PEAK_OUTPUT, 10);
+    shoulderMotor.configPeakOutputReverse(-Constants.Arm.PEAK_OUTPUT, 10);
     shoulderMotor.setInverted(TalonFXInvertType.Clockwise);
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -66,14 +70,19 @@ public class Arm extends SubsystemBase {
     elbowMotor.setSelectedSensorPosition(0);
     elbowMotor.configNominalOutputForward(0);
     elbowMotor.configNominalOutputReverse(0);
-    elbowMotor.configClosedLoopPeakOutput(0, .1);
-    elbowMotor.configPeakOutputForward(.1, 10);
-    elbowMotor.configPeakOutputReverse(-.1, 10);
+    elbowMotor.configClosedLoopPeakOutput(0, Constants.Arm.CLOSED_LOOP_PEAK_OUTPUT);
+    elbowMotor.configPeakOutputForward(Constants.Arm.PEAK_OUTPUT, 10);
+    elbowMotor.configPeakOutputReverse(-Constants.Arm.PEAK_OUTPUT, 10);
     elbowMotor.setInverted(TalonFXInvertType.Clockwise);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
-    
-    
+  }
 
+  /**
+   * Methods for Talon
+   */
+
+   public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
+    return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
   }
 
   public void setElbowSpeed(double speed) {
@@ -87,31 +96,10 @@ public class Arm extends SubsystemBase {
   public double getShoulderPositionTicks() {
     return shoulderMotor.getSelectedSensorPosition();
   }
-
-    /**
-   * Converts given ticks to radians.
-   *
-   * @param ticks The ticks to convert to radians.
-   * @return Radians.  (ticks) / (2048 ticks/rev) / (75 gear-ratio) * (2*PI radians/rev) 
-   */
-  //Convert ticks to Radians
-  public double convertTicksToRadians(double ticks) {
-    return ticks * (1/2048.0) * (1/75.0) * (2.0 * Math.PI);
-  }
-
-  /**
-   * Converts degrees to ticks
-   *
-   * @param angle      = The angle to be converted
-   * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
-   */
-  public double convertAnglestoTicks(double angle){
-    return angle * (2048.0) * (75.0) * (1.0/360.0);
-  }
-
+  
   public void setElbowZero() {
     elbowMotor.setSelectedSensorPosition(0);
-    holdElbowPosition(0);
+    holdElbowPosition(0, 0);
   }
 
   public void setShoulderZero() {
@@ -123,12 +111,27 @@ public class Arm extends SubsystemBase {
     return elbowMotor.getSelectedSensorPosition();
   }
 
-  public void holdElbowPosition(double ticks) {
-    elbowMotor.set(ControlMode.Position, ticks);
+  public void holdElbowPosition(double elbowTicks, double shoulderTicks) {
+    double elbowTarget = (elbowTicks - elbowOffset) + shoulderTicks;
+    elbowMotor.set(ControlMode.Position, elbowTarget);
   }
 
   public void holdShoulderPosition(double ticks) {
-    shoulderMotor.set(ControlMode.Position, ticks);
+    double shoulderTarget = ticks - shoulderOffset;
+    shoulderMotor.set(ControlMode.Position, shoulderTarget);
+  }
+
+  public double getShoulderPosition() {
+    double angle = Units.radiansToDegrees(convertTicksToRadians(getShoulderPositionTicks())) + shoulderOffset;
+    return angle;
+  }
+
+  /*
+   * This is getting an angle with Talon FX's with a virtual fourbar
+   */
+  public double getElbowPosition() {
+    double angle = Units.radiansToDegrees(convertTicksToRadians(getElbowPositionTicks())) - getShoulderPosition() + elbowOffset;
+    return angle;
   }
 
 
@@ -154,9 +157,31 @@ public class Arm extends SubsystemBase {
     return Math.abs(elbowMotor.getClosedLoopTarget()-getElbowPositionTicks()) < 500.0;
   }
 
-  public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
-    return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
+  /**
+   * Utility Methods
+   */
+
+   /**
+   * Converts given ticks to radians.
+   *
+   * @param ticks The ticks to convert to radians.
+   * @return Radians.  (ticks) / (2048 ticks/rev) / (75 gear-ratio) * (2*PI radians/rev) 
+   */
+  //Convert ticks to Radians
+  public double convertTicksToRadians(double ticks) {
+    return ticks * (1/2048.0) * (1/75.0) * (2.0 * Math.PI);
   }
+
+  /**
+   * Converts degrees to ticks
+   *
+   * @param angle      = The angle to be converted
+   * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
+   */
+  public double convertAnglestoTicks(double angle){
+    return angle * (2048.0) * (75.0) * (1.0/360.0);
+  }
+
 
 
 

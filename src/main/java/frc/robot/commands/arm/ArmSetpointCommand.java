@@ -49,7 +49,7 @@ public class ArmSetpointCommand extends CommandBase {
     public void initialize() {
         // TODO Auto-generated method stub
         arm.holdShoulderPosition(shoulderSetpoint + Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
-        arm.holdElbowPosition(elbowSetpoint + Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
+        arm.holdElbowPosition(elbowSetpoint + Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS, 0);
     }
 
     

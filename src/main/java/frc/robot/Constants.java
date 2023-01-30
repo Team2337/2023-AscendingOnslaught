@@ -390,6 +390,11 @@ public final class Constants {
     public static final int BLUE_PIPELINE_INDEX = 1;
   }
 
+  public static final class Arm {
+    public static final double CLOSED_LOOP_PEAK_OUTPUT = 0.3;
+    public static final double PEAK_OUTPUT = 0.3;
+  }
+
   public static final double MOTOR_MINIMUM_TEMP_CELSIUS = 15.0; // Used in Shuffleboard for temperature dials
   public static final double MOTOR_SHUTDOWN_TEMP_CELSIUS = 70.0;
 

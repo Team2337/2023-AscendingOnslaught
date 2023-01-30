@@ -32,7 +32,7 @@ public class ArmBasicJoystickCommand extends CommandBase {
         double outputElbow = deadband(-joystick.get().getRightY(), 0.15);
         if ((outputShoulder == 0) && (outputElbow == 0)){ 
             if (shouldHoldArm) {
-                m_arm.holdElbowPosition(m_arm.getElbowPositionTicks());
+                m_arm.holdElbowPosition(m_arm.getElbowPositionTicks(), 0);
                 m_arm.holdShoulderPosition(m_arm.getShoulderPositionTicks());
                 shouldHoldArm = false;
             }
