@@ -73,6 +73,7 @@ public class RobotContainer {
     autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
     autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
     autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 

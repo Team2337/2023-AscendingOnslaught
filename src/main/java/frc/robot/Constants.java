@@ -273,6 +273,7 @@ public final class Constants {
     public static final double robotOffsetFromHybridAndPickupNodes = Units.inchesToMeters(20);
     public static final double floorPickupArmReach = Units.inchesToMeters(36);
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
+    public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -331,7 +332,7 @@ public final class Constants {
     public static final Translation2d redRightSubstationPickup = new Translation2d(redSubstation5.getX() - floorPickupArmReach - centerOfRobot, redSubstation5.getY() - robotOffsetFromHybridAndPickupNodes);
 
     // Blue Charge Station
-    public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19));
+    public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
     public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
 
