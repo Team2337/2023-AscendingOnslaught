@@ -11,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -27,6 +29,7 @@ import frc.robot.nerdyfiles.swerve.FXSwerveModule;
 public class Drivetrain extends SubsystemBase {
 
   private final PigeonIMU pigeon;
+  private Accelerometer accelerometer = new BuiltInAccelerometer();
 
   /**
    * Array for swerve module objects, sorted by ID
@@ -281,6 +284,10 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose Rotation", pose.getRotation().getDegrees());
     SmartDashboard.putNumber("Gyro", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
+    SmartDashboard.putNumber("Pitch", getGyroscopePitch().getDegrees());
+    SmartDashboard.putNumber("Accelerometer X", accelerometer.getX());
+    SmartDashboard.putNumber("Accelerometer Y", accelerometer.getY());
+    SmartDashboard.putNumber("Accelerometer Z", accelerometer.getZ());
     SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
     SmartDashboard.putNumber("Module 1", Units.metersToInches(modules[1].getPosition().distanceMeters));
     SmartDashboard.putNumber("Module 2", Units.metersToInches(modules[2].getPosition().distanceMeters));
