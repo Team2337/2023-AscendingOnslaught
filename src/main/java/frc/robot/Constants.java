@@ -68,7 +68,7 @@ public final class Constants {
     public static final boolean KICKER = false;
     public static final boolean PDH = false;
     public static final boolean SHOOTER = false;
-    public static final boolean VISION = false;
+    public static final boolean VISION = true;
   }
 
   // Driver dashboard

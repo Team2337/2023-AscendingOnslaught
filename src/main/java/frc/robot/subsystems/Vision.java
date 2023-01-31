@@ -4,10 +4,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.Constants.SystemsCheckPositions;
 import frc.robot.nerdyfiles.vision.LimelightUtilities;
@@ -90,6 +92,8 @@ public class Vision extends SubsystemBase {
   private double distanceToTargetMetersB = 0.0;
   private double distanceToTargetMetersO = 0.0;
   private LimelightColor color;
+  private String allianceColor;
+  private String botPoseColor;
 
   public int relocalizeCounter = 0;
 
@@ -97,6 +101,9 @@ public class Vision extends SubsystemBase {
     // Automatically switch our Limelight to our default pipeline on construction
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
+
+    allianceColor = DriverStation.getAlliance().toString();
+    botPoseColor = botPoseColor + allianceColor;
 
     // Systems check
     if (Constants.DO_SYSTEMS_CHECK) {
@@ -115,7 +122,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    tposeB = NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry("botpose").getDoubleArray(defaultPose);
+    tposeB = NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry(botPoseColor).getDoubleArray(defaultPose);
     currentPipelineB = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.BLUE));
     currentLEDModeB = LEDMode.withValue(getIntValue(LimelightKey.LEDMode, LimelightColor.BLUE));
     txB = getDoubleValue(LimelightKey.X, LimelightColor.BLUE);
@@ -128,7 +135,7 @@ public class Vision extends SubsystemBase {
       distanceToTargetMetersB = calculateDistanceToTargetMeters(LimelightColor.BLUE);
     }
 
-    tposeO = NetworkTableInstance.getDefault().getTable("limelight-orange").getEntry("botpose").getDoubleArray(defaultPose);
+    tposeO = NetworkTableInstance.getDefault().getTable("limelight-orange").getEntry(botPoseColor).getDoubleArray(defaultPose);
     currentPipelineO = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.ORANGE));
     currentLEDModeO = LEDMode.withValue(getIntValue(LimelightKey.LEDMode, LimelightColor.ORANGE));
     txO = getDoubleValue(LimelightKey.X, LimelightColor.ORANGE);
