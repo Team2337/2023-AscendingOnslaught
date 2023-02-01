@@ -168,6 +168,10 @@ public class Drivetrain extends SubsystemBase {
       .withSize(DriverDashboardPositions.GYRO_DEGREES.width, DriverDashboardPositions.GYRO_DEGREES.height);
   }
 
+  public Field2d getField2d() {
+    return field;
+  }
+  
   public void addVisionMeasurement(Pose2d visionPose, double timestampSeconds) {
     odometry.addVisionMeasurement(visionPose, timestampSeconds);
   }

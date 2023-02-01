@@ -10,6 +10,8 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -73,11 +75,23 @@ public class RobotContainer {
     autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
     autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
     autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Full Field Straight Vector", new CartesianVectorProfileToPointCommand(new Translation2d(16,0), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
+    autonChooser.addOption("Full Field Straight XY", new CartesianProfiledPointToPointCommand(new Translation2d(16,0), drivetrain::getTranslation, drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
+    autonChooser.addOption("Full Field Diagonal Vector", new CartesianVectorProfileToPointCommand(new Translation2d(16,8), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
+    autonChooser.addOption("Full Field Diagonal XY", new CartesianProfiledPointToPointCommand(new Translation2d(16,8), drivetrain::getTranslation, drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
+    autonChooser.addOption("Full Field Box Vector",
+      new CartesianVectorProfileToPointCommand(new Translation2d(15.5,0.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading)
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15.5,7.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5,7.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5,0.5), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+      .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15,7), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading))
+    );
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.addOption("Zero", "Zero");
+    startingPosChooser.addOption("0.5,0.5", "0.5,0.5");
     startingPosChooser.addOption("Right Right", "Right Right");
     startingPosChooser.setDefaultOption("Right Middle", "Right Middle");
     startingPosChooser.addOption("Right Left", "Right Left");
@@ -161,6 +175,10 @@ public class RobotContainer {
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
+    if (startPos == "0.5,0.5") {
+      drivetrain.resetPosition(new Pose2d(new Translation2d(0.5,0.5), Rotation2d.fromDegrees(startingAngle)));
+      return;
+    }
     if (DriverStation.getAlliance() == Alliance.Blue) {
       switch (startPos) {
 
