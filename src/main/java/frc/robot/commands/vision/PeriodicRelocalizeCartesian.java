@@ -12,6 +12,8 @@ import frc.robot.subsystems.Vision;
 public class PeriodicRelocalizeCartesian extends VisionCommand {
 
   private boolean disableRelocalizationInAuto = true;
+  private int relocalizationCounterLimit = 10;
+  private int relocalizationCounter = 0;
 
   public PeriodicRelocalizeCartesian(Drivetrain drivetrain, Vision vision) {
     this.vision = vision;
@@ -22,22 +24,26 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
 
   @Override
   public void execute() {
-    //TODO: When do we turn this off?
-    if (DriverStation.isAutonomous() && disableRelocalizationInAuto) {
-      return;
-    }
-    if (vision.getVisionPose().length != 0) {
+    if (relocalizationCounter == relocalizationCounterLimit){
+      //TODO: When do we turn this off?
+      if (DriverStation.isAutonomous() && disableRelocalizationInAuto) {
+        return;
+      }
+      if (vision.getVisionPose().length != 0) {
 
-      double visionPoseX = vision.getVisionPoseX();
-      double visionPoseY = vision.getVisionPoseY();
-      double visionRotation = vision.getVisionRotation();
+        double visionPoseX = vision.getVisionPoseX();
+        double visionPoseY = vision.getVisionPoseY();
+        double visionRotation = vision.getVisionRotation();
       
-      Pose2d pose = new Pose2d(
-        new Translation2d(visionPoseX, visionPoseY),
-        Rotation2d.fromDegrees(visionRotation)
-      );
+        Pose2d pose = new Pose2d(
+          new Translation2d(visionPoseX, visionPoseY),
+          Rotation2d.fromDegrees(visionRotation)
+        );
 
-      drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency() + 2) / 1000));
-    } 
+        drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency() + 2) / 1000));
+        relocalizationCounter = -1;
+      }
+    }
+    relocalizationCounter++; 
   }
 }

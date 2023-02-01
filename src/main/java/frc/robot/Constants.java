@@ -59,15 +59,16 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
+    public static final boolean ARM = false;
     public static final boolean CLIMBER = false;
     public static final boolean DELIVERY = false;
-    public static final boolean DRIVETRAIN = true;
+    public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
     public static final boolean KICKER = false;
     public static final boolean PDH = false;
     public static final boolean SHOOTER = false;
-    public static final boolean VISION = true;
+    public static final boolean VISION = false;
   }
 
   // Driver dashboard
@@ -176,24 +177,25 @@ public final class Constants {
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
         MODULE0_ANGLE_CANCODER_ID = 1;
-        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(-131.572);
+        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(94.39);
+
         MODULE1_DRIVE_MOTOR_ID = 1;
         MODULE1_ANGLE_MOTOR_ID = 2;
         MODULE1_ANGLE_CANCODER_ID = 2;
-        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-175.078);
+        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-5.8867);
 
         MODULE2_DRIVE_MOTOR_ID = 8;
         MODULE2_ANGLE_MOTOR_ID = 9;
         MODULE2_ANGLE_CANCODER_ID = 3;
-        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(83.145);
+        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(48.259153);
 
         MODULE3_DRIVE_MOTOR_ID = 10;
         MODULE3_ANGLE_MOTOR_ID = 11;
         MODULE3_ANGLE_CANCODER_ID = 4;
-        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(3.779);
+        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(2.7246);
 
-        DRIVETRAIN_TRACK_WIDTH_INCHES = 18.75;
-        DRIVETRAIN_WHEEL_BASE_INCHES = 18.75;
+        DRIVETRAIN_TRACK_WIDTH_INCHES = 19.75;
+        DRIVETRAIN_WHEEL_BASE_INCHES = 24.75;
         
         CENTERING_BEAM_ID = 1;
         INTAKE_BEAM_ID = 0;
@@ -271,6 +273,7 @@ public final class Constants {
     public static final double robotOffsetFromHybridAndPickupNodes = Units.inchesToMeters(20);
     public static final double floorPickupArmReach = Units.inchesToMeters(36);
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
+    public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -329,7 +332,7 @@ public final class Constants {
     public static final Translation2d redRightSubstationPickup = new Translation2d(redSubstation5.getX() - floorPickupArmReach - centerOfRobot, redSubstation5.getY() - robotOffsetFromHybridAndPickupNodes);
 
     // Blue Charge Station
-    public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19));
+    public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
     public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
 
@@ -421,6 +424,17 @@ public final class Constants {
   public static final double VISION_OFFSET = 0;
 
   public static final double CLIMBER_ROLL = 15;
+
+  public static final double SHOULDER_ARM_LENGTH = 26.5;
+  public static final double ELBOW_ARM_LENGTH = 26.5;
+
+/**
+ * Based on a 75:1 Gear Ratio
+ */
+  public static final double TICKS_PER_DEGREES = 426.66667;
+
+  public static final double ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//-54.0);
+  public static final double SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//115.0);
 
   public static enum BallColor {
     Red,

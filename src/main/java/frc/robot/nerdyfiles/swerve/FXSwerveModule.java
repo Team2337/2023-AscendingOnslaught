@@ -91,7 +91,7 @@ public class FXSwerveModule {
 
     configuration.statorCurrLimit = CTREUtils.defaultCurrentLimit();
 
-    configuration.slot0.kP = 0.3;
+    configuration.slot0.kP = 0.9; //0.3
     configuration.slot0.kI = 0.0;
     configuration.slot0.kD = 0.1;
 
@@ -172,6 +172,7 @@ public class FXSwerveModule {
     SmartDashboard.putNumber(prefix + "Velocity (ft per s)", Units.metersToFeet(getVelocity()));
     SmartDashboard.putNumber(prefix + "Drive Motor Temperature (C)", getDriveMotorTemperature());
     SmartDashboard.putNumber(prefix + "Angle Motor Temperature (C)", getAngleMotorTemperature());
+    SmartDashboard.putNumber(prefix + "Angle Motor Error", angleMotor.getClosedLoopError());
   }
 
 }

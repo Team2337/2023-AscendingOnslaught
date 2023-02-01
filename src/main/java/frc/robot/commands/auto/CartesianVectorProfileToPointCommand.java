@@ -169,7 +169,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
   @Override
   public boolean isFinished() {
-    return driveController.atGoal();
+    return  Units.metersToInches(translationSupplier.get().getDistance(target)) < 1;
   }
 
   private void log() {
