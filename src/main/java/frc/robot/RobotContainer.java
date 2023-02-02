@@ -58,7 +58,6 @@ public class RobotContainer {
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
   private final SendableChooser<Double> startingAngleChooser = new SendableChooser<>();
   private int teleopAutoPosition = 1;
-  private Translation2d teleopAutoDestination;
 
   public RobotContainer() {
     JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
@@ -418,6 +417,8 @@ public class RobotContainer {
 
   public Command constructTeleopAutoCommand() {
     Command teleopDriveCommand = new DoNothingCommand();
+    Translation2d teleopAutoDestination;
+
     String color = DriverStation.getAlliance().toString().toLowerCase();
     if (color == "blue") {
       if (teleopAutoPosition <= 2) {
@@ -478,8 +479,85 @@ public class RobotContainer {
 
       }
       
-    } else {
+      switch (teleopAutoPosition) {
+        case 1:
+          teleopAutoDestination = Constants.Auto.blue1;
+          break;
+        case 2:
+          teleopAutoDestination = Constants.Auto.blue2;
+          break;
+        case 3:
+          teleopAutoDestination = Constants.Auto.blue3;
+          break;
+        case 4:
+          teleopAutoDestination = Constants.Auto.blue4;
+          break;
+        case 5:
+          teleopAutoDestination = Constants.Auto.blue5;
+          break;
+        case 6:
+          teleopAutoDestination = Constants.Auto.blue6;
+          break;
+        case 7:
+          teleopAutoDestination = Constants.Auto.blue7;
+          break;
+        case 8:
+          teleopAutoDestination = Constants.Auto.blue8;
+          break;
+        case 9:
+          teleopAutoDestination = Constants.Auto.blue9;
+          break;
+        case 10:
+          teleopAutoDestination = Constants.Auto.blue10;
+          break;
+        case 11:
+          teleopAutoDestination = Constants.Auto.blue11;
+          break;
+        default:
+          teleopAutoDestination = Constants.Auto.blue1;
+      }
+
+
+    } else { // if red alliance
       teleopDriveCommand = new DoNothingCommand();
+
+      switch (teleopAutoPosition) {
+        case 1:
+          teleopAutoDestination = Constants.Auto.red1;
+          break;
+        case 2:
+          teleopAutoDestination = Constants.Auto.red2;
+          break;
+        case 3:
+          teleopAutoDestination = Constants.Auto.red3;
+          break;
+        case 4:
+          teleopAutoDestination = Constants.Auto.red4;
+          break;
+        case 5:
+          teleopAutoDestination = Constants.Auto.red5;
+          break;
+        case 6:
+          teleopAutoDestination = Constants.Auto.red6;
+          break;
+        case 7:
+          teleopAutoDestination = Constants.Auto.red7;
+          break;
+        case 8:
+          teleopAutoDestination = Constants.Auto.red8;
+          break;
+        case 9:
+          teleopAutoDestination = Constants.Auto.red9;
+          break;
+        case 10:
+          teleopAutoDestination = Constants.Auto.red10;
+          break;
+        case 11:
+          teleopAutoDestination = Constants.Auto.red11;
+          break;
+        default:
+          teleopAutoDestination = Constants.Auto.red1;
+      }
     }
 
     teleopDriveCommand = teleopDriveCommand.andThen(
