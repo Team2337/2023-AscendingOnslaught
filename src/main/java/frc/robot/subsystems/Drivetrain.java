@@ -74,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Update Drivetrain state only once per cycle
   private Pose2d pose = new Pose2d();
-  // private Field2d field = new Field2d();
+  private Field2d field = new Field2d();
 
   // Array for Yaw Pitch and Roll values in degrees
   private double[] ypr_deg = { 0, 0, 0 };
