@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
@@ -55,6 +57,8 @@ public class RobotContainer {
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
   private final SendableChooser<Double> startingAngleChooser = new SendableChooser<>();
+  private int teleopAutoPosition = 1;
+  private Translation2d teleopAutoDestination;
 
   public RobotContainer() {
     JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
@@ -284,7 +288,7 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
-    // SwerveDriveCommand
+    // SwerveDriveCommand to turn on/off field orientation
     
     JoystickButton driverX = new JoystickButton(driverController, XboxController.Button.kX.value);
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
@@ -298,12 +302,13 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
+    driverA.onTrue(constructTeleopAutoCommand());
+    driverB.onTrue(Commands.runOnce(() -> {teleopAutoPosition = 1; }));
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
     // driverRightBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.RED,
     // delivery, kicker));
-    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
 
     driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
 
@@ -317,6 +322,7 @@ public class RobotContainer {
     JoystickButton operatorA = new JoystickButton(operatorController, XboxController.Button.kA.value);
     JoystickButton operatorB = new JoystickButton(operatorController, XboxController.Button.kB.value);
     JoystickButton operatorX = new JoystickButton(operatorController, XboxController.Button.kX.value);
+    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
@@ -408,6 +414,87 @@ public class RobotContainer {
 
   public boolean getClearSwitchStatus() {
     return operatorStation.clearSwitch.getAsBoolean();
+  }
+
+  public Command constructTeleopAutoCommand() {
+    Command teleopDriveCommand = new DoNothingCommand();
+    String color = DriverStation.getAlliance().toString().toLowerCase();
+    if (color == "blue") {
+      if (teleopAutoPosition <= 2) {
+        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueRightIntermediaryFar, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        );
+      } else if (teleopAutoPosition <= 4) {
+        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueRightIntermediaryFar, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        ).andThen(
+          new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueRightIntermediaryNear, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        ));
+      } else if (teleopAutoPosition <= 7) {
+        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueLeftIntermediaryFar, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        ).andThen(
+          new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueLeftIntermediaryNear, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        ));
+      } else if (teleopAutoPosition <= 9) {
+        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
+          Constants.Auto.blueLeftIntermediaryFar, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        );
+      } else if (teleopAutoPosition > 9) {
+
+      } else {
+
+      }
+      
+    } else {
+      teleopDriveCommand = new DoNothingCommand();
+    }
+
+    teleopDriveCommand = teleopDriveCommand.andThen(
+      new CartesianVectorProfileToPointCommand(
+          teleopAutoDestination, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        )
+    );
+
+
+    return teleopDriveCommand;
   }
 
 }
