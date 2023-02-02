@@ -51,6 +51,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     Supplier<Translation2d> translationSupplier,
     double driveP,
     double maxAcceleration,
+    // TODO: add maxVelocity parameter
     AutoDrive autoDrive,
     Heading heading
     // Field2d field
