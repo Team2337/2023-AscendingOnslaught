@@ -417,152 +417,148 @@ public class RobotContainer {
 
   public Command constructTeleopAutoCommand() {
     Command teleopDriveCommand = new DoNothingCommand();
-    Translation2d teleopAutoDestination;
+    Translation2d waypoint1_outer = null;
+    Translation2d waypoint2_inner = null;
+    Translation2d waypoint3_goal = null;
 
     String color = DriverStation.getAlliance().toString().toLowerCase();
     if (color == "blue") {
-      if (teleopAutoPosition <= 2) {
-        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueRightIntermediaryFar, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        );
-      } else if (teleopAutoPosition <= 4) {
-        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueRightIntermediaryFar, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        ).andThen(
-          new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueRightIntermediaryNear, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        ));
-      } else if (teleopAutoPosition <= 7) {
-        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueLeftIntermediaryFar, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        ).andThen(
-          new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueLeftIntermediaryNear, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        ));
-      } else if (teleopAutoPosition <= 9) {
-        teleopDriveCommand = new CartesianVectorProfileToPointCommand(
-          Constants.Auto.blueLeftIntermediaryFar, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        );
-      } else if (teleopAutoPosition > 9) {
 
-      } else {
-
-      }
-      
       switch (teleopAutoPosition) {
         case 1:
-          teleopAutoDestination = Constants.Auto.blue1;
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint3_goal = Constants.Auto.blue1;
           break;
         case 2:
-          teleopAutoDestination = Constants.Auto.blue2;
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint3_goal = Constants.Auto.blue2;
           break;
         case 3:
-          teleopAutoDestination = Constants.Auto.blue3;
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blue3;
           break;
         case 4:
-          teleopAutoDestination = Constants.Auto.blue4;
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blue4;
           break;
         case 5:
-          teleopAutoDestination = Constants.Auto.blue5;
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blue5;
           break;
         case 6:
-          teleopAutoDestination = Constants.Auto.blue6;
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blue6;
           break;
         case 7:
-          teleopAutoDestination = Constants.Auto.blue7;
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blue7;
           break;
         case 8:
-          teleopAutoDestination = Constants.Auto.blue8;
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.blue8;
           break;
         case 9:
-          teleopAutoDestination = Constants.Auto.blue9;
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.blue9;
           break;
         case 10:
-          teleopAutoDestination = Constants.Auto.blue10;
+          //waypoint1 = Constants.Auto.blue;
+          waypoint3_goal = Constants.Auto.blue10;
           break;
         case 11:
-          teleopAutoDestination = Constants.Auto.blue11;
+          //waypoint1 = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.blue11;
           break;
-        default:
-          teleopAutoDestination = Constants.Auto.blue1;
       }
-
 
     } else { // if red alliance
-      teleopDriveCommand = new DoNothingCommand();
 
       switch (teleopAutoPosition) {
         case 1:
-          teleopAutoDestination = Constants.Auto.red1;
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint3_goal = Constants.Auto.red1;
           break;
         case 2:
-          teleopAutoDestination = Constants.Auto.red2;
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint3_goal = Constants.Auto.red2;
           break;
         case 3:
-          teleopAutoDestination = Constants.Auto.red3;
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.red3;
           break;
         case 4:
-          teleopAutoDestination = Constants.Auto.red4;
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.red4;
           break;
         case 5:
-          teleopAutoDestination = Constants.Auto.red5;
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.red5;
           break;
         case 6:
-          teleopAutoDestination = Constants.Auto.red6;
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.red6;
           break;
         case 7:
-          teleopAutoDestination = Constants.Auto.red7;
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.red7;
           break;
         case 8:
-          teleopAutoDestination = Constants.Auto.red8;
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.red8;
           break;
         case 9:
-          teleopAutoDestination = Constants.Auto.red9;
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.red9;
           break;
         case 10:
-          teleopAutoDestination = Constants.Auto.red10;
+          //waypoint1 = Constants.Auto.red;
+          waypoint3_goal = Constants.Auto.red10;
           break;
         case 11:
-          teleopAutoDestination = Constants.Auto.red11;
+          //waypoint1 = Constants.Auto.redLeftIntermediaryFar;
+          waypoint3_goal = Constants.Auto.red11;
           break;
-        default:
-          teleopAutoDestination = Constants.Auto.red1;
       }
     }
 
+    // waypoint1 = outer waypoint
+    teleopDriveCommand = new CartesianVectorProfileToPointCommand(
+      waypoint1_outer, 
+      drivetrain::getTranslation,
+      1.5,
+      Units.inchesToMeters(80),
+      autoDrive, 
+      heading
+    );
+    
+    // waypoint2 = inner waypoint (if it exists)
+    if (waypoint2_inner != null) {
+      teleopDriveCommand = teleopDriveCommand.andThen(
+        new CartesianVectorProfileToPointCommand(
+          waypoint2_inner, 
+          drivetrain::getTranslation,
+          1.5,
+          Units.inchesToMeters(80),
+          autoDrive, 
+          heading
+        )
+      );
+    }
+
+    // waypoint 3 = final scoring location
     teleopDriveCommand = teleopDriveCommand.andThen(
       new CartesianVectorProfileToPointCommand(
-          teleopAutoDestination, 
+          waypoint3_goal, 
           drivetrain::getTranslation,
           1.5,
           Units.inchesToMeters(80),
@@ -570,7 +566,6 @@ public class RobotContainer {
           heading
         )
     );
-
 
     return teleopDriveCommand;
   }
