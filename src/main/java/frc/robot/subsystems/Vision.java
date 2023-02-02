@@ -93,7 +93,7 @@ public class Vision extends SubsystemBase {
   private double distanceToTargetMetersO = 0.0;
   private LimelightColor color;
   private String allianceColor;
-  private String botPoseColor;
+  private String botPoseColor = "botpose_wpi";
 
   public int relocalizeCounter = 0;
 
@@ -102,7 +102,7 @@ public class Vision extends SubsystemBase {
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
 
-    allianceColor = DriverStation.getAlliance().toString();
+    allianceColor = DriverStation.getAlliance().toString().toLowerCase();
     botPoseColor = botPoseColor + allianceColor;
 
     // Systems check
