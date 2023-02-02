@@ -2,14 +2,17 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.coordinates.PolarCoordinate;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision.LimelightColor;
 
 public abstract class VisionCommand extends CommandBase {
 
   protected Drivetrain drivetrain;;
   protected Vision vision;
+  private LimelightColor color;
 
   /**
    * Get a polar coordinate for the robot based on our vision subsystem.
@@ -17,13 +20,18 @@ public abstract class VisionCommand extends CommandBase {
    * +/- 5 degrees off center of the vision target.
    */
   protected PolarCoordinate calculateVisionPolarCoordiante() {
+    if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
+      color = LimelightColor.BLUE;
+    } else {
+      color = LimelightColor.ORANGE;
+    }
     // Vision polar coordiante can be determined by using a distance reading
     // + looking at our gyro reading + our tx value.
     // Assumes we're facing the Hub dead-on-ish
     Rotation2d gyroRotation = drivetrain.getGyroscopeRotation();
     Rotation2d hubTheta = gyroRotation.rotateBy(Rotation2d.fromDegrees(180));
-    if (vision.hasActiveTarget()) {
-      double tx = vision.getTx(); // Degrees from crosshairs center - -29.8 to 29.8
+    if (vision.hasActiveTarget(color)) {
+      double tx = vision.getTx(color); // Degrees from crosshairs center - -29.8 to 29.8
       // If we're more than ~2 degrees off center, we don't have confidence in our
       // hub height reading. Don't calculate an estimated position.
       if (Math.abs(tx) > 2) {

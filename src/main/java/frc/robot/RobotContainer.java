@@ -351,6 +351,7 @@ public class RobotContainer {
     //operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(arm, -40000, 17500));
     /** Driverstation Controls * */
+    //TODO: Create switch to flip between orange and blue
   }
 
   public void instantiateSubsystemsTeleop() {
@@ -384,18 +385,6 @@ public class RobotContainer {
 
   public PigeonState getPigeonState() {
     return drivetrain.getPigeonState();
-  }
-
-  public boolean isOnTarget() {
-    return vision.isOnTarget();
-  }
-
-  public boolean hasActiveTarget() {
-    return vision.hasActiveTarget();
-  }
-
-  public double getTx() {
-    return vision.getTx();
   }
 
   public boolean getBlackSwitchStatus() {

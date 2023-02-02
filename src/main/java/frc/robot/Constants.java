@@ -389,6 +389,8 @@ public final class Constants {
     public static final double VISION_TARGET_OFFSET_FROM_HUB_CENTER_METERS = Units.feetToMeters(2);
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
+    //TODO: Change to 15
+    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 3;
   }
 
   public static final double MOTOR_MINIMUM_TEMP_CELSIUS = 15.0; // Used in Shuffleboard for temperature dials
