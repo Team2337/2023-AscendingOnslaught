@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private boolean autonomousRan = false;
+  public static String allianceColor = "hello";
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -123,17 +124,18 @@ public class Robot extends TimedRobot {
     m_robotContainer.enableMaintainHeading();
 
     if (!autonomousRan) {
-      // m_robotContainer.resetRobotTeleop();
+      m_robotContainer.resetRobotTeleop();
     }
 
-    m_robotContainer.instantiateSubsystemsTeleop();
-    m_robotContainer.configureButtonBindingsTeleop();
+    // m_robotContainer.instantiateSubsystemsTeleop();
+    // m_robotContainer.configureButtonBindingsTeleop();    
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
+    SmartDashboard.putString("Alliance Color", allianceColor);
+    allianceColor = DriverStation.getAlliance().toString();
   }
 
   @Override

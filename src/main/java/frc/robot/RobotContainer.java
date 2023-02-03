@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
@@ -31,6 +32,8 @@ import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand;
+import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
@@ -57,7 +60,6 @@ public class RobotContainer {
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
   private final SendableChooser<Double> startingAngleChooser = new SendableChooser<>();
-  private int teleopAutoPosition = 1;
 
   public RobotContainer() {
     JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
@@ -66,7 +68,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     //arm.setDefaultCommand(new ArmBasicJoystickCommand(arm, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
@@ -166,15 +168,13 @@ public class RobotContainer {
             Constants.Auto.zeroPoint,
             new Rotation2d(0)));
   } 
-/* 
+
   public void resetRobotTeleop() {
-    pigeon.setYaw(0, 250);
     drivetrain.resetPosition(
         new Pose2d(
-            Constants.Auto.kResetToZero.toFieldCoordinate(),
-            drivetrain.getGyroscopeRotation()));
-  }
-*/
+            Constants.Auto.zeroPoint,
+            new Rotation2d(0)));
+  } 
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
@@ -301,8 +301,10 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
-    driverA.onTrue(constructTeleopAutoCommand());
-    driverB.onTrue(Commands.runOnce(() -> {teleopAutoPosition = 1; }));
+    driverA.onTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(drivetrain::getWaypointInner, autoDrive, drivetrain, heading), new RedConstructTeleopAutoCommand(drivetrain::getTeleopAutoPosition, autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
+    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(4)));   
+    
+
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
@@ -359,8 +361,6 @@ public class RobotContainer {
   }
 
   public void instantiateSubsystemsTeleop() {
-    // pixyCam = new PixyCam();
-    System.out.println("Hello World!");
   }
 
   public void configureButtonBindingsTeleop() {
@@ -413,161 +413,6 @@ public class RobotContainer {
 
   public boolean getClearSwitchStatus() {
     return operatorStation.clearSwitch.getAsBoolean();
-  }
-
-  public Command constructTeleopAutoCommand() {
-    Command teleopDriveCommand = new DoNothingCommand();
-    Translation2d waypoint1_outer = null;
-    Translation2d waypoint2_inner = null;
-    Translation2d waypoint3_goal = null;
-
-    String color = DriverStation.getAlliance().toString().toLowerCase();
-    if (color == "blue") {
-
-      switch (teleopAutoPosition) {
-        case 1:
-          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
-          waypoint3_goal = Constants.Auto.blue1;
-          break;
-        case 2:
-          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
-          waypoint3_goal = Constants.Auto.blue2;
-          break;
-        case 3:
-          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
-          waypoint2_inner = Constants.Auto.blueRightIntermediaryNear;
-          waypoint3_goal = Constants.Auto.blue3;
-          break;
-        case 4:
-          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
-          waypoint2_inner = Constants.Auto.blueRightIntermediaryNear;
-          waypoint3_goal = Constants.Auto.blue4;
-          break;
-        case 5:
-          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.blue5;
-          break;
-        case 6:
-          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.blue6;
-          break;
-        case 7:
-          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.blue7;
-          break;
-        case 8:
-          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.blue8;
-          break;
-        case 9:
-          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.blue9;
-          break;
-        case 10:
-          //waypoint1 = Constants.Auto.blue;
-          waypoint3_goal = Constants.Auto.blue10;
-          break;
-        case 11:
-          //waypoint1 = Constants.Auto.blueLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.blue11;
-          break;
-      }
-
-    } else { // if red alliance
-
-      switch (teleopAutoPosition) {
-        case 1:
-          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
-          waypoint3_goal = Constants.Auto.red1;
-          break;
-        case 2:
-          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
-          waypoint3_goal = Constants.Auto.red2;
-          break;
-        case 3:
-          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
-          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
-          waypoint3_goal = Constants.Auto.red3;
-          break;
-        case 4:
-          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
-          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
-          waypoint3_goal = Constants.Auto.red4;
-          break;
-        case 5:
-          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.red5;
-          break;
-        case 6:
-          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.red6;
-          break;
-        case 7:
-          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
-          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
-          waypoint3_goal = Constants.Auto.red7;
-          break;
-        case 8:
-          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.red8;
-          break;
-        case 9:
-          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.red9;
-          break;
-        case 10:
-          //waypoint1 = Constants.Auto.red;
-          waypoint3_goal = Constants.Auto.red10;
-          break;
-        case 11:
-          //waypoint1 = Constants.Auto.redLeftIntermediaryFar;
-          waypoint3_goal = Constants.Auto.red11;
-          break;
-      }
-    }
-
-    // waypoint1 = outer waypoint
-    teleopDriveCommand = new CartesianVectorProfileToPointCommand(
-      waypoint1_outer, 
-      drivetrain::getTranslation,
-      1.5,
-      Units.inchesToMeters(80),
-      autoDrive, 
-      heading
-    );
-    
-    // waypoint2 = inner waypoint (if it exists)
-    if (waypoint2_inner != null) {
-      teleopDriveCommand = teleopDriveCommand.andThen(
-        new CartesianVectorProfileToPointCommand(
-          waypoint2_inner, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        )
-      );
-    }
-
-    // waypoint 3 = final scoring location
-    teleopDriveCommand = teleopDriveCommand.andThen(
-      new CartesianVectorProfileToPointCommand(
-          waypoint3_goal, 
-          drivetrain::getTranslation,
-          1.5,
-          Units.inchesToMeters(80),
-          autoDrive, 
-          heading
-        )
-    );
-
-    return teleopDriveCommand;
   }
 
 }
