@@ -176,10 +176,6 @@ public class Drivetrain extends SubsystemBase {
       .withPosition(DriverDashboardPositions.GYRO_DEGREES.x, DriverDashboardPositions.GYRO_DEGREES.y)
       .withSize(DriverDashboardPositions.GYRO_DEGREES.width, DriverDashboardPositions.GYRO_DEGREES.height);
   }
-
-  // public Field2d getField2d() {
-  //   return field;
-  // }
   
   public void addVisionMeasurement(Pose2d visionPose, double timestampSeconds) {
     odometry.addVisionMeasurement(visionPose, timestampSeconds);
