@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +24,8 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
   private static final double maxVelocity = Units.inchesToMeters(162);
-  private double initialVelocity = Units.inchesToMeters(40);
+  private double initialVelocity = Units.inchesToMeters(-40);
+  private double initialAcceleration = Units.inchesToMeters(0);
   // 0.15 = 5" error over 23ft, 14" error over 49ft 
   // 0.1 = 4" error over 23ft, 10" error over 49 ft
   // 0.05 = almost no error, but can oscilate near target
@@ -40,8 +42,10 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
 
   private Translation2d startPos;
   private Supplier<Translation2d> target;
+  private Supplier<Double> velocity;
   private Translation2d intermediateTarget = new Translation2d();
   private Translation2d driveVector = new Translation2d();
+  private double trajectoryCutoff = 0;
 
   // private Field2d field;
   // private FieldObject2d intTargetPlot;
@@ -53,6 +57,8 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   public CartesianVectorProfileToPointTargetCommand(
     Supplier<Translation2d> target,
     Supplier<Translation2d> translationSupplier,
+    Supplier<Double> velocity,
+    double trajectoryCutoff,
     double driveP,
     double maxAcceleration,
     // TODO: add maxVelocity parameter
@@ -72,6 +78,8 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     );
 
     this.target = target;
+    this.trajectoryCutoff = trajectoryCutoff;
+    this.velocity = velocity;
     this.heading = heading;
     this.autoDrive = autoDrive;
     this.translationSupplier = translationSupplier;
@@ -82,6 +90,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
       driveP, 0.0, 0.0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration)
     );
+
 
     driveController.setTolerance(Units.inchesToMeters(2));
 
@@ -101,7 +110,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     // to avoid a JUMP to their starting values on first run
     
     startPos = translationSupplier.get();
-    driveController.reset(target.get().getDistance(startPos));
+    driveController.reset(target.get().getDistance(startPos) - Units.inchesToMeters(1), -velocity.get());
 
     // field.getObject("startPos").setPose(new Pose2d(startPos, new Rotation2d(0)));
     // field.getObject("targetPos").setPose(new Pose2d(target, new Rotation2d(0)));
@@ -177,7 +186,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   @Override
   public boolean isFinished() {
     //TODO: Change the 12
-    return  (Units.metersToInches(translationSupplier.get().getDistance(target.get())) < 12) || (DriverStation.isTeleop() && robotContainer.getDriverInput());
+    return  (Units.metersToInches(translationSupplier.get().getDistance(target.get())) < trajectoryCutoff) || (DriverStation.isTeleop() && robotContainer.getDriverInput());
   }
 
   private void log() {

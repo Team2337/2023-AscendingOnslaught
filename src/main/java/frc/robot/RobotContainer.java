@@ -303,7 +303,7 @@ public class RobotContainer {
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
     driverA.onTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), new RedConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue));
     driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));   
-    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(8)));
+    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
     
 
 
