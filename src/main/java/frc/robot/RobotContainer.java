@@ -20,6 +20,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
@@ -29,6 +32,8 @@ import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand;
+import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
@@ -63,7 +68,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     //arm.setDefaultCommand(new ArmBasicJoystickCommand(arm, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
@@ -163,15 +168,13 @@ public class RobotContainer {
             Constants.Auto.zeroPoint,
             new Rotation2d(0)));
   } 
-/* 
+
   public void resetRobotTeleop() {
-    pigeon.setYaw(0, 250);
     drivetrain.resetPosition(
         new Pose2d(
-            Constants.Auto.kResetToZero.toFieldCoordinate(),
-            drivetrain.getGyroscopeRotation()));
-  }
-*/
+            Constants.Auto.zeroPoint,
+            new Rotation2d(0)));
+  } 
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
@@ -284,7 +287,7 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
-    // SwerveDriveCommand
+    // SwerveDriveCommand to turn on/off field orientation
     
     JoystickButton driverX = new JoystickButton(driverController, XboxController.Button.kX.value);
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
@@ -298,12 +301,16 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
+    driverA.onTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), new RedConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue));
+    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));   
+    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
+    
+
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
     // driverRightBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.RED,
     // delivery, kicker));
-    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
 
     driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
 
@@ -317,6 +324,7 @@ public class RobotContainer {
     JoystickButton operatorA = new JoystickButton(operatorController, XboxController.Button.kA.value);
     JoystickButton operatorB = new JoystickButton(operatorController, XboxController.Button.kB.value);
     JoystickButton operatorX = new JoystickButton(operatorController, XboxController.Button.kX.value);
+    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
@@ -355,8 +363,6 @@ public class RobotContainer {
   }
 
   public void instantiateSubsystemsTeleop() {
-    // pixyCam = new PixyCam();
-    System.out.println("Hello World!");
   }
 
   public void configureButtonBindingsTeleop() {
@@ -397,6 +403,10 @@ public class RobotContainer {
 
   public boolean getClearSwitchStatus() {
     return operatorStation.clearSwitch.getAsBoolean();
+  }
+
+  public boolean getDriverInput() {
+    return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
   }
 
 }

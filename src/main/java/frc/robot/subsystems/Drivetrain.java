@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -19,8 +20,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.Constants.SystemsCheckPositions;
 import frc.robot.nerdyfiles.utilities.Utilities;
@@ -79,6 +82,12 @@ public class Drivetrain extends SubsystemBase {
   // Array for Yaw Pitch and Roll values in degrees
   private double[] ypr_deg = { 0, 0, 0 };
 
+  public int teleopAutoPosition = 1;
+  
+  private Translation2d waypoint1_outer = new Translation2d(0, 0);
+  private Translation2d waypoint2_inner = new Translation2d(0, 0);
+  private Translation2d waypoint3_goal = new Translation2d(0, 0);
+
   /**
    * Subsystem where swerve modules are configured,
    * and the calculations from the joystick inputs is handled.
@@ -134,7 +143,7 @@ public class Drivetrain extends SubsystemBase {
       modulePositions,
       pose);
     setupShuffleboard(Constants.DashboardLogging.DRIVETRAIN);
-    // SmartDashboard.putData("field", field);
+    SmartDashboard.putData("field", field);
   }
 
   private void setupShuffleboard(Boolean logEnable) {
@@ -241,6 +250,167 @@ public class Drivetrain extends SubsystemBase {
     this.chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   }
 
+  public Translation2d getWaypointOuter() {
+    return waypoint1_outer;
+  }
+
+  public Translation2d getWaypointInner() {
+    return waypoint2_inner;
+  }
+
+  public Translation2d getWaypointGoal() {
+    return waypoint3_goal;
+  }
+
+  public void setTeleopAutoPosition(int position) {
+    teleopAutoPosition = position;
+    if (isAllianceBlue()) {
+      switch (teleopAutoPosition) {
+        case 1:
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueGridRightRobotRight;
+          waypoint3_goal = Constants.Auto.blueGridRightRobotRight;
+          break;
+        case 2:
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueGridRightRobotCenter;
+          waypoint3_goal = Constants.Auto.blueGridRightRobotCenter;
+          break;
+        case 3:
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
+          waypoint3_goal = Constants.Auto.blueGridRightRobotLeft;
+          break;
+        case 4:
+          waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
+          waypoint3_goal = Constants.Auto.blueGridMiddleRobotRight;
+          break;
+        case 5:
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blueGridMiddleRobotCenter;
+          break;
+        case 6:
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blueGridMiddleRobotLeft;
+          break;
+        case 7:
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.blueGridLeftRobotRight;
+          break;
+        case 8:
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueGridLeftRobotCenter;
+          waypoint3_goal = Constants.Auto.blueGridLeftRobotCenter;
+          break;
+        case 9:
+          waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.blueGridLeftRobotLeft;
+          waypoint3_goal = Constants.Auto.blueGridLeftRobotLeft;
+          break;
+        case 10:
+          waypoint1_outer = Constants.Auto.blueSubstationIntermediary;
+          waypoint2_inner = Constants.Auto.blueLeftSubstationPickup;
+          waypoint3_goal = Constants.Auto.blueLeftSubstationPickup;
+          break;
+        case 11:
+          waypoint1_outer = Constants.Auto.blueSubstationIntermediary;
+          waypoint2_inner = Constants.Auto.blueRightSubstationPickup;
+          waypoint3_goal = Constants.Auto.blueRightSubstationPickup;
+          break;
+      } 
+    } else {
+      switch (teleopAutoPosition) {
+        case 1:
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redGridRightRobotRight;
+          waypoint3_goal = Constants.Auto.redGridRightRobotRight;
+          break;
+        case 2:
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redGridRightRobotCenter;
+          waypoint3_goal = Constants.Auto.redGridRightRobotCenter;
+          break;
+        case 3:
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.redGridRightRobotLeft;
+          break;
+        case 4:
+          waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
+          waypoint3_goal = Constants.Auto.redGridMiddleRobotRight;
+          break;
+        case 5:
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.redGridMiddleRobotCenter;
+          break;
+        case 6:
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.redGridMiddleRobotLeft;
+          break;
+        case 7:
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
+          waypoint3_goal = Constants.Auto.redGridLeftRobotRight;
+          break;
+        case 8:
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redGridLeftRobotCenter;
+          waypoint3_goal = Constants.Auto.redGridLeftRobotCenter;
+          break;
+        case 9:
+          waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
+          waypoint2_inner = Constants.Auto.redGridLeftRobotLeft;
+          waypoint3_goal = Constants.Auto.redGridLeftRobotLeft;
+          break;
+        case 10:
+          waypoint1_outer = Constants.Auto.redSubstationIntermediary;
+          waypoint2_inner = Constants.Auto.redLeftSubstationPickup;
+          waypoint3_goal = Constants.Auto.redLeftSubstationPickup;
+          break;
+        case 11:
+          waypoint1_outer = Constants.Auto.redSubstationIntermediary;
+          waypoint2_inner = Constants.Auto.redRightSubstationPickup;
+          waypoint3_goal = Constants.Auto.redRightSubstationPickup;
+          break;
+      }
+
+    }
+
+  }
+
+  public int getTeleopAutoPosition() {
+    return teleopAutoPosition;
+  }
+
+  public String getAllianceColor() {
+    return Robot.allianceColor;
+  }
+
+  public boolean isAllianceBlue() {
+    return (Robot.allianceColor.equals("Blue"));
+  }
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
   @Override
   public void periodic() {
     pigeon.getYawPitchRoll(ypr_deg);
@@ -274,7 +444,7 @@ public class Drivetrain extends SubsystemBase {
       modulePositions
     );
 
-    // field.setRobotPose(pose);
+    field.setRobotPose(pose);
     /*
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
@@ -288,6 +458,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Accelerometer X", accelerometer.getX());
     SmartDashboard.putNumber("Accelerometer Y", accelerometer.getY());
     SmartDashboard.putNumber("Accelerometer Z", accelerometer.getZ());
+    SmartDashboard.putNumber("Teleop Auto Position", getTeleopAutoPosition());
     SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
     SmartDashboard.putNumber("Module 1", Units.metersToInches(modules[1].getPosition().distanceMeters));
     SmartDashboard.putNumber("Module 2", Units.metersToInches(modules[2].getPosition().distanceMeters));

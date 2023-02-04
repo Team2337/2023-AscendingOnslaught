@@ -5,8 +5,11 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
@@ -16,11 +19,13 @@ import frc.robot.subsystems.Heading;
  * Generate movement values to drive the robot between it's current position and
  * the specified point.
  */
-public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
+public class CartesianVectorProfileToPointTargetCommand extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
   private static final double maxVelocity = Units.inchesToMeters(162);
+  private double initialVelocity = Units.inchesToMeters(-40);
+  private double initialAcceleration = Units.inchesToMeters(0);
   // 0.15 = 5" error over 23ft, 14" error over 49ft 
   // 0.1 = 4" error over 23ft, 10" error over 49 ft
   // 0.05 = almost no error, but can oscilate near target
@@ -30,14 +35,17 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
   private Heading heading;
   private AutoDrive autoDrive;
+  private RobotContainer robotContainer;
 
   private ProfiledPIDController driveController;
   private Supplier<Translation2d> translationSupplier;
 
   private Translation2d startPos;
-  private Translation2d target;
+  private Supplier<Translation2d> target;
+  private Supplier<Double> velocity;
   private Translation2d intermediateTarget = new Translation2d();
   private Translation2d driveVector = new Translation2d();
+  private double trajectoryCutoff = 0;
 
   // private Field2d field;
   // private FieldObject2d intTargetPlot;
@@ -46,14 +54,17 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
   // private List<Pose2d> intRobotPlotPoses;
   // private int posePlotCounter;
 
-  public CartesianVectorProfileToPointCommand(
-    Translation2d target,
+  public CartesianVectorProfileToPointTargetCommand(
+    Supplier<Translation2d> target,
     Supplier<Translation2d> translationSupplier,
+    Supplier<Double> velocity,
+    double trajectoryCutoff,
     double driveP,
     double maxAcceleration,
     // TODO: add maxVelocity parameter
     AutoDrive autoDrive,
-    Heading heading
+    Heading heading,
+    RobotContainer robotContainer
     // Field2d field
   ) {
     super(
@@ -67,15 +78,19 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     );
 
     this.target = target;
+    this.trajectoryCutoff = trajectoryCutoff;
+    this.velocity = velocity;
     this.heading = heading;
     this.autoDrive = autoDrive;
     this.translationSupplier = translationSupplier;
+    this.robotContainer = robotContainer;
     // this.field = field;
 
     driveController = new ProfiledPIDController(
       driveP, 0.0, 0.0,
       new TrapezoidProfile.Constraints(maxVelocity, maxAcceleration)
     );
+
 
     driveController.setTolerance(Units.inchesToMeters(2));
 
@@ -95,7 +110,7 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
     // to avoid a JUMP to their starting values on first run
     
     startPos = translationSupplier.get();
-    driveController.reset(target.getDistance(startPos));
+    driveController.reset(target.get().getDistance(startPos) - Units.inchesToMeters(1), -velocity.get());
 
     // field.getObject("startPos").setPose(new Pose2d(startPos, new Rotation2d(0)));
     // field.getObject("targetPos").setPose(new Pose2d(target, new Rotation2d(0)));
@@ -113,11 +128,11 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
     // get the distance to the target
     Translation2d currentPos = translationSupplier.get();
-    double distanceFromTarget = target.getDistance(currentPos);
-    double percentFromTarget = distanceFromTarget / target.getDistance(startPos); // starts at 1.0 and decreases to 0.0
+    double distanceFromTarget = target.get().getDistance(currentPos);
+    double percentFromTarget = distanceFromTarget / target.get().getDistance(startPos); // starts at 1.0 and decreases to 0.0
 
     // target a point xx% between us and the target, interpolated along the original vector to the target
-    intermediateTarget = startPos.minus(target).times(percentFromTarget*(1-intTargetLead)).plus(target);
+    intermediateTarget = startPos.minus(target.get()).times(percentFromTarget*(1-intTargetLead)).plus(target.get());
     Translation2d vectorToIntermediateTarget = intermediateTarget.minus(currentPos);
 
     // plot the intermediate points in Glass
@@ -170,14 +185,15 @@ public class CartesianVectorProfileToPointCommand extends CartesianHeadingToTarg
 
   @Override
   public boolean isFinished() {
-    return  Units.metersToInches(translationSupplier.get().getDistance(target)) < 1;
+    //TODO: Change the 12
+    return  (Units.metersToInches(translationSupplier.get().getDistance(target.get())) < trajectoryCutoff) || (DriverStation.isTeleop() && robotContainer.getDriverInput());
   }
 
   private void log() {
-    SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.getX()));
-    SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.getY()));
-    SmartDashboard.putNumber("VectorProfile2P/Target Angle (deg)", target.minus(translationSupplier.get()).getAngle().getDegrees());
-    SmartDashboard.putNumber("VectorProfile2P/Target Dist (in)", Units.metersToInches(translationSupplier.get().getDistance(target)));
+    SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.get().getX()));
+    SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.get().getY()));
+    SmartDashboard.putNumber("VectorProfile2P/Target Angle (deg)", target.get().minus(translationSupplier.get()).getAngle().getDegrees());
+    SmartDashboard.putNumber("VectorProfile2P/Target Dist (in)", Units.metersToInches(translationSupplier.get().getDistance(target.get())));
 
     SmartDashboard.putNumber("VectorProfile2P/Int Target X (in)", Units.metersToInches(intermediateTarget.getX()));
     SmartDashboard.putNumber("VectorProfile2P/Int Target Y (in)", Units.metersToInches(intermediateTarget.getY()));
