@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.arm.Elbow;
+import frc.robot.subsystems.arm.Shoulder;
 
 public class ArmSetpointCommand extends CommandBase {
 
-    Arm arm;
+    Elbow elbow;
+    Shoulder shoulder;
     Supplier<CommandXboxController> joystick;
 
     double shoulderP = 0.005;
@@ -36,20 +38,23 @@ public class ArmSetpointCommand extends CommandBase {
     ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
 
 
-    public ArmSetpointCommand(Arm arm, double shoulderSetpoint, double elbowSetpoint) {
-        this.arm = arm;
+    public ArmSetpointCommand(Elbow elbow, Shoulder shoulder, double shoulderSetpoint, double elbowSetpoint) {
+        this.elbow = elbow;
+        this.shoulder = shoulder;
         this.elbowSetpoint = elbowSetpoint;
         this.shoulderSetpoint = shoulderSetpoint;
-        addRequirements(arm);
+        addRequirements(elbow, shoulder);
 
     }
 
 
     @Override
     public void initialize() {
+        shoulder.enable();
+        elbow.enable();
         // TODO Auto-generated method stub
-        arm.holdShoulderPosition(shoulderSetpoint + Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
-        arm.holdElbowPosition(elbowSetpoint + Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS);
+        shoulder.setSetpoint(shoulderSetpoint);
+        elbow.setSetpoint(elbowSetpoint);
     }
 
     
@@ -60,6 +65,8 @@ public class ArmSetpointCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        shoulder.enable();
+        elbow.enable();
         
     }
 
@@ -67,13 +74,7 @@ public class ArmSetpointCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (arm.shoulderAtSetpoint() && arm.elbowAtSetpoint()) {
-            SmartDashboard.putString("hello", "I made it!");
-            return true;
-        }
-        else {
-            return false;
-        }
+       return (false);
         
 
     }

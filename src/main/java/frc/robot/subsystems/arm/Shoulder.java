@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -13,34 +13,45 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Arm extends SubsystemBase {
+public class Shoulder extends PIDSubsystem {
+
+  double offset = -25;
+  double lampreyVoltage = RobotController.getVoltage3V3();
+  double fullRange = 360 * (5.0/lampreyVoltage);
 
   AnalogInput shoulderLamprey = new AnalogInput(0);
-  AnalogInput elbowLamprey = new AnalogInput(1);
-  TalonFX shoulderMotor = new TalonFX(16);
-  TalonFX elbowMotor = new TalonFX(3);
+  AnalogPotentiometer shoulderLampreyPot = new AnalogPotentiometer(shoulderLamprey, fullRange, offset);
+  TalonFX shoulderMotor = new TalonFX(15);
 
-  double elbowkP = 0.5;
-  double elbowkI = 0.0;
-  double elbowkD = 0.0;
-
-  double shoulderkP = 0.5;
-  double shoulderkI = 0.0;
-  double shoulderkD = 0.0;
+  static double shoulderkP = 0.075;
+  static double shoulderkI = 0.0;
+  static double shoulderkD = 0.0;
+  double allowableError = 3;
 
   
   /** Creates a new ExampleSubsystem. */
-  public Arm() {
+  public Shoulder() {
+    super(new PIDController(shoulderkP, shoulderkI, shoulderkD));
+    getController().setTolerance(allowableError);
+
+
+
+
+
+
     shoulderMotor.configFactoryDefault();
     shoulderMotor.config_kP(0, shoulderkP);
     shoulderMotor.config_kI(0, shoulderkI);
     shoulderMotor.config_kD(0, shoulderkD);
-    shoulderMotor.configForwardSoftLimitThreshold(100000);
+    shoulderMotor.configForwardSoftLimitThreshold(275000);
     shoulderMotor.configReverseSoftLimitThreshold(0);
     shoulderMotor.configForwardSoftLimitEnable(true);
     shoulderMotor.configReverseSoftLimitEnable(true);
@@ -51,42 +62,49 @@ public class Arm extends SubsystemBase {
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
     shoulderMotor.configClosedLoopPeakOutput(0, 0.1);
-    shoulderMotor.configPeakOutputForward(.1, 10);
-    shoulderMotor.configPeakOutputReverse(-.1, 10);
+    shoulderMotor.configPeakOutputForward(1, 10);
+    shoulderMotor.configPeakOutputReverse(-1, 10);
     shoulderMotor.setInverted(TalonFXInvertType.Clockwise);
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
-
-    elbowMotor.configFactoryDefault();
-    elbowMotor.config_kP(0, elbowkP);
-    elbowMotor.config_kI(0, elbowkI);
-    elbowMotor.config_kD(0, elbowkD);
-    elbowMotor.configAllowableClosedloopError(0, 0);
-    elbowMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0, 10);
-    elbowMotor.configStatorCurrentLimit(defaultCurrentLimit());
-    elbowMotor.setSelectedSensorPosition(0);
-    elbowMotor.configNominalOutputForward(0);
-    elbowMotor.configNominalOutputReverse(0);
-    elbowMotor.configClosedLoopPeakOutput(0, .1);
-    elbowMotor.configPeakOutputForward(.1, 10);
-    elbowMotor.configPeakOutputReverse(-.1, 10);
-    elbowMotor.setInverted(TalonFXInvertType.Clockwise);
-    elbowMotor.setNeutralMode(NeutralMode.Brake);
-    
-    
-
   }
 
-  public void setElbowSpeed(double speed) {
-    elbowMotor.set(ControlMode.PercentOutput, speed);
+
+  @Override
+  protected void useOutput(double output, double setpoint) {
+    setShoulderSpeed(output);
+    
+  }
+
+  @Override
+  protected double getMeasurement() {
+    // TODO Auto-generated method stub
+    return getShoulderLampreyDegrees();
+  }
+
+  public double getShoulderLampreyDegrees() {
+    double angle = shoulderLampreyPot.get();
+    if (angle < -25 || angle >300){
+      angle = -25;
+    }
+    return angle;
   }
 
   public void setShoulderSpeed(double speed) {
     shoulderMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public boolean atSetpoint() {
+    return getController().atSetpoint();
+  }
+
+ // This is all encoder stuff
+  
+
   public double getShoulderPositionTicks() {
     return shoulderMotor.getSelectedSensorPosition();
   }
+
+  
 
     /**
    * Converts given ticks to radians.
@@ -109,22 +127,10 @@ public class Arm extends SubsystemBase {
     return angle * (2048.0) * (75.0) * (1.0/360.0);
   }
 
-  public void setElbowZero() {
-    elbowMotor.setSelectedSensorPosition(0);
-    holdElbowPosition(0);
-  }
 
   public void setShoulderZero() {
     shoulderMotor.setSelectedSensorPosition(0);
     holdShoulderPosition(0);
-  }
-
-  public double getElbowPositionTicks() {
-    return elbowMotor.getSelectedSensorPosition();
-  }
-
-  public void holdElbowPosition(double ticks) {
-    elbowMotor.set(ControlMode.Position, ticks);
   }
 
   public void holdShoulderPosition(double ticks) {
@@ -141,17 +147,8 @@ public class Arm extends SubsystemBase {
     
   }
 
-  public double getElbowEncoderPosition(){
-    return shoulderLamprey.getVoltage() * (360.0/3.30);
-    
-  }
-
   public boolean shoulderAtSetpoint() {
     return Math.abs(shoulderMotor.getClosedLoopTarget() - getShoulderPositionTicks()) < 500.0;
-  }
-
-  public boolean elbowAtSetpoint() {
-    return Math.abs(elbowMotor.getClosedLoopTarget()-getElbowPositionTicks()) < 500.0;
   }
 
   public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
@@ -159,30 +156,24 @@ public class Arm extends SubsystemBase {
   }
 
 
-
-  @Override
-  public void periodic() {
-    
-    // This method will be called once per scheduler run
-  }
+@Override
+public void periodic() {
+    super.periodic();
+    log();
+}
 
   public void log() {
     if (Constants.DashboardLogging.ARM) {
-      SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderEncoderPosition());
-      SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowEncoderPosition());
-      SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
-      SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
+      SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderLampreyDegrees());
+      //SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
       SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
-      SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
-      SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
-      SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
+      //SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
-      SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
-      SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", shoulderMotor.getStatorCurrent());
-      SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
-      SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
-      SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
+      //SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", shoulderMotor.getStatorCurrent());
+      //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
     }
   }
+
+  
 
 }
