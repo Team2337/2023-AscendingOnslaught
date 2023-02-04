@@ -301,8 +301,9 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
 
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
-    driverA.onTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(drivetrain::getWaypointInner, autoDrive, drivetrain, heading), new RedConstructTeleopAutoCommand(drivetrain::getTeleopAutoPosition, autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
-    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(4)));   
+    driverA.onTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), new RedConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue));
+    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));   
+    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(8)));
     
 
 
@@ -413,6 +414,10 @@ public class RobotContainer {
 
   public boolean getClearSwitchStatus() {
     return operatorStation.clearSwitch.getAsBoolean();
+  }
+
+  public boolean getDriverInput() {
+    return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
   }
 
 }

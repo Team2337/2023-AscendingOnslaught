@@ -300,16 +300,6 @@ public final class Constants {
     public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobot + hybridNodeLength, blueBottom8.getY());
     public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobot + hybridNodeLength, blueBottom8.getY() - robotOffsetFromHybridAndPickupNodes);
 
-    public static final Translation2d blue9 = blueGridLeftRobotLeft; 
-    public static final Translation2d blue8 = blueGridLeftRobotCenter; 
-    public static final Translation2d blue7 = blueGridLeftRobotRight; 
-    public static final Translation2d blue6 = blueGridMiddleRobotLeft; 
-    public static final Translation2d blue5 = blueGridMiddleRobotCenter; 
-    public static final Translation2d blue4 = blueGridMiddleRobotRight; 
-    public static final Translation2d blue3 = blueGridRightRobotLeft; 
-    public static final Translation2d blue2 = blueGridRightRobotCenter; 
-    public static final Translation2d blue1 = blueGridRightRobotRight; 
-
     // Red Starting Locations
     public static final Translation2d redGridLeftRobotLeft = new Translation2d(redTop1.getX() + centerOfRobot + hybridNodeLength, redTop1.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redGridLeftRobotCenter = new Translation2d(redTop1.getX() + centerOfRobot + hybridNodeLength, redTop1.getY());
@@ -319,17 +309,7 @@ public final class Constants {
     public static final Translation2d redGridMiddleRobotRight = new Translation2d(redMiddle2.getX() + centerOfRobot + hybridNodeLength, redMiddle2.getY() - robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redGridRightRobotLeft = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redGridRightRobotCenter = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY());
-    public static final Translation2d redGridRightRobotRight = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() - robotOffsetFromHybridAndPickupNodes);
-
-    public static final Translation2d red9 = redGridLeftRobotLeft; 
-    public static final Translation2d red8 = redGridLeftRobotCenter; 
-    public static final Translation2d red7 = redGridLeftRobotRight; 
-    public static final Translation2d red6 = redGridMiddleRobotLeft; 
-    public static final Translation2d red5 = redGridMiddleRobotCenter; 
-    public static final Translation2d red4 = redGridMiddleRobotRight; 
-    public static final Translation2d red3 = redGridRightRobotLeft; 
-    public static final Translation2d red2 = redGridRightRobotCenter; 
-    public static final Translation2d red1 = redGridRightRobotRight; 
+    public static final Translation2d redGridRightRobotRight = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() - robotOffsetFromHybridAndPickupNodes); 
     
     // Blue Staging Marks
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobot - floorPickupArmReach, Units.inchesToMeters(36.19));
@@ -347,15 +327,9 @@ public final class Constants {
     public static final Translation2d blueLeftSubstationPickup = new Translation2d(blueSubstation4.getX() - floorPickupArmReach - centerOfRobot, blueSubstation4.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d blueRightSubstationPickup = new Translation2d(blueSubstation4.getX() - floorPickupArmReach - centerOfRobot, blueSubstation4.getY() - robotOffsetFromHybridAndPickupNodes);
 
-    public static final Translation2d blue10 = blueLeftSubstationPickup; 
-    public static final Translation2d blue11 = blueRightSubstationPickup;
-
     // Red Substation Pickup Locations
     public static final Translation2d redLeftSubstationPickup = new Translation2d(redSubstation5.getX() - floorPickupArmReach - centerOfRobot, redSubstation5.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redRightSubstationPickup = new Translation2d(redSubstation5.getX() - floorPickupArmReach - centerOfRobot, redSubstation5.getY() - robotOffsetFromHybridAndPickupNodes);
-
-    public static final Translation2d red10 = redLeftSubstationPickup; 
-    public static final Translation2d red11 = redRightSubstationPickup;
 
     // Blue Charge Station
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
@@ -371,13 +345,16 @@ public final class Constants {
     public static final Translation2d blueLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(185));
     public static final Translation2d blueLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(185));
     public static final Translation2d blueRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(30));
+    public static final Translation2d blueRightIntermediaryAutoNear = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(30));
     public static final Translation2d blueRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(30));
+    public static final Translation2d blueSubstationIntermediary = new Translation2d(blueSubstation4.getX() - Units.inchesToMeters(100), blueSubstation4.getY() + centerOfRobot);
 
     // Red Intermediary Points
     public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
     public static final Translation2d redLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(285));
     public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
     public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
+    public static final Translation2d redSubstationIntermediary = new Translation2d(redSubstation5.getX() - Units.inchesToMeters(100), redSubstation5.getY() + centerOfRobot);
   }
 
   // Robot-specific configuration for our swerve drive algorithm
