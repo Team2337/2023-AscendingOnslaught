@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,8 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
   private static final double maxVelocity = Units.inchesToMeters(162);
+  private double initialVelocity = Units.inchesToMeters(-40);
+  private double initialAcceleration = Units.inchesToMeters(0);
   // 0.15 = 5" error over 23ft, 14" error over 49ft 
   // 0.1 = 4" error over 23ft, 10" error over 49 ft
   // 0.05 = almost no error, but can oscilate near target
