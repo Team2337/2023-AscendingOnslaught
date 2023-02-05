@@ -35,7 +35,8 @@ public class Elbow extends PIDSubsystem {
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
   double allowableError = 3;
-
+  private double speedlimit = 0.3;
+  private double closedLoopLimit = 0.3;
   
   /** Creates a new ExampleSubsystem. */
   public Elbow() {
@@ -53,17 +54,17 @@ public class Elbow extends PIDSubsystem {
     elbowMotor.config_kD(0, elbowkD);
     elbowMotor.configForwardSoftLimitThreshold(100000);
     elbowMotor.configReverseSoftLimitThreshold(0);
-    elbowMotor.configForwardSoftLimitEnable(true);
-    elbowMotor.configReverseSoftLimitEnable(true);
+    elbowMotor.configForwardSoftLimitEnable(false);
+    elbowMotor.configReverseSoftLimitEnable(false);
     elbowMotor.configAllowableClosedloopError(0, 0);
     elbowMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0, 0);
     elbowMotor.configStatorCurrentLimit(defaultCurrentLimit());
     elbowMotor.setSelectedSensorPosition(0);
     elbowMotor.configNominalOutputForward(0);
     elbowMotor.configNominalOutputReverse(0);
-    elbowMotor.configClosedLoopPeakOutput(0, 0.5);
-    elbowMotor.configPeakOutputForward(.5, 10);
-    elbowMotor.configPeakOutputReverse(-.5, 10);
+    elbowMotor.configClosedLoopPeakOutput(0, closedLoopLimit);
+    elbowMotor.configPeakOutputForward(speedlimit, 10);
+    elbowMotor.configPeakOutputReverse(-speedlimit, 10);
     elbowMotor.setInverted(TalonFXInvertType.Clockwise);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
   }

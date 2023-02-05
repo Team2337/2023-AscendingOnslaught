@@ -35,7 +35,8 @@ public class Shoulder extends PIDSubsystem {
   static double shoulderkI = 0.0;
   static double shoulderkD = 0.0;
   double allowableError = 3;
-
+  private double speedlimit = 0.3;
+  private double closedLoopLimit = 0.3;
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {
@@ -61,9 +62,9 @@ public class Shoulder extends PIDSubsystem {
     shoulderMotor.setSelectedSensorPosition(0);
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
-    shoulderMotor.configClosedLoopPeakOutput(0, 0.5);
-    shoulderMotor.configPeakOutputForward(.5, 10);
-    shoulderMotor.configPeakOutputReverse(-.5, 10);
+    shoulderMotor.configClosedLoopPeakOutput(0, closedLoopLimit);
+    shoulderMotor.configPeakOutputForward(speedlimit, 10);
+    shoulderMotor.configPeakOutputReverse(-speedlimit, 10);
     shoulderMotor.setInverted(TalonFXInvertType.Clockwise);
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
   }
