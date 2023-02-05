@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
+import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
@@ -43,6 +44,8 @@ import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.arm.Elbow;
+import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
   private final XboxController driverController = new XboxController(0);
@@ -55,7 +58,8 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
   private final Vision vision = new Vision();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
-  private final Arm arm = new Arm();
+  private final Elbow elbow = new Elbow();
+  private final Shoulder shoulder = new Shoulder();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -69,7 +73,8 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
-    //arm.setDefaultCommand(new ArmBasicJoystickCommand(arm, () -> operatorController));
+        //elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
+        shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -340,22 +345,22 @@ public class RobotContainer {
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
 
 
-    operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
+    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREMID.SHOULDER, Constants.Arm.SCOREMID.ELBOW));
     //90,0
-    operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
+    operatorX.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
     //0, 90
-    operatorY.whileTrue(new ArmSetpointCommand(arm, 5500, 28000));
+    operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
 
-    operatorBack.whileTrue(new ArmSetpointCommand(arm, -Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS , -Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS));
+    operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.CARRY.SHOULDER,Constants.Arm.CARRY.ELBOW ));
     //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
     
-    operatorStart.onTrue(new ArmDemoCommand(arm));
+    operatorStart.onTrue(new ArmDemoCommand(elbow, shoulder));
 
 
     
-    operatorA.whileTrue(new ArmJoystickCommand(arm, operatorController));
+    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController));
     //operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
-    operatorRightBumper.whileTrue(new ArmSetpointCommand(arm, -40000, 17500));
+    operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, -40000, 17500));
     /** Driverstation Controls * */
     //TODO: Create switch to flip between orange and blue
   }

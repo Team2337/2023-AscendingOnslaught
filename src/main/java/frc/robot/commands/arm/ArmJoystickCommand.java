@@ -6,10 +6,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.nerdyfiles.utilities.Utilities;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.arm.Elbow;
+import frc.robot.subsystems.arm.Shoulder;
 
 public class ArmJoystickCommand extends CommandBase {
-    private Arm arm;
+    //private Arm arm;
+    private Shoulder shoulder;
+    private Elbow elbow;
     private XboxController joystick;
     private double joystickX = 0;
     private double joystickY = 0;
@@ -27,16 +30,17 @@ public class ArmJoystickCommand extends CommandBase {
     private double ticksPerDegree = 426.667;
     double testx = 0;
     double testy = 0;
-    public ArmJoystickCommand(Arm arm, XboxController joystick) {
-        this.arm = arm;
+    public ArmJoystickCommand(Elbow elbow, Shoulder shoulder, XboxController joystick) {
+        this.elbow = elbow;
+        this.shoulder = shoulder;
         this.joystick = joystick;
-        addRequirements(arm);
+        addRequirements(elbow, shoulder);
     }
 
     @Override
     public void initialize() {
         //TODO:  can we change this to something that makes sense when you read it, such as needCurrentSetpoint? or switch logic so boolean reads haveCurrentSetpoint.
-        shouldHoldArm = true;
+        //shouldHoldArm = true;
 
 
         
@@ -50,12 +54,12 @@ public class ArmJoystickCommand extends CommandBase {
 
         // Convert sensor readings to angles as used in our forward and inverse kinematics.
         // Shoulder angle shoud be zero when level with the ground and pointing straight back from the robot (when back of the robot to the right, angles are positive CCW)
-        mathShoulderAngle = Units.radiansToDegrees(arm.convertTicksToRadians(arm.getShoulderPositionTicks())) + shoulderOffset;
+        mathShoulderAngle = shoulder.getShoulderLampreyDegrees();
         // Elbow Angle is zero when parallel with first/bottom arm (when back of the robot to the right, angles are positive CCW)
-        mathElbowAngle = Units.radiansToDegrees(arm.convertTicksToRadians(arm.getElbowPositionTicks())) - mathShoulderAngle + elbowOffset;
+        mathElbowAngle = elbow.getElbowLampreyDegrees();
         // Calculate the current X,Y location of the intake
-        currentX = Constants.SHOULDER_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle)) + Constants.ELBOW_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
-        currentY = Constants.SHOULDER_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle)) + Constants.ELBOW_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
+        currentX = Constants.Arm.SHOULDER_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle)) + Constants.Arm.ELBOW_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
+        currentY = Constants.Arm.SHOULDER_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle)) + Constants.Arm.ELBOW_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
 
         
         //Read Joystick inputs and apply a deadband
@@ -80,9 +84,9 @@ public class ArmJoystickCommand extends CommandBase {
         
         // Calculate new arm angles based on target X,Y    
         double hypot = Math.sqrt((targetX * targetX) + (targetY * targetY));
-        double theta_S2 = Math.acos((Math.pow(Constants.SHOULDER_ARM_LENGTH, 2) + Math.pow(hypot, 2) - Math.pow(Constants.ELBOW_ARM_LENGTH,2)) / (2.0 * hypot * Constants.ELBOW_ARM_LENGTH));
+        double theta_S2 = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(hypot, 2) - Math.pow(Constants.Arm.ELBOW_ARM_LENGTH,2)) / (2.0 * hypot * Constants.Arm.ELBOW_ARM_LENGTH));
         double theta_S1 = Math.asin(targetY/hypot);
-        double theta_E = Math.acos((Math.pow(Constants.SHOULDER_ARM_LENGTH, 2) + Math.pow(Constants.ELBOW_ARM_LENGTH, 2) - Math.pow(hypot,2)) / (2.0 * Constants.SHOULDER_ARM_LENGTH * Constants.ELBOW_ARM_LENGTH));
+        double theta_E = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(Constants.Arm.ELBOW_ARM_LENGTH, 2) - Math.pow(hypot,2)) / (2.0 * Constants.Arm.SHOULDER_ARM_LENGTH * Constants.Arm.ELBOW_ARM_LENGTH));
         SmartDashboard.putNumber("A/hypot", hypot);
         SmartDashboard.putNumber("A/theta_S2", Units.radiansToDegrees(theta_S2));
         SmartDashboard.putNumber("A/theta_S1", Units.radiansToDegrees(theta_S1));
@@ -111,8 +115,8 @@ public class ArmJoystickCommand extends CommandBase {
         } 
 
         //TODO: THINK WE NEED TO SUBTRACT OUT OFFSETS BEFORE SETTING POSITIONS
-        double shoulderTarget = bottomSetpoint - shoulderOffset;
-        double elbowTarget = (topSetpoint - elbowOffset) + shoulderTarget;
+        double shoulderTarget = bottomSetpoint;
+        double elbowTarget = topSetpoint;
 
         //elbowTarget = SmartDashboard.getNumber("A/test elbo target", elbowTarget);
         //shoulderTarget = SmartDashboard.getNumber("A/test shoulder target", shoulderTarget);
@@ -122,32 +126,32 @@ public class ArmJoystickCommand extends CommandBase {
 
         if ((joystickX == 0) && (joystickY == 0)){ 
             if (shouldHoldArm) {
-                arm.holdElbowPosition(arm.getElbowPositionTicks());
-                arm.holdShoulderPosition(arm.getShoulderPositionTicks());
+                shoulder.setSetpoint(shoulder.getShoulderLampreyDegrees());
+                elbow.setSetpoint(elbow.getElbowLampreyDegrees());
                 shouldHoldArm = false;
             }
         } else {
             // Change boolean so that if joysticks go back to zero, we will get position/set setpoint, stoping the arms movement.
             shouldHoldArm = true;    
 
-            arm.holdElbowPosition(arm.convertAnglestoTicks(elbowTarget));
-            arm.holdShoulderPosition(arm.convertAnglestoTicks(shoulderTarget));
+            shoulder.setSetpoint(shoulderTarget);
+            elbow.setSetpoint(elbowTarget);
         }
             SmartDashboard.putNumber("A/shoulderTarget", shoulderTarget);
             SmartDashboard.putNumber("A/elbowTarget", elbowTarget);
             SmartDashboard.putNumber("A/Math Top Angle (Degrees)", topSetpoint);
             SmartDashboard.putNumber("A/Math Bottom Angle (Degrees)", bottomSetpoint);
 
-            SmartDashboard.putNumber("A/Actual Shoulder Angle (Degrees)", Units.radiansToDegrees(arm.convertTicksToRadians(arm.getShoulderPositionTicks())));
-            SmartDashboard.putNumber("A/Actual Elbow Angle (Degrees)", Units.radiansToDegrees(arm.convertTicksToRadians(arm.getElbowPositionTicks())));
+            SmartDashboard.putNumber("A/Actual Shoulder Angle (Degrees)", shoulder.getShoulderLampreyDegrees());
+            SmartDashboard.putNumber("A/Actual Elbow Angle (Degrees)", elbow.getElbowLampreyDegrees());
             SmartDashboard.putNumber("A/Shoulder Angle Math", mathShoulderAngle);
             SmartDashboard.putNumber("A/Elbow Angle Math", mathElbowAngle);
 
             SmartDashboard.putNumber("A/Current X", currentX);
             SmartDashboard.putNumber("A/Current Y", currentY);
     
-            SmartDashboard.putNumber("A/Elbow Predicted Ticks", arm.convertAnglestoTicks((elbowTarget)));
-            SmartDashboard.putNumber("A/Bottom Predicted Ticks", arm.convertAnglestoTicks(shoulderTarget));
+            SmartDashboard.putNumber("A/Elbow Predicted Degrees", elbowTarget);
+            SmartDashboard.putNumber("A/Bottom Predicted Ticks", shoulderTarget);
     }
 
 
