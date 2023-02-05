@@ -37,6 +37,8 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
+import frc.robot.commands.intakeSpinner.IntakeSpinnerJoystick;
+import frc.robot.commands.intakeSpinner.IntakeSpinnerSetPoint;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
@@ -58,6 +60,7 @@ public class RobotContainer {
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Arm arm = new Arm();
   private final Intake intake = new Intake();
+  private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -340,8 +343,8 @@ public class RobotContainer {
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
-    operatorB.whileTrue(intake.RunIntake());
-    operatorX.whileTrue((intake.RunOuttake()));
+    //operatorB.whileTrue(intake.RunIntake());
+    //operatorX.whileTrue((intake.RunOuttake()));
     //operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
     //90,0
     //operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
@@ -351,6 +354,9 @@ public class RobotContainer {
     operatorBack.whileTrue(new ArmSetpointCommand(arm, -Constants.SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS , -Constants.ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS));
     //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
     
+    //operatorB.whileTrue(new IntakeSpinnerJoystick(intakespinner, operatorController));
+    operatorB.whileTrue(new InstantCommand(()->intakespinner.setIntakeSpinnerMotorSpeed(0.5),intakespinner));
+    operatorX.whileTrue(new IntakeSpinnerSetPoint(intakespinner, 90));
     operatorStart.onTrue(new ArmDemoCommand(arm));
 
 
