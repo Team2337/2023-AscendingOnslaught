@@ -37,9 +37,6 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
 
   private double forwardOutput = 0.0;
   private double strafeOutput = 0.0;
-  private double currentRotation;
-  private double rotatedForwardOutput;
-  private double rotatedStrafeOutput;
 
   private boolean isElevated = false; 
 
