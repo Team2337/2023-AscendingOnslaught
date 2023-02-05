@@ -36,9 +36,6 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
 
   private double forwardOutput = 0.0;
   private double strafeOutput = 0.0;
-  private double currentRotation;
-  private double rotatedForwardOutput;
-  private double rotatedStrafeOutput;
 
   public CartesianProfiledPointToPointCommand(
     Translation2d target,

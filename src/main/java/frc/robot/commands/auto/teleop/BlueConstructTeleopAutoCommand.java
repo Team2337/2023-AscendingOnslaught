@@ -1,12 +1,8 @@
 package frc.robot.commands.auto.teleop;
 
-import java.util.function.Supplier;
-
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.CartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
