@@ -34,6 +34,7 @@ public class RedConstructTeleopAutoCommand extends SequentialCommandGroup {
             1.5,
             Units.inchesToMeters(80),
             autoDrive,
+            drivetrain,
             heading,
             robotContainer),
         new CartesianVectorProfileToPointTargetCommand(
@@ -44,6 +45,7 @@ public class RedConstructTeleopAutoCommand extends SequentialCommandGroup {
             1.5,
             Units.inchesToMeters(80),
             autoDrive,
+            drivetrain,
             heading,
             robotContainer),
         new CartesianVectorProfileToPointTargetCommand(
@@ -54,6 +56,7 @@ public class RedConstructTeleopAutoCommand extends SequentialCommandGroup {
             1.5,
             Units.inchesToMeters(80),
             autoDrive,
+            drivetrain,
             heading,
             robotContainer));
   }

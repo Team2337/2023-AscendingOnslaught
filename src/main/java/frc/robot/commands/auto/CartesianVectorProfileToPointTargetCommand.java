@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 
 /**
@@ -33,6 +34,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   private Heading heading;
   private AutoDrive autoDrive;
   private RobotContainer robotContainer;
+  private Drivetrain drivetrain;
 
   private ProfiledPIDController driveController;
   private Supplier<Translation2d> translationSupplier;
@@ -60,6 +62,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     double maxAcceleration,
     // TODO: add maxVelocity parameter
     AutoDrive autoDrive,
+    Drivetrain drivetrain,
     Heading heading,
     RobotContainer robotContainer
     // Field2d field
@@ -69,7 +72,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
       translationSupplier,
       () -> false,
       () -> false,
-      null,
+      drivetrain,
       heading,
       null
     );
@@ -183,7 +186,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   @Override
   public boolean isFinished() {
     //TODO: Change the 12
-    return  (Units.metersToInches(translationSupplier.get().getDistance(target.get())) < trajectoryCutoff) || (DriverStation.isTeleop() && robotContainer.getDriverInput());
+    return  (Units.metersToInches(translationSupplier.get().getDistance(target.get())) < trajectoryCutoff);
   }
 
   private void log() {
