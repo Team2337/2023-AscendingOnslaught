@@ -59,7 +59,7 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = false;
+    public static final boolean ARM = true;
     public static final boolean CLIMBER = false;
     public static final boolean DELIVERY = false;
     public static final boolean DRIVETRAIN = false;
@@ -442,10 +442,35 @@ public final class Constants {
   public static final double VISION_OFFSET = 0;
 
   public static final double CLIMBER_ROLL = 15;
+  public static class Arm {
+    public static final double SHOULDER_ARM_LENGTH = 26.5;
+    public static final double ELBOW_ARM_LENGTH = 26.5;
+    public static class SCOREHIGH {
+      public static final double SHOULDER = 130.0;
+      public static final double ELBOW = 30.0;
+    }
+    public static class SUBSTATION {
+      public static final double SHOULDER = 33.0;
+      public static final double ELBOW = -10.0;
+    }
+    public static class SCOREMID {
+      public static final double SHOULDER = 120.0;
+      public static final double ELBOW = 90.0;
+    }
+    public static class SCORELOW {
+      public static final double SHOULDER = 100.0;
+      public static final double ELBOW = 145.0;
+    }
+    public static class CARRY {
+      public static final double SHOULDER = 0.0;
+      public static final double ELBOW = 170.0;
+    }
 
-  public static final double SHOULDER_ARM_LENGTH = 26.5;
-  public static final double ELBOW_ARM_LENGTH = 26.5;
 
+
+
+  }
+  
 /**
  * Based on a 75:1 Gear Ratio
  */
