@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -20,7 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
@@ -51,6 +54,7 @@ public class RobotContainer {
   private final Vision vision = new Vision();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Arm arm = new Arm();
+  private final Intake intake = new Intake();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -332,11 +336,11 @@ public class RobotContainer {
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
-
-
-    operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
+    operatorB.whileTrue(intake.RunIntake());
+    operatorX.whileTrue((intake.RunOuttake()));
+    //operatorB.whileTrue(new ArmSetpointCommand(arm, -2000, 46000));
     //90,0
-    operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
+    //operatorX.whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     //0, 90
     operatorY.whileTrue(new ArmSetpointCommand(arm, 5500, 28000));
 
