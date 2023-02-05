@@ -21,25 +21,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
-import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand;
+import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand;
+import frc.robot.commands.auto.test.AngleTest;
+import frc.robot.commands.auto.test.MoveForwardTest;
+import frc.robot.commands.auto.test.Test;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
-import frc.robot.nerdyfiles.oi.JoystickAnalogButton;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
-import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -67,7 +70,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     //arm.setDefaultCommand(new ArmBasicJoystickCommand(arm, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
@@ -167,15 +170,13 @@ public class RobotContainer {
             Constants.Auto.zeroPoint,
             new Rotation2d(0)));
   } 
-/* 
+
   public void resetRobotTeleop() {
-    pigeon.setYaw(0, 250);
     drivetrain.resetPosition(
         new Pose2d(
-            Constants.Auto.kResetToZero.toFieldCoordinate(),
-            drivetrain.getGyroscopeRotation()));
-  }
-*/
+            Constants.Auto.zeroPoint,
+            new Rotation2d(0)));
+  } 
 
 
   public void resetRobotChooser(String startPos, double startingAngle) {
@@ -288,26 +289,28 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
-    // SwerveDriveCommand
+    // SwerveDriveCommand to turn on/off field orientation
     
     JoystickButton driverX = new JoystickButton(driverController, XboxController.Button.kX.value);
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
     JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
     JoystickButton driverY = new JoystickButton(driverController, XboxController.Button.kY.value);
-    JoystickAnalogButton driverTriggerLeft = new JoystickAnalogButton(driverController,
-        XboxController.Axis.kLeftTrigger.value);
-    JoystickAnalogButton driverTriggerRight = new JoystickAnalogButton(driverController,
-        XboxController.Axis.kRightTrigger.value);
     JoystickButton driverBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
+    Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
+    Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
 
     driverStart.onTrue(new MaintainHeadingCommand(0, heading));
+    driverA.whileTrue(new ConditionalCommand(new BlueConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), new RedConstructTeleopAutoCommand(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue));
+    triggerDriverLeft.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));   
+    triggerDriverRight.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
+    
+
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
     // driverRightBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.RED,
     // delivery, kicker));
-    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
 
     driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
 
@@ -321,14 +324,15 @@ public class RobotContainer {
     JoystickButton operatorA = new JoystickButton(operatorController, XboxController.Button.kA.value);
     JoystickButton operatorB = new JoystickButton(operatorController, XboxController.Button.kB.value);
     JoystickButton operatorX = new JoystickButton(operatorController, XboxController.Button.kX.value);
+    JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
+    Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
+    Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     
     // Operator left bumper used for vision tracking by default commands.
     // Operator right bumper below in the configureButtonBindingsTeleop() method.
-    JoystickAnalogButton operatorLeftTrigger = new JoystickAnalogButton(operatorController, XboxController.Axis.kLeftTrigger.value);
-    JoystickAnalogButton operatorRightTrigger = new JoystickAnalogButton(operatorController, XboxController.Axis.kRightTrigger.value);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
@@ -355,11 +359,10 @@ public class RobotContainer {
     //operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(arm, -40000, 17500));
     /** Driverstation Controls * */
+    //TODO: Create switch to flip between orange and blue
   }
 
   public void instantiateSubsystemsTeleop() {
-    // pixyCam = new PixyCam();
-    System.out.println("Hello World!");
   }
 
   public void configureButtonBindingsTeleop() {
@@ -390,18 +393,6 @@ public class RobotContainer {
     return drivetrain.getPigeonState();
   }
 
-  public boolean isOnTarget() {
-    return vision.isOnTarget();
-  }
-
-  public boolean hasActiveTarget() {
-    return vision.hasActiveTarget();
-  }
-
-  public double getTx() {
-    return vision.getTx();
-  }
-
   public boolean getBlackSwitchStatus() {
     return operatorStation.blackSwitch.getAsBoolean();
   }
@@ -412,6 +403,10 @@ public class RobotContainer {
 
   public boolean getClearSwitchStatus() {
     return operatorStation.clearSwitch.getAsBoolean();
+  }
+
+  public boolean getDriverInput() {
+    return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
   }
 
 }

@@ -2,9 +2,11 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision.LimelightColor;
 
 /**
 * Use the LimeLight to update the Heading subsystem.
@@ -14,6 +16,7 @@ public class LimeLightHeadingCommand extends CommandBase {
   private Drivetrain drivetrain;
   private Heading heading;
   private Vision vision;
+  private LimelightColor color;
 
   boolean shouldRotateToLimelightHeading = true;
 
@@ -27,8 +30,14 @@ public class LimeLightHeadingCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    if (vision.hasActiveTarget()) {
-      double towardsCenterDegrees = (vision.getTx() * -1);
+    if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
+      color = LimelightColor.BLUE;
+    } else {
+      color = LimelightColor.ORANGE;
+    }
+
+    if (vision.hasActiveTarget(color)) {
+      double towardsCenterDegrees = (vision.getTx(color) * -1);
       Rotation2d desiredRotation =  drivetrain.getGyroscopeRotation()
         .plus(Rotation2d.fromDegrees(towardsCenterDegrees));
       heading.setMaintainHeading(desiredRotation);

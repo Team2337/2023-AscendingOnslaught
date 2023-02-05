@@ -274,6 +274,7 @@ public final class Constants {
     public static final double floorPickupArmReach = Units.inchesToMeters(36);
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
+    public static final double trajectoryCutoff = 24;
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -309,7 +310,7 @@ public final class Constants {
     public static final Translation2d redGridMiddleRobotRight = new Translation2d(redMiddle2.getX() + centerOfRobot + hybridNodeLength, redMiddle2.getY() - robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redGridRightRobotLeft = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d redGridRightRobotCenter = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY());
-    public static final Translation2d redGridRightRobotRight = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() - robotOffsetFromHybridAndPickupNodes);
+    public static final Translation2d redGridRightRobotRight = new Translation2d(redBottom3.getX() + centerOfRobot + hybridNodeLength, redBottom3.getY() - robotOffsetFromHybridAndPickupNodes); 
     
     // Blue Staging Marks
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobot - floorPickupArmReach, Units.inchesToMeters(36.19));
@@ -340,6 +341,21 @@ public final class Constants {
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
     public static final Translation2d redLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) + robotChargeStationYOffset);
     public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+
+    // Blue Intermediary Points
+    public static final Translation2d blueLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(185));
+    public static final Translation2d blueLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(185));
+    public static final Translation2d blueRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(30));
+    public static final Translation2d blueRightIntermediaryAutoNear = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(30));
+    public static final Translation2d blueRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(30));
+    public static final Translation2d blueSubstationIntermediary = new Translation2d(blueSubstation4.getX() - Units.inchesToMeters(100), blueSubstation4.getY() + centerOfRobot);
+
+    // Red Intermediary Points
+    public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
+    public static final Translation2d redLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(285));
+    public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
+    public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
+    public static final Translation2d redSubstationIntermediary = new Translation2d(redSubstation5.getX() - Units.inchesToMeters(100), redSubstation5.getY() + centerOfRobot);
   }
 
   // Robot-specific configuration for our swerve drive algorithm
@@ -389,6 +405,8 @@ public final class Constants {
     public static final double VISION_TARGET_OFFSET_FROM_HUB_CENTER_METERS = Units.feetToMeters(2);
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
+    //TODO: Change to 15
+    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 3;
   }
 
   public static final double MOTOR_MINIMUM_TEMP_CELSIUS = 15.0; // Used in Shuffleboard for temperature dials
