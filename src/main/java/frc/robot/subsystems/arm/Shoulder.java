@@ -61,9 +61,9 @@ public class Shoulder extends PIDSubsystem {
     shoulderMotor.setSelectedSensorPosition(0);
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
-    shoulderMotor.configClosedLoopPeakOutput(0, 0.1);
-    shoulderMotor.configPeakOutputForward(1, 10);
-    shoulderMotor.configPeakOutputReverse(-1, 10);
+    shoulderMotor.configClosedLoopPeakOutput(0, 0.5);
+    shoulderMotor.configPeakOutputForward(.5, 10);
+    shoulderMotor.configPeakOutputReverse(-.5, 10);
     shoulderMotor.setInverted(TalonFXInvertType.Clockwise);
     shoulderMotor.setNeutralMode(NeutralMode.Brake);
   }
@@ -152,7 +152,7 @@ public class Shoulder extends PIDSubsystem {
   }
 
   public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
-    return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
+    return new StatorCurrentLimitConfiguration(true, 30.0, 25.0, 2.0);
   }
 
 

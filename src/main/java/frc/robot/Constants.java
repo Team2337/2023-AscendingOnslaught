@@ -462,7 +462,7 @@ public final class Constants {
       public static final double ELBOW = 145.0;
     }
     public static class CARRY {
-      public static final double SHOULDER = -20.0;
+      public static final double SHOULDER = -15.0;
       public static final double ELBOW = 170.0;
     }
 

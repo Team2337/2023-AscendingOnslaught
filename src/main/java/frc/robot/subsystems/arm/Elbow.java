@@ -23,7 +23,7 @@ import frc.robot.Constants;
 
 public class Elbow extends PIDSubsystem {
 
-  double offset = 170;
+  double offset = -180;
   double lampreyVoltage = RobotController.getVoltage3V3();
   double fullRange = 360 * (5.0/lampreyVoltage);
 
@@ -31,10 +31,10 @@ public class Elbow extends PIDSubsystem {
   AnalogPotentiometer elbowLampreyPot = new AnalogPotentiometer(elbowLamprey, fullRange, offset);
   TalonFX elbowMotor = new TalonFX(16);
 
-  static double elbowkP = 0.5;
+  static double elbowkP = 0.075;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
-  double allowableError = 1;
+  double allowableError = 3;
 
   
   /** Creates a new ExampleSubsystem. */
@@ -61,9 +61,9 @@ public class Elbow extends PIDSubsystem {
     elbowMotor.setSelectedSensorPosition(0);
     elbowMotor.configNominalOutputForward(0);
     elbowMotor.configNominalOutputReverse(0);
-    elbowMotor.configClosedLoopPeakOutput(0, 0.1);
-    elbowMotor.configPeakOutputForward(.1, 10);
-    elbowMotor.configPeakOutputReverse(-.1, 10);
+    elbowMotor.configClosedLoopPeakOutput(0, 0.5);
+    elbowMotor.configPeakOutputForward(.5, 10);
+    elbowMotor.configPeakOutputReverse(-.5, 10);
     elbowMotor.setInverted(TalonFXInvertType.Clockwise);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
   }
@@ -140,16 +140,22 @@ public class Elbow extends PIDSubsystem {
     return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
   }
 
+  @Override
+  public void periodic() {
+      super.periodic();
+      log();
+  }
+
 
   public void log() {
     if (Constants.DashboardLogging.ARM) {
       SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowLampreyDegrees());
-      SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getElbowPositionTicks()));
+      //SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getElbowPositionTicks()));
       SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
-      SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
+      //SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
-      SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
-      SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
+      //SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
+      //SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
     }
   }
 
