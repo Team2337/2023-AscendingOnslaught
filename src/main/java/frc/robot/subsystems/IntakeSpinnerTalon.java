@@ -10,7 +10,7 @@ import frc.robot.nerdyfiles.utilities.CTREUtils;
 
 public class IntakeSpinnerTalon extends SubsystemBase {
     
-    private TalonFX intakeSpinnerMotor = new TalonFX(18);
+    private TalonFX intakeSpinnerMotor = new TalonFX(50);
     private double peakOutput = 0.1;
     private double tolerance = 10000;
     private double kP = 0.1;
