@@ -79,7 +79,7 @@ public class RobotContainer {
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
         //elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
-        shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
+        shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -350,12 +350,13 @@ public class RobotContainer {
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
     triggerOperatorRight.whileTrue(intake.RunIntake());
     triggerOperatorLeft.whileTrue((intake.RunOuttake()));
-    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREMID.SHOULDER, Constants.Arm.SCOREMID.ELBOW));
+    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELEFALLENCONE.SHOULDER, Constants.Arm.TELEFALLENCONE.ELBOW));
     //90,0
     operatorX.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
     //0, 90
     operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
 
+    
     operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.CARRY.SHOULDER,Constants.Arm.CARRY.ELBOW ));
     //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
     

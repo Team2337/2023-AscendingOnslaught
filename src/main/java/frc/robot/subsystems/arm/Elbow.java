@@ -24,8 +24,9 @@ import frc.robot.Constants;
 public class Elbow extends PIDSubsystem {
 
   double offset = -180;
-  double lampreyVoltage = RobotController.getVoltage3V3();
-  double fullRange = 360 * (5.0/lampreyVoltage);
+  // double lampreyVoltage = RobotController.getVoltage3V3();
+  double lampreyVoltage = 3.306;
+  double fullRange = 360 * (RobotController.getVoltage5V()/lampreyVoltage);
 
   AnalogInput elbowLamprey = new AnalogInput(1);
   AnalogPotentiometer elbowLampreyPot = new AnalogPotentiometer(elbowLamprey, fullRange, offset);
@@ -42,11 +43,6 @@ public class Elbow extends PIDSubsystem {
   public Elbow() {
     super(new PIDController(elbowkP, elbowkI, elbowkD));
     getController().setTolerance(allowableError);
-
-
-
-
-
 
     elbowMotor.configFactoryDefault();
     elbowMotor.config_kP(0, elbowkP);
@@ -73,7 +69,7 @@ public class Elbow extends PIDSubsystem {
   @Override
   protected void useOutput(double output, double setpoint) {
     setElbowSpeed(output);
-    
+    SmartDashboard.putNumber("Arm K/ Elbow Output", output);
   }
 
   @Override
@@ -151,6 +147,7 @@ public class Elbow extends PIDSubsystem {
   public void log() {
     if (Constants.DashboardLogging.ARM) {
       SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowLampreyDegrees());
+      SmartDashboard.putNumber("Arm/Elbow Lamprey Voltage", elbowLamprey.getVoltage());
       //SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getElbowPositionTicks()));
       SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
       //SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());

@@ -24,8 +24,9 @@ import frc.robot.Constants;
 public class Shoulder extends PIDSubsystem {
 
   double offset = -25;
-  double lampreyVoltage = RobotController.getVoltage3V3();
-  double fullRange = 360 * (5.0/lampreyVoltage);
+  // double lampreyVoltage = RobotController.getVoltage3V3();
+  double lampreyVoltage = 3.306;
+  double fullRange = 360 * (RobotController.getVoltage5V()/lampreyVoltage);
 
   AnalogInput shoulderLamprey = new AnalogInput(0);
   AnalogPotentiometer shoulderLampreyPot = new AnalogPotentiometer(shoulderLamprey, fullRange, offset);
@@ -59,7 +60,7 @@ public class Shoulder extends PIDSubsystem {
     shoulderMotor.configAllowableClosedloopError(0, 0);
     shoulderMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0, 0);
     shoulderMotor.configStatorCurrentLimit(defaultCurrentLimit());
-    shoulderMotor.setSelectedSensorPosition(0);
+    shoulderMotor.setSelectedSensorPosition(convertDegreestoTicks(getShoulderLampreyDegrees()));
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
     shoulderMotor.configClosedLoopPeakOutput(0, closedLoopLimit);
@@ -73,7 +74,7 @@ public class Shoulder extends PIDSubsystem {
   @Override
   protected void useOutput(double output, double setpoint) {
     setShoulderSpeed(output);
-    
+    SmartDashboard.putNumber("Arm K/ Shoulder Output", output);
   }
 
   @Override
@@ -114,8 +115,9 @@ public class Shoulder extends PIDSubsystem {
    * @return Radians.  (ticks) / (2048 ticks/rev) / (75 gear-ratio) * (2*PI radians/rev) 
    */
   //Convert ticks to Radians
-  public double convertTicksToRadians(double ticks) {
-    return ticks * (1/2048.0) * (1/75.0) * (2.0 * Math.PI);
+  public double convertTicksToDegrees(double ticks) {
+    ticks = 1.0;
+    return ticks * (1.0/2048.0) * (1.0/Constants.Arm.ARM_GEAR_RATIO) * (360.0);
   }
 
   /**
@@ -124,8 +126,10 @@ public class Shoulder extends PIDSubsystem {
    * @param angle      = The angle to be converted
    * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
    */
-  public double convertAnglestoTicks(double angle){
-    return angle * (2048.0) * (75.0) * (1.0/360.0);
+  public double convertDegreestoTicks(double angle){
+    angle = 1.0;
+    angle = angle + 25.0;
+    return angle * (2048.0) * (Constants.Arm.ARM_GEAR_RATIO) * (1.0/360.0);
   }
 
 
@@ -161,16 +165,20 @@ public class Shoulder extends PIDSubsystem {
 public void periodic() {
     super.periodic();
     log();
+
 }
 
   public void log() {
     if (Constants.DashboardLogging.ARM) {
       SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderLampreyDegrees());
-      //SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertTicksToRadians(getShoulderPositionTicks()));
+      SmartDashboard.putNumber("Arm/Shoulder Lamprey Voltage", shoulderLamprey.getVoltage());
+      SmartDashboard.putNumber("Arm/System Voltage 5", RobotController.getCurrent5V());
+      SmartDashboard.putNumber("Arm/System Voltage 3", RobotController.getCurrent3V3());
+      SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertDegreestoTicks(getShoulderPositionTicks()));
       SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
       //SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
-      //SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", shoulderMotor.getStatorCurrent());
+      SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
       //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
     }
   }

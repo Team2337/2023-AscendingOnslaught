@@ -35,8 +35,8 @@ public class ArmBasicJoystickCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double outputShoulder = Utilities.deadband(-joystick.get().getLeftY(), 0.15);
-        double outputElbow = Utilities.deadband(-joystick.get().getRightY(), 0.15);
+        double outputShoulder = Utilities.deadbandAndSquare(-joystick.get().getLeftY(), 0.15);
+        double outputElbow = Utilities.deadbandAndSquare(joystick.get().getRightY(), 0.15);
         if ((outputShoulder == 0) && (outputElbow == 0)){ 
             if (shouldHoldArm) {
                 elbow.holdElbowPosition(elbow.getElbowPositionTicks());

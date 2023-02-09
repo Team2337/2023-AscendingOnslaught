@@ -443,23 +443,36 @@ public final class Constants {
 
   public static final double CLIMBER_ROLL = 15;
   public static class Arm {
-    public static final double SHOULDER_ARM_LENGTH = 26.5;
-    public static final double ELBOW_ARM_LENGTH = 26.5;
+    public static final double SHOULDER_ARM_LENGTH = 25;
+    public static final double ELBOW_ARM_LENGTH = 34;
+    public static final double ARM_GEAR_RATIO = 218.75;
     public static class SCOREHIGH {
-      public static final double SHOULDER = 130.0;
-      public static final double ELBOW = 30.0;
+      public static final double SHOULDER = 110.0;
+      public static final double ELBOW = 54.0;
     }
     public static class SUBSTATION {
-      public static final double SHOULDER = 33.0;
-      public static final double ELBOW = -10.0;
+      public static final double SHOULDER = 66.0;
+      public static final double ELBOW = -37.0;
     }
     public static class SCOREMID {
-      public static final double SHOULDER = 120.0;
-      public static final double ELBOW = 90.0;
+      public static final double SHOULDER = 59.0;
+      public static final double ELBOW = 127.0;
     }
     public static class SCORELOW {
       public static final double SHOULDER = 100.0;
       public static final double ELBOW = 145.0;
+    }
+    public static class AUTOPICKUP {
+      public static final double SHOULDER = -5.0;
+      public static final double ELBOW = 9.0;
+    }
+    public static class TELESTANDINGCONE {
+      public static final double SHOULDER = 44.0;
+      public static final double ELBOW = -84.0;
+    }
+    public static class TELEFALLENCONE {
+      public static final double SHOULDER = 29.0;
+      public static final double ELBOW = -76.0;
     }
     public static class CARRY {
       public static final double SHOULDER = 0.0;
