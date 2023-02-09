@@ -421,4 +421,12 @@ public class RobotContainer {
     return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
   }
 
+  public int getElbowSetpoint() {
+    return (int) elbow.getSetpoint();
+  }
+
+  public int getShoulderSetpoint() {
+    return (int) shoulder.getSetpoint();
+  }
+
 }
