@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   private static final int kMotorPort = 0;
   private static final int kEncoderAChannel = 0;
   private static final int kEncoderBChannel = 1;
-  private static final int kJoystickPort = 0;
+  //private static final int kJoystickPort = 0;
 
   // The P gain for the PID controller that drives this arm.
   private static final double kArmKp = 40.0;
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 
   private final PWMSparkMax m_topMotor = new PWMSparkMax(kMotorPort);
   private final PWMSparkMax m_bottomMotor = new PWMSparkMax(kMotorPort + 1);
-  private final XboxController m_joystick = new XboxController(kJoystickPort);
+  //private final XboxController m_joystick = new XboxController(kJoystickPort);
   double deltaX, deltaY;
 
   // Simulation classes help us simulate what's going on, including gravity.
@@ -388,7 +388,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putString("Alliance Color", allianceColor);
     allianceColor = DriverStation.getAlliance().toString();
-
+/* 
     switch (controlMode.getSelected()) {
 
       case 1:
@@ -449,84 +449,88 @@ public class Robot extends TimedRobot {
         // Shoulder angle shoud be zero when level with the ground and pointing straight
         // back from the robot (when back of the robot to the right, angles are positive
         // CCW)
-        double mathShoulderAngle = Units.radiansToDegrees(m_bottomEncoder.getDistance());
-        // Elbow Angle is zero when parallel with first/bottom arm (when back of the
-        // robot to the right, angles are positive CCW)
-        double mathElbowAngle = Units.radiansToDegrees(m_topEncoder.getDistance());
+       // Convert sensor readings to angles as used in our forward and inverse kinematics.
+        // Shoulder angle shoud be zero when level with the ground and pointing straight back from the robot (when back of the robot to the right, angles are positive CCW)
+       /*  double mathShoulderAngle = Units.radiansToDegrees(m_bottomEncoderSim.getDistance());
+        double joystickP = 3;
+        // Elbow Angle is zero when parallel with first/bottom arm (when back of the robot to the right, angles are positive CCW)
+        double mathElbowAngle = Units.radiansToDegrees(m_topEncoderSim.getDistance());
         // Calculate the current X,Y location of the intake
-        double currentX = SHOULDER_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle)) + ELBOW_ARM_LENGTH
-            * Math.cos(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
-        double currentY = SHOULDER_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle)) + ELBOW_ARM_LENGTH
-            * Math.sin(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
+        double currentX = Constants.Arm.SHOULDER_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle)) + Constants.Arm.ELBOW_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
+        double currentY = Constants.Arm.SHOULDER_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle)) + Constants.Arm.ELBOW_ARM_LENGTH * Math.sin(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
 
-        // Read Joystick inputs and apply a deadband
-        deltaX = Utilities.deadbandAndSquare(m_joystick.getRawAxis(0), 0.1) * 2.5;
-        deltaY = Utilities.deadbandAndSquare(m_joystick.getRawAxis(1), 0.1) * 2.5;
+        
+        //Read Joystick inputs and apply a deadband
+        // TODO:  do we want X and Y on different joysticks??  variable for deadband?
+        double joystickX = Utilities.deadbandAndSquare(-m_robotContainer.getOpYRight(), 0.1);
+        double joystickY = Utilities.deadbandAndSquare(-m_robotContainer.getOpYLeft(), 0.1);
+
+        deltaX = joystickX * joystickP; 
+        deltaY = joystickY * joystickP;
+        //deltaX = 0;
+        //deltaY = 0;
 
         // Adjust the target X,Y location of the intake based on joystick inputs
         double targetX = currentX + deltaX;
         double targetY = currentY + deltaY;
-
+        //targetX = -33;
+        //targetY = 25;
         SmartDashboard.putNumber("Arm K/DeltaX", deltaX);
         SmartDashboard.putNumber("Arm K/DeltaY", deltaY);
         SmartDashboard.putNumber("Arm K/Target X", targetX);
         SmartDashboard.putNumber("Arm K/Target Y", targetY);
-
-        // Calculate new arm angles based on target X,Y
+        
+        // Calculate new arm angles based on target X,Y    
         double hypot = Math.sqrt((targetX * targetX) + (targetY * targetY));
-        double theta_S2 = Math.acos((Math.pow(SHOULDER_ARM_LENGTH, 2) + Math.pow(hypot, 2) - Math.pow(ELBOW_ARM_LENGTH, 2))
-                / (2.0 * hypot * SHOULDER_ARM_LENGTH));
-
-        double theta_S1 = Math.asin(targetY / hypot);
-        double theta_E = Math.acos((Math.pow(SHOULDER_ARM_LENGTH, 2) + Math.pow(ELBOW_ARM_LENGTH, 2) - Math.pow(hypot, 2))
-            / (2.0 * SHOULDER_ARM_LENGTH * ELBOW_ARM_LENGTH));
+        double theta_S2 = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(hypot, 2) - Math.pow(Constants.Arm.ELBOW_ARM_LENGTH,2)) 
+        / (2.0 * hypot * Constants.Arm.SHOULDER_ARM_LENGTH));
+       // double theta_S1 = Math.asin(targetY/hypot);
+       double theta_S1 = Math.atan2(targetY, targetX);
+        double theta_E = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(Constants.Arm.ELBOW_ARM_LENGTH, 2) - Math.pow(hypot,2)) 
+        / (2.0 * Constants.Arm.SHOULDER_ARM_LENGTH * Constants.Arm.ELBOW_ARM_LENGTH));
         SmartDashboard.putNumber("Arm K/hypot", hypot);
         SmartDashboard.putNumber("Arm K/theta_S2", Units.radiansToDegrees(theta_S2));
         SmartDashboard.putNumber("Arm K/theta_S1", Units.radiansToDegrees(theta_S1));
         SmartDashboard.putNumber("Arm K/theta_E", Units.radiansToDegrees(theta_E));
 
         // TODO: NOT SURE ON LOGIC, HAVE TO WALK THRU AGAIN
-        // Final steps to determine new angle setpoints differs based on the quadrant
-        // (x,y) is in.
-        if (targetY >= 0) {
-          bottomSetpoint = (int) (Units.radiansToDegrees(theta_S1 + theta_S2));
-        } else {
-          bottomSetpoint = (int) (Units.radiansToDegrees(theta_S2 + theta_S1));
+        // Final steps to determine new angle setpoints differs based on the quadrant (x,y) is in.
+       /*  if (targetY >= 0) {
+            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
         }
-
+        else {
+            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S2 + theta_S1));
+        } */
+        /* 
         if (targetX < 0) {
-          topSetpoint = (int) (Units.radiansToDegrees(Math.PI - theta_E));
-          if (targetY < 0) {
-            bottomSetpoint = (int) (Units.radiansToDegrees(Math.PI - (theta_S2 - theta_S1)));
-          } else {
-            bottomSetpoint = (int) (Units.radiansToDegrees(Math.PI - (theta_S1 + theta_S2)));
-          }
-        } else {
-          topSetpoint = (int) (Units.radiansToDegrees(theta_E - Math.PI));
+            topSetpoint = (int)(Units.radiansToDegrees(Math.PI - theta_E));
+            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
+            }
+        else {
+                topSetpoint = (int)(Units.radiansToDegrees(theta_E-Math.PI));
+                bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
         }
-
-        // TODO: THINK WE NEED TO SUBTRACT OUT OFFSETS BEFORE SETTING POSITIONS
-        // double shoulderTarget = bottomSetpoint;
-        // double elbowTarget = topSetpoint;
-
-        // elbowTarget = SmartDashboard.getNumber("A/test elbo target", elbowTarget);
-        // shoulderTarget = SmartDashboard.getNumber("A/test shoulder target",
-        // shoulderTarget);
-
-        if ((m_joystick.getRawAxis(0) == 0) && (m_joystick.getRawAxis(1) == 0)) {
+        if ((joystickX == 0) && (joystickY == 0)){ 
           if (shouldHoldArm) {
-            topSetpoint = (int) Units.radiansToDegrees(m_topEncoder.getDistance()); // shoulder.getShoulderLampreyDegrees();
-            bottomSetpoint = (int) Units.radiansToDegrees(m_bottomEncoder.getDistance());
-            shouldHoldArm = false;
+              topSetpoint = (int)(Units.radiansToDegrees(m_topEncoderSim.getDistance()));
+              bottomSetpoint = (int)(Units.radiansToDegrees(m_bottomEncoderSim.getDistance()));
+              shouldHoldArm = false;
           }
-        } else {
-          // Change boolean so that if joysticks go back to zero, we will get position/set
-          // setpoint, stoping the arms movement.
-          shouldHoldArm = true;
-        }
+      } else {
+          // Change boolean so that if joysticks go back to zero, we will get position/set setpoint, stoping the arms movement.
+          shouldHoldArm = true;    
+      }   
+                /*else {
+            topSetpoint = (int)(Units.radiansToDegrees(theta_E - Math.PI));
+        } */
+
+        //TODO: THINK WE NEED TO SUBTRACT OUT OFFSETS BEFORE SETTING POSITIONS
+       // double shoulderTarget = bottomSetpoint;
+        //double elbowTarget = topSetpoint;
+
 
         // ===============
-
+/* 
         break;
 
       case 4:
@@ -602,7 +606,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("CurrentX", SHOULDER_ARM_LENGTH * Math.sin(m_bottomEncoder.getDistance())
         + ELBOW_ARM_LENGTH * Math.sin(m_bottomEncoder.getDistance() + m_topEncoder.getDistance()));
     SmartDashboard.putNumber("CurrentY", SHOULDER_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance())
-        + ELBOW_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance() + m_topEncoder.getDistance()));
+        + ELBOW_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance() + m_topEncoder.getDistance())); */
 
   }
 

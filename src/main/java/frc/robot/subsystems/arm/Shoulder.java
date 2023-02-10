@@ -32,7 +32,7 @@ public class Shoulder extends PIDSubsystem {
   AnalogPotentiometer shoulderLampreyPot = new AnalogPotentiometer(shoulderLamprey, fullRange, offset);
   TalonFX shoulderMotor = new TalonFX(15);
 
-  static double shoulderkP = 0.075;
+  static double shoulderkP = 0.025;
   static double shoulderkI = 0.0;
   static double shoulderkD = 0.0;
   double allowableError = 3;

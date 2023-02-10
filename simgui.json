@@ -1,10 +1,5 @@
 {
   "HALProvider": {
-    "Encoders": {
-      "window": {
-        "visible": true
-      }
-    },
     "Other Devices": {
       "BuiltInAccel": {
         "header": {
@@ -12,9 +7,9 @@
         }
       }
     },
-    "RoboRIO": {
+    "Timing": {
       "window": {
-        "visible": true
+        "visible": false
       }
     }
   },
@@ -34,11 +29,6 @@
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Arm Sim": {
         "window": {
           "visible": true
@@ -82,5 +72,8 @@
         "open": true
       }
     }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

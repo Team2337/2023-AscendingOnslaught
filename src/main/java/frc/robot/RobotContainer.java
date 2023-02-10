@@ -429,4 +429,12 @@ public class RobotContainer {
     return (int) shoulder.getSetpoint();
   }
 
+  public double getOpYRight() {
+    return operatorController.getRightY();
+  }
+
+  public double getOpYLeft() {
+    return operatorController.getLeftY();
+  }
+
 }

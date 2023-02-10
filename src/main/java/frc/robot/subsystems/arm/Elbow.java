@@ -32,7 +32,7 @@ public class Elbow extends PIDSubsystem {
   AnalogPotentiometer elbowLampreyPot = new AnalogPotentiometer(elbowLamprey, fullRange, offset);
   TalonFX elbowMotor = new TalonFX(16);
 
-  static double elbowkP = 0.075;
+  static double elbowkP = 0.025;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
   double allowableError = 3;

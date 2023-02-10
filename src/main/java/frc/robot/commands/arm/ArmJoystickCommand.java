@@ -71,6 +71,32 @@ public class ArmJoystickCommand extends CommandBase {
         deltaY = joystickY * joystickP;
         //deltaX = 0;
         //deltaY = 0;
+        if (currentX > 0) {
+            if (currentX < 18.0 && deltaX < 0) {
+                deltaX = 0;
+            }
+            if (Math.sqrt(Math.pow(currentX,2) +Math.pow(currentY, 2)) > ((Constants.Arm.ELBOW_ARM_LENGTH + Constants.Arm.SHOULDER_ARM_LENGTH) * .9)) {
+                if (deltaX > 0) {
+                    deltaX = 0;
+                }
+                if (deltaY > 0) {
+                    deltaY = 0;
+                }
+            }
+
+        } else {
+            if (currentX > -18.0 && deltaX > 0) {
+                deltaX = 0;
+            }
+            if (Math.sqrt(Math.pow(currentX,2) +Math.pow(currentY, 2)) > ((Constants.Arm.ELBOW_ARM_LENGTH + Constants.Arm.SHOULDER_ARM_LENGTH) * .9)) {
+                if (deltaX < 0) {
+                    deltaX = 0;
+                }
+                if (deltaY > 0) {
+                    deltaY = 0;
+                }
+            }
+        }
 
         // Adjust the target X,Y location of the intake based on joystick inputs
         double targetX = currentX + deltaX;
@@ -86,7 +112,8 @@ public class ArmJoystickCommand extends CommandBase {
         double hypot = Math.sqrt((targetX * targetX) + (targetY * targetY));
         double theta_S2 = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(hypot, 2) - Math.pow(Constants.Arm.ELBOW_ARM_LENGTH,2)) 
         / (2.0 * hypot * Constants.Arm.SHOULDER_ARM_LENGTH));
-        double theta_S1 = Math.asin(targetY/hypot);
+       // double theta_S1 = Math.asin(targetY/hypot);
+       double theta_S1 = Math.atan2(targetY, targetX);
         double theta_E = Math.acos((Math.pow(Constants.Arm.SHOULDER_ARM_LENGTH, 2) + Math.pow(Constants.Arm.ELBOW_ARM_LENGTH, 2) - Math.pow(hypot,2)) 
         / (2.0 * Constants.Arm.SHOULDER_ARM_LENGTH * Constants.Arm.ELBOW_ARM_LENGTH));
         SmartDashboard.putNumber("Arm K/hypot", hypot);
@@ -96,25 +123,24 @@ public class ArmJoystickCommand extends CommandBase {
 
         // TODO: NOT SURE ON LOGIC, HAVE TO WALK THRU AGAIN
         // Final steps to determine new angle setpoints differs based on the quadrant (x,y) is in.
-        if (targetY >= 0) {
+       /*  if (targetY >= 0) {
             bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
         }
         else {
             bottomSetpoint = (int)(Units.radiansToDegrees(theta_S2 + theta_S1));
-        }
+        } */
         if (targetX < 0) {
             topSetpoint = (int)(Units.radiansToDegrees(Math.PI - theta_E));
-            if (targetY < 0) {
-                bottomSetpoint = (int)(Units.radiansToDegrees(Math.PI - (theta_S2 - theta_S1)));
+            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
             }
-            else {
-                bottomSetpoint = (int)(Units.radiansToDegrees(Math.PI - (theta_S1 + theta_S2)));
-            }
-            
-        }
         else {
+                topSetpoint = (int)(Units.radiansToDegrees(theta_E-Math.PI));
+                bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
+        }
+            
+                /*else {
             topSetpoint = (int)(Units.radiansToDegrees(theta_E - Math.PI));
-        } 
+        } */
 
         //TODO: THINK WE NEED TO SUBTRACT OUT OFFSETS BEFORE SETTING POSITIONS
         double shoulderTarget = bottomSetpoint;
