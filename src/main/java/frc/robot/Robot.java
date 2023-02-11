@@ -388,7 +388,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putString("Alliance Color", allianceColor);
     allianceColor = DriverStation.getAlliance().toString();
-/* 
+
     switch (controlMode.getSelected()) {
 
       case 1:
@@ -408,7 +408,7 @@ public class Robot extends TimedRobot {
             m_arm_bottom_min_angle, m_arm_bottom_max_angle);
         break;
       case 3:
-        /**
+        /* 
          * // calculate X and/or Y based on current angles - adjust X and/or Y based on
          * joystick - calaculate new angles (topSetpoint,bottomSetpoint),
          * deltaX = m_joystick.getRawAxis(0) * .1;
@@ -441,9 +441,9 @@ public class Robot extends TimedRobot {
          * theta_S1));
          * SmartDashboard.putNumber("sin(90)", Math.sin(90));
          * SmartDashboard.putNumber("sin(pi 2) correct", Math.sin(Math.PI/2));
-         **/
+         *
         // =====================
-
+      */
         // Convert sensor readings to angles as used in our forward and inverse
         // kinematics.
         // Shoulder angle shoud be zero when level with the ground and pointing straight
@@ -451,7 +451,7 @@ public class Robot extends TimedRobot {
         // CCW)
        // Convert sensor readings to angles as used in our forward and inverse kinematics.
         // Shoulder angle shoud be zero when level with the ground and pointing straight back from the robot (when back of the robot to the right, angles are positive CCW)
-       /*  double mathShoulderAngle = Units.radiansToDegrees(m_bottomEncoderSim.getDistance());
+        double mathShoulderAngle = Units.radiansToDegrees(m_bottomEncoderSim.getDistance());
         double joystickP = 3;
         // Elbow Angle is zero when parallel with first/bottom arm (when back of the robot to the right, angles are positive CCW)
         double mathElbowAngle = Units.radiansToDegrees(m_topEncoderSim.getDistance());
@@ -495,16 +495,22 @@ public class Robot extends TimedRobot {
 
         // TODO: NOT SURE ON LOGIC, HAVE TO WALK THRU AGAIN
         // Final steps to determine new angle setpoints differs based on the quadrant (x,y) is in.
-       /*  if (targetY >= 0) {
-            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
-        }
-        else {
-            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S2 + theta_S1));
-        } */
-        /* 
+       //  if (targetY >= 0) {
+         //   bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1 + theta_S2));
+        //}
+        //else {
+          //  bottomSetpoint = (int)(Units.radiansToDegrees(theta_S2 + theta_S1));
+        //} 
+        
         if (targetX < 0) {
             topSetpoint = (int)(Units.radiansToDegrees(Math.PI - theta_E));
-            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
+            if (targetY < 0){
+                bottomSetpoint = (int)(Units.radiansToDegrees((2*Math.PI) + theta_S1-theta_S2));
+            }
+            else {
+                bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
+            }
+            
             }
         else {
                 topSetpoint = (int)(Units.radiansToDegrees(theta_E-Math.PI));
@@ -520,6 +526,8 @@ public class Robot extends TimedRobot {
           // Change boolean so that if joysticks go back to zero, we will get position/set setpoint, stoping the arms movement.
           shouldHoldArm = true;    
       }   
+
+
                 /*else {
             topSetpoint = (int)(Units.radiansToDegrees(theta_E - Math.PI));
         } */
@@ -530,7 +538,7 @@ public class Robot extends TimedRobot {
 
 
         // ===============
-/* 
+
         break;
 
       case 4:
@@ -606,7 +614,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("CurrentX", SHOULDER_ARM_LENGTH * Math.sin(m_bottomEncoder.getDistance())
         + ELBOW_ARM_LENGTH * Math.sin(m_bottomEncoder.getDistance() + m_topEncoder.getDistance()));
     SmartDashboard.putNumber("CurrentY", SHOULDER_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance())
-        + ELBOW_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance() + m_topEncoder.getDistance())); */
+        + ELBOW_ARM_LENGTH * Math.cos(m_bottomEncoder.getDistance() + m_topEncoder.getDistance())); 
 
   }
 

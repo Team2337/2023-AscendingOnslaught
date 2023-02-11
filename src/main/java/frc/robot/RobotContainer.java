@@ -79,7 +79,7 @@ public class RobotContainer {
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean, driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
         //elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
-        shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController));
+        shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus())); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     // Configure the button bindings
     configureButtonBindings();
 
@@ -367,7 +367,7 @@ public class RobotContainer {
 
 
     
-    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController));
+    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
     //operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, -40000, 17500));
     /** Driverstation Controls * */
@@ -408,7 +408,10 @@ public class RobotContainer {
   public boolean getBlackSwitchStatus() {
     return operatorStation.blackSwitch.getAsBoolean();
   }
-
+  /**
+   * This is the switch for the arm lamprey's failing
+   * @return
+   */
   public boolean getYellowSwitchStatus() {
     return operatorStation.yellowSwitch.getAsBoolean();
   }

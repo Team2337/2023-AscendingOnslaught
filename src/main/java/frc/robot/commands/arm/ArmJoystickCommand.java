@@ -1,5 +1,7 @@
 package frc.robot.commands.arm;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,12 +30,14 @@ public class ArmJoystickCommand extends CommandBase {
     private double elbowOffset = 0;
     private double mathShoulderAngle, mathElbowAngle;
     private double ticksPerDegree = 1094.44;
+    Supplier<Boolean>lampreyBroken;
     double testx = 0;
     double testy = 0;
-    public ArmJoystickCommand(Elbow elbow, Shoulder shoulder, XboxController joystick) {
+    public ArmJoystickCommand(Elbow elbow, Shoulder shoulder, XboxController joystick, Supplier<Boolean>lampreyBroken) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.joystick = joystick;
+        this.lampreyBroken = lampreyBroken;
         addRequirements(elbow, shoulder);
     }
 
@@ -51,7 +55,28 @@ public class ArmJoystickCommand extends CommandBase {
 
     @Override
     public void execute() {
+        if (lampreyBroken.get()){
+            shoulder.disable();
+            elbow.disable();
+            double outputShoulder = Utilities.deadbandAndSquare(-joystick.getLeftY(), 0.15);
+            double outputElbow = Utilities.deadbandAndSquare(joystick.getRightY(), 0.15);
+            if ((outputShoulder == 0) && (outputElbow == 0)){ 
+                if (shouldHoldArm) {
+                    elbow.holdElbowPosition(elbow.getElbowPositionTicks());
+                    shoulder.holdShoulderPosition(shoulder.getShoulderPositionTicks());
+                    shouldHoldArm = false;
+                }
+            } else {
+                elbow.setElbowSpeed(outputElbow);
+                shoulder.setShoulderSpeed(outputShoulder);
+                shouldHoldArm = true;
+            }
+    }
+        else {
+            shoulder.enable();
+            elbow.enable();
 
+        
         // Convert sensor readings to angles as used in our forward and inverse kinematics.
         // Shoulder angle shoud be zero when level with the ground and pointing straight back from the robot (when back of the robot to the right, angles are positive CCW)
         mathShoulderAngle = shoulder.getShoulderLampreyDegrees();
@@ -131,7 +156,13 @@ public class ArmJoystickCommand extends CommandBase {
         } */
         if (targetX < 0) {
             topSetpoint = (int)(Units.radiansToDegrees(Math.PI - theta_E));
-            bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
+            if (targetY < 0){
+                bottomSetpoint = (int)(Units.radiansToDegrees((2*Math.PI) + theta_S1-theta_S2));
+            }
+            else {
+                bottomSetpoint = (int)(Units.radiansToDegrees(theta_S1-theta_S2));
+            }
+            
             }
         else {
                 topSetpoint = (int)(Units.radiansToDegrees(theta_E-Math.PI));
@@ -180,6 +211,7 @@ public class ArmJoystickCommand extends CommandBase {
     
             SmartDashboard.putNumber("Arm K/Elbow Predicted Degrees", elbowTarget);
             SmartDashboard.putNumber("Arm K/Bottom Predicted Ticks", shoulderTarget);
+    }
     }
 
 

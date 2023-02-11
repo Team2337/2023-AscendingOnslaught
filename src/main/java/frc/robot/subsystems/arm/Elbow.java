@@ -55,7 +55,7 @@ public class Elbow extends PIDSubsystem {
     elbowMotor.configAllowableClosedloopError(0, 0);
     elbowMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0, 0);
     elbowMotor.configStatorCurrentLimit(defaultCurrentLimit());
-    elbowMotor.setSelectedSensorPosition(0);
+    elbowMotor.setSelectedSensorPosition(convertDegreestoTicks(getElbowLampreyDegrees()));
     elbowMotor.configNominalOutputForward(0);
     elbowMotor.configNominalOutputReverse(0);
     elbowMotor.configClosedLoopPeakOutput(0, closedLoopLimit);
@@ -98,15 +98,15 @@ public class Elbow extends PIDSubsystem {
 
   
 
-    /**
+     /**
    * Converts given ticks to radians.
    *
    * @param ticks The ticks to convert to radians.
    * @return Radians.  (ticks) / (2048 ticks/rev) / (75 gear-ratio) * (2*PI radians/rev) 
    */
   //Convert ticks to Radians
-  public double convertTicksToRadians(double ticks) {
-    return ticks * (1/2048.0) * (1/75.0) * (2.0 * Math.PI);
+  public double convertTicksToDegrees(double ticks) {
+    return ticks * (1.0/2048.0) * (1.0/Constants.Arm.ARM_GEAR_RATIO) * (360.0);
   }
 
   /**
@@ -115,8 +115,9 @@ public class Elbow extends PIDSubsystem {
    * @param angle      = The angle to be converted
    * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
    */
-  public double convertAnglestoTicks(double angle){
-    return angle * (2048.0) * (75.0) * (1.0/360.0);
+  public double convertDegreestoTicks(double angle){
+    angle = angle;
+    return angle * (2048.0) * (Constants.Arm.ARM_GEAR_RATIO) * (1.0/360.0);
   }
 
 
@@ -149,7 +150,7 @@ public class Elbow extends PIDSubsystem {
       SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowLampreyDegrees());
       SmartDashboard.putNumber("Arm/Elbow Lamprey Voltage", elbowLamprey.getVoltage());
       //SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getElbowPositionTicks()));
-      SmartDashboard.putNumber("A/Elbow Motor Encoder Ticks", getElbowPositionTicks());
+      SmartDashboard.putNumber("Arm/Elbow Motor Encoder Ticks", getElbowPositionTicks());
       //SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
       //SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());

@@ -60,7 +60,7 @@ public class Shoulder extends PIDSubsystem {
     shoulderMotor.configAllowableClosedloopError(0, 0);
     shoulderMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0, 0);
     shoulderMotor.configStatorCurrentLimit(defaultCurrentLimit());
-    shoulderMotor.setSelectedSensorPosition(convertDegreestoTicks(getShoulderLampreyDegrees()));
+    shoulderMotor.setSelectedSensorPosition(-convertDegreestoTicks(getShoulderLampreyDegrees()));
     shoulderMotor.configNominalOutputForward(0);
     shoulderMotor.configNominalOutputReverse(0);
     shoulderMotor.configClosedLoopPeakOutput(0, closedLoopLimit);
@@ -116,7 +116,6 @@ public class Shoulder extends PIDSubsystem {
    */
   //Convert ticks to Radians
   public double convertTicksToDegrees(double ticks) {
-    ticks = 1.0;
     return ticks * (1.0/2048.0) * (1.0/Constants.Arm.ARM_GEAR_RATIO) * (360.0);
   }
 
@@ -127,8 +126,7 @@ public class Shoulder extends PIDSubsystem {
    * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
    */
   public double convertDegreestoTicks(double angle){
-    angle = 1.0;
-    angle = angle + 25.0;
+    angle = angle;
     return angle * (2048.0) * (Constants.Arm.ARM_GEAR_RATIO) * (1.0/360.0);
   }
 
@@ -174,8 +172,8 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/Shoulder Lamprey Voltage", shoulderLamprey.getVoltage());
       SmartDashboard.putNumber("Arm/System Voltage 5", RobotController.getCurrent5V());
       SmartDashboard.putNumber("Arm/System Voltage 3", RobotController.getCurrent3V3());
-      SmartDashboard.putNumber("Arm/Theoretical Shoulder Motor Angle Via Encoder", convertDegreestoTicks(getShoulderPositionTicks()));
-      SmartDashboard.putNumber("A/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
+      SmartDashboard.putNumber("A/Theoretical Shoulder Motor Angle Via Encoder", convertDegreestoTicks(getShoulderPositionTicks()));
+      SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
       //SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
