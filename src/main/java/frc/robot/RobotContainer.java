@@ -89,7 +89,7 @@ public class RobotContainer {
     // vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
-    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
+    //shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -435,6 +435,7 @@ public class RobotContainer {
   }
 
   public void instantiateSubsystemsTeleop() {
+    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
   }
 
   public void configureButtonBindingsTeleop() {

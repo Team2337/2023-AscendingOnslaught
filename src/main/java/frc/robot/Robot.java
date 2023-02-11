@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
     //TODO: Used for april tag testing, do not remove
     // m_robotContainer.resetRobotChooser(startingPos, startingAngle);
 
-    // m_robotContainer.instantiateSubsystemsTeleop();
+     m_robotContainer.instantiateSubsystemsTeleop();
     // m_robotContainer.configureButtonBindingsTeleop();    
   }
 
