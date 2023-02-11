@@ -435,7 +435,7 @@ public class RobotContainer {
   }
 
   public void instantiateSubsystemsTeleop() {
-    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
+    shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController));
   }
 
   public void configureButtonBindingsTeleop() {
