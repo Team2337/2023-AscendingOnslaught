@@ -275,6 +275,7 @@ public final class Constants {
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
+    public static final double trajectoryTolerance = 2;
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));

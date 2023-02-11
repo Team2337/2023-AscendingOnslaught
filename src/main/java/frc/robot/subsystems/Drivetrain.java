@@ -264,22 +264,22 @@ public class Drivetrain extends SubsystemBase {
     teleopAutoPosition = position;
     if (isAllianceBlue()) {
       switch (teleopAutoPosition) {
-        case 1:
+        case 9:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridRightRobotRight;
           waypoint3_goal = Constants.Auto.blueGridRightRobotRight;
           break;
-        case 2:
+        case 8:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridRightRobotCenter;
           waypoint3_goal = Constants.Auto.blueGridRightRobotCenter;
           break;
-        case 3:
+        case 7:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
           waypoint3_goal = Constants.Auto.blueGridRightRobotLeft;
           break;
-        case 4:
+        case 6:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotRight;
@@ -289,22 +289,22 @@ public class Drivetrain extends SubsystemBase {
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotCenter;
           break;
-        case 6:
+        case 4:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotLeft;
           break;
-        case 7:
+        case 3:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotRight;
           break;
-        case 8:
+        case 2:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridLeftRobotCenter;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotCenter;
           break;
-        case 9:
+        case 1:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridLeftRobotLeft;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotLeft;
@@ -322,22 +322,22 @@ public class Drivetrain extends SubsystemBase {
       } 
     } else {
       switch (teleopAutoPosition) {
-        case 1:
+        case 9:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridRightRobotRight;
           waypoint3_goal = Constants.Auto.redGridRightRobotRight;
           break;
-        case 2:
+        case 8:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridRightRobotCenter;
           waypoint3_goal = Constants.Auto.redGridRightRobotCenter;
           break;
-        case 3:
+        case 7:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridRightRobotLeft;
           break;
-        case 4:
+        case 6:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotRight;
@@ -347,22 +347,22 @@ public class Drivetrain extends SubsystemBase {
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotCenter;
           break;
-        case 6:
+        case 4:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotLeft;
           break;
-        case 7:
+        case 3:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridLeftRobotRight;
           break;
-        case 8:
+        case 2:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridLeftRobotCenter;
           waypoint3_goal = Constants.Auto.redGridLeftRobotCenter;
           break;
-        case 9:
+        case 1:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridLeftRobotLeft;
           waypoint3_goal = Constants.Auto.redGridLeftRobotLeft;

@@ -9,14 +9,14 @@ import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 
-public class BlueConstructTeleopAutoCommand extends SequentialCommandGroup {
+public class BlueConstructTeleopAutoCommand2 extends SequentialCommandGroup {
   AutoDrive autoDrive;
   Drivetrain drivetrain;
   Heading heading;
   RobotContainer robotContainer;
   private double trajectoryCutoff;
 
-  public BlueConstructTeleopAutoCommand(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading, RobotContainer robotContainer) {
+  public BlueConstructTeleopAutoCommand2(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading, RobotContainer robotContainer) {
     this.autoDrive = autoDrive;
     this.drivetrain = drivetrain;
     this.heading = heading;
@@ -25,18 +25,6 @@ public class BlueConstructTeleopAutoCommand extends SequentialCommandGroup {
 
     // waypoint2 = inner waypoint (if it exists)
     addCommands(
-        // waypoint1 = outer waypoint
-        new CartesianVectorProfileToPointTargetCommand(
-            drivetrain::getWaypointOuter,
-            drivetrain::getTranslation,
-            drivetrain::velocity,
-            trajectoryCutoff,
-            1.5,
-            Units.inchesToMeters(80),
-            autoDrive,
-            drivetrain,
-            heading,
-            robotContainer),
         new CartesianVectorProfileToPointTargetCommand(
             drivetrain::getWaypointInner,
             drivetrain::getTranslation,
@@ -52,7 +40,7 @@ public class BlueConstructTeleopAutoCommand extends SequentialCommandGroup {
             drivetrain::getWaypointGoal,
             drivetrain::getTranslation,
             drivetrain::velocity,
-            2,
+            Constants.Auto.trajectoryTolerance,
             1.5,
             Units.inchesToMeters(80),
             autoDrive,
