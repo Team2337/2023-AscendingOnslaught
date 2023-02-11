@@ -59,7 +59,7 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean CLIMBER = false;
     public static final boolean DELIVERY = false;
     public static final boolean DRIVETRAIN = false;
@@ -275,6 +275,7 @@ public final class Constants {
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
+    public static final double trajectoryTolerance = 2;
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
