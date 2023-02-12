@@ -436,7 +436,7 @@ public final class Constants {
 
   public static final int SHOOTER_BEAM_ID = 2;
 
-  public static final int LEDSTRIP_PWM_ID = 1;
+  public static final int LEDSTRIP_PWM_ID = 9;
 
   public static final double VISION_TOLERANCE = 1.5;
 

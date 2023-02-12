@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.BallColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
+import frc.robot.commands.LED.LEDRunnable;
 import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
@@ -49,6 +50,7 @@ import frc.robot.commands.auto.test.Test;
 import frc.robot.commands.auto.test.vectorBlueRightMiddleToBottom;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
+import frc.robot.nerdyfiles.leds.LED;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
@@ -71,6 +73,7 @@ public class RobotContainer {
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Intake intake = new Intake();
+  private final LED led = new LED();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final Shoulder shoulder = new Shoulder();
   private final Vision vision = new Vision(this);
@@ -97,6 +100,7 @@ public class RobotContainer {
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
+    led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
     // Configure the button bindings
     configureButtonBindings();
 
