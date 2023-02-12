@@ -23,6 +23,7 @@ public class blueStartMiddleMiddleBalance extends SequentialCommandGroup{
                 Units.inchesToMeters(60), 
                 drivetrain::getGyroscopePitch,
                 autoDrive, 
+                drivetrain,
                 heading
                 )
         );
