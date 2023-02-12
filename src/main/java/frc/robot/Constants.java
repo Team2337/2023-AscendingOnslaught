@@ -430,7 +430,7 @@ public final class Constants {
   public static final double DELIVERY_SPEED = 0.275;
   public static final double BOTTOM_TO_TOP_SPEED = 0.4; //0.35
 
-  public static final int INTAKE_MOTOR_ID = 15;
+  public static final int INTAKE_MOTOR_ID = 17;
   public static final double INTAKE_FORWARD_SPEED = 1;
   public static final double INTAKE_REVERSE_SPEED = -0.5;
 
@@ -446,8 +446,9 @@ public final class Constants {
 
   public static final double CLIMBER_ROLL = 15;
   public static class Arm {
-    public static final double SHOULDER_ARM_LENGTH = 26.5;
-    public static final double ELBOW_ARM_LENGTH = 26.5;
+    public static final double SHOULDER_ARM_LENGTH = 25;
+    public static final double ELBOW_ARM_LENGTH = 34;
+    public static final double ARM_GEAR_RATIO = 218.75;
     public static final double shoulderP = 0.005;
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;

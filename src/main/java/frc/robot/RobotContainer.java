@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -47,6 +48,8 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
+import frc.robot.commands.intakeSpinner.IntakeSpinnerJoystick;
+import frc.robot.commands.intakeSpinner.IntakeSpinnerSetPoint;
 import frc.robot.commands.auto.test.vectorBlueRightMiddleToBottom;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -70,6 +73,7 @@ public class RobotContainer {
 
   private final AutoDrive autoDrive = new AutoDrive();
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
+  private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Intake intake = new Intake();
@@ -96,10 +100,10 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
+                    shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus())); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
-    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
     // Configure the button bindings
     configureButtonBindings();
@@ -402,24 +406,24 @@ public class RobotContainer {
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
+    triggerOperatorRight.whileTrue(intake.RunIntake());
+    triggerOperatorLeft.whileTrue((intake.RunOuttake()));
+    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELEFALLENCONE.SHOULDER, Constants.Arm.TELEFALLENCONE.ELBOW));
+    operatorX.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
+    operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
 
-    operatorB.whileTrue(
-        new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREMID.SHOULDER, Constants.Arm.SCOREMID.ELBOW));
-    // 90,0
-    operatorX.whileTrue(
-        new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
-    // 0, 90
-    operatorY.whileTrue(
-        new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
-
-    operatorBack
-        .whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.CARRY.SHOULDER, Constants.Arm.CARRY.ELBOW));
-    // operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500,
-    // -70500));
-
+    
+    operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.CARRY.SHOULDER,Constants.Arm.CARRY.ELBOW ));
+    //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
+    
+    //operatorB.whileTrue(new IntakeSpinnerJoystick(intakespinner, operatorController));
+    //operatorB.whileTrue(new InstantCommand(()->intakespinner.setIntakeSpinnerMotorSpeed(0.5),intakespinner));
+    //operatorX.whileTrue(new IntakeSpinnerSetPoint(intakespinner, 90));
     operatorStart.onTrue(new ArmDemoCommand(elbow, shoulder));
 
-    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController));
+
+    
+    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
     // operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, -40000, 17500));
     /** Driverstation Controls * */
@@ -460,7 +464,10 @@ public class RobotContainer {
   public boolean getBlackSwitchStatus() {
     return operatorStation.blackSwitch.getAsBoolean();
   }
-
+  /**
+   * This is the switch for the arm lamprey's failing
+   * @return
+   */
   public boolean getYellowSwitchStatus() {
     return operatorStation.yellowSwitch.getAsBoolean();
   }
@@ -473,6 +480,22 @@ public class RobotContainer {
     return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
   }
 
+
+  public int getElbowSetpoint() {
+    return (int) elbow.getSetpoint();
+  }
+
+  public int getShoulderSetpoint() {
+    return (int) shoulder.getSetpoint();
+  }
+
+  public double getOpYRight() {
+    return operatorController.getRightY();
+  }
+
+  public double getOpYLeft() {
+    return operatorController.getLeftY();
+  }
   public double getPDHChannelRed() {
     return powerDistributionHub.getChannelCurrent(4);
   }

@@ -1,0 +1,79 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "BuiltInAccel": {
+        "header": {
+          "open": true
+        }
+      }
+    },
+    "Timing": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/DRIVER DASHBOARD/Auton Chooser": "String Chooser",
+      "/Shuffleboard/DRIVER DASHBOARD/Starting Angle Chooser": "String Chooser",
+      "/Shuffleboard/DRIVER DASHBOARD/Starting Pos Chooser": "String Chooser",
+      "/SmartDashboard/Arm Sim": "Mechanism2d",
+      "/SmartDashboard/AutonChooser": "String Chooser",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "/SmartDashboard/StartingAngleChooser": "String Chooser",
+      "/SmartDashboard/StartingPositionChooser": "String Chooser",
+      "/SmartDashboard/field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Arm Sim": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[0]": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[1]": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/StartingAngleChooser": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "A": {
+          "open": true
+        },
+        "Arm": {
+          "open": true
+        },
+        "Arm K": {
+          "open": true
+        },
+        "Arm Sim": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables View": {
+    "visible": false
+  }
+}
