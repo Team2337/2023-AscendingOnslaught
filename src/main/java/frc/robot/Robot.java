@@ -125,9 +125,9 @@ public class Robot extends TimedRobot {
 
     if (!autonomousRan) {
       m_robotContainer.resetRobotTeleop();
+      //TODO: Used for april tag testing, do not remove
+      m_robotContainer.resetRobotChooser(startingPos, startingAngle);
     }
-    //TODO: Used for april tag testing, do not remove
-    // m_robotContainer.resetRobotChooser(startingPos, startingAngle);
 
     // m_robotContainer.instantiateSubsystemsTeleop();
     // m_robotContainer.configureButtonBindingsTeleop();    

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.nerdyfiles.vision.LimelightUtilities;
 
@@ -100,9 +101,6 @@ public class Vision extends SubsystemBase {
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
 
-    allianceColor = DriverStation.getAlliance().toString().toLowerCase();
-    botPoseColor = botPoseColor + allianceColor;
-
     // Systems check
     if (Constants.DO_SYSTEMS_CHECK) {
       ShuffleboardTab systemsCheck = Constants.SYSTEMS_CHECK_TAB;
@@ -120,6 +118,15 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
+    botPoseColor = "botpose_wpi";
+    if (Robot.allianceColor.equals("Blue")) {
+      allianceColor = "blue";
+    } else {
+      allianceColor = "red";
+    }
+    botPoseColor = botPoseColor + allianceColor;
+    SmartDashboard.putString("Bot Pose Color", botPoseColor);
+
     tposeB = NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry(botPoseColor).getDoubleArray(defaultPose);
     currentPipelineB = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.BLUE));
     currentLEDModeB = LEDMode.withValue(getIntValue(LimelightKey.LEDMode, LimelightColor.BLUE));

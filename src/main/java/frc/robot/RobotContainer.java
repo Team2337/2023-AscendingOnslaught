@@ -53,6 +53,7 @@ import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
+import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
@@ -91,8 +92,7 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain,
-    // vision));
+    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
