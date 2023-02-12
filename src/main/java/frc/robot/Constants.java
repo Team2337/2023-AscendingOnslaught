@@ -59,7 +59,7 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean CLIMBER = false;
     public static final boolean DELIVERY = false;
     public static final boolean DRIVETRAIN = false;
@@ -275,6 +275,9 @@ public final class Constants {
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
+    public static final double trajectoryTolerance = 2;
+    public static final double intakeForwardSpeed = 0.5;
+    public static final double intakeReverseSpeed = -0.5;
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -406,7 +409,7 @@ public final class Constants {
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
     //TODO: Change to 15
-    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 3;
+    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 15;
   }
 
   public static final double MOTOR_MINIMUM_TEMP_CELSIUS = 15.0; // Used in Shuffleboard for temperature dials
@@ -433,7 +436,7 @@ public final class Constants {
 
   public static final int SHOOTER_BEAM_ID = 2;
 
-  public static final int LEDSTRIP_PWM_ID = 1;
+  public static final int LEDSTRIP_PWM_ID = 9;
 
   public static final double VISION_TOLERANCE = 1.5;
 
@@ -446,6 +449,13 @@ public final class Constants {
     public static final double SHOULDER_ARM_LENGTH = 25;
     public static final double ELBOW_ARM_LENGTH = 34;
     public static final double ARM_GEAR_RATIO = 218.75;
+    public static final double shoulderP = 0.005;
+    public static final double shoulderI = 0.0;
+    public static final double shoulderD = 0.0;
+    public static final double elbowP = 0.2;
+    public static final double elbowI = 0.0;
+    public static final double elbowD = 0.0;
+    
     public static class SCOREHIGH {
       public static final double SHOULDER = 110.0;
       public static final double ELBOW = 54.0;
@@ -478,6 +488,7 @@ public final class Constants {
       public static final double SHOULDER = 0.0;
       public static final double ELBOW = 170.0;
     }
+
 
 
 

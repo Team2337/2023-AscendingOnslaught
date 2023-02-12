@@ -25,7 +25,7 @@ public class ArmJoystickCommand extends CommandBase {
     private double deltaY = 0;
     private double bottomSetpoint = 0;
     private double topSetpoint = 0;
-    private boolean shouldHoldArm = true;
+    private boolean shouldHoldArm;
     private double shoulderOffset = 0;
     private double elbowOffset = 0;
     private double mathShoulderAngle, mathElbowAngle;

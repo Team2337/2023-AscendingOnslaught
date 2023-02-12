@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.nerdyfiles.utilities.Utilities;
@@ -35,7 +36,10 @@ public class PowerDistributionHub extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("Channel Current 6", getChannelCurrent(6));
+    SmartDashboard.putNumber("Channel Current 4", getChannelCurrent(4));
+  }
 
   /**
    * @param enabled Sets the switchable channel to be enabled/disabled
