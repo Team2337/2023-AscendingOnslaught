@@ -27,9 +27,9 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
   @Override
   public void execute() {
     if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
-      color = LimelightColor.BLUE;
-    } else {
       color = LimelightColor.ORANGE;
+    } else {
+      color = LimelightColor.BLUE;
     }
 
     if (relocalizationCounter == relocalizationCounterLimit){

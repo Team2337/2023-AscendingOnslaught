@@ -276,6 +276,8 @@ public final class Constants {
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
     public static final double trajectoryTolerance = 2;
+    public static final double intakeForwardSpeed = 0.5;
+    public static final double intakeReverseSpeed = -0.5;
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -407,7 +409,7 @@ public final class Constants {
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
     //TODO: Change to 15
-    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 3;
+    public static final int VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 15;
   }
 
   public static final double MOTOR_MINIMUM_TEMP_CELSIUS = 15.0; // Used in Shuffleboard for temperature dials
@@ -446,26 +448,46 @@ public final class Constants {
   public static class Arm {
     public static final double SHOULDER_ARM_LENGTH = 26.5;
     public static final double ELBOW_ARM_LENGTH = 26.5;
+    public static final double shoulderP = 0.005;
+    public static final double shoulderI = 0.0;
+    public static final double shoulderD = 0.0;
+    public static final double elbowP = 0.2;
+    public static final double elbowI = 0.0;
+    public static final double elbowD = 0.0;
+    
     public static class SCOREHIGH {
-      public static final double SHOULDER = 130.0;
-      public static final double ELBOW = 30.0;
+      public static final double SHOULDER = 110.0;
+      public static final double ELBOW = 54.0;
     }
     public static class SUBSTATION {
-      public static final double SHOULDER = 33.0;
-      public static final double ELBOW = -10.0;
+      public static final double SHOULDER = 66.0;
+      public static final double ELBOW = -37.0;
     }
     public static class SCOREMID {
-      public static final double SHOULDER = 120.0;
-      public static final double ELBOW = 90.0;
+      public static final double SHOULDER = 59.0;
+      public static final double ELBOW = 127.0;
     }
     public static class SCORELOW {
       public static final double SHOULDER = 100.0;
       public static final double ELBOW = 145.0;
     }
+    public static class AUTOPICKUP {
+      public static final double SHOULDER = -5.0;
+      public static final double ELBOW = 9.0;
+    }
+    public static class TELESTANDINGCONE {
+      public static final double SHOULDER = 44.0;
+      public static final double ELBOW = -84.0;
+    }
+    public static class TELEFALLENCONE {
+      public static final double SHOULDER = 29.0;
+      public static final double ELBOW = -76.0;
+    }
     public static class CARRY {
       public static final double SHOULDER = 0.0;
       public static final double ELBOW = 170.0;
     }
+
 
 
 

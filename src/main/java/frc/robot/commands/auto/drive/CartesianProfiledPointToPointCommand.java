@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.drive;
 
 import java.util.function.Supplier;
 
@@ -18,7 +18,7 @@ import frc.robot.subsystems.Heading;
  * Generate movement values to drive the robot between it's current position and
  * the specified point. Depends on the robot facing the Hub.
  */
-public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
+public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
@@ -33,14 +33,11 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
   private ProfiledPIDController strafeController;
   private Supplier<Translation2d> translationSupplier;
   private Supplier<Rotation2d> rotationSupplier;
-  private Supplier<Rotation2d> pitchSupplier;
 
   private double forwardOutput = 0.0;
   private double strafeOutput = 0.0;
 
-  private boolean isElevated = false; 
-
-  public AutoEngagePP2P(
+  public CartesianProfiledPointToPointCommand(
     Translation2d target,
     Supplier<Translation2d> translationSupplier,
     Supplier<Rotation2d> rotationSupplier,
@@ -48,7 +45,6 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
     double strafeP,
     double forwardAcceleration,
     double strafeAcceleration,
-    Supplier<Rotation2d> pitchSupplier,
     AutoDrive autoDrive,
     Heading heading
   ) {
@@ -67,7 +63,6 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
     this.autoDrive = autoDrive;
     this.translationSupplier = translationSupplier;
     this.rotationSupplier = rotationSupplier;
-    this.pitchSupplier = pitchSupplier;
 
     forwardController = new ProfiledPIDController(
       driveP, 0.0, 0.0,
@@ -118,10 +113,6 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
       target.getY()
     );
 
-    if (pitchSupplier.get().getDegrees() < -10) {
-      isElevated = true;
-    }
-
     // Replaced with isFieldOriented = true on AutoDrive.State
     // rotatedForwardOutput = forwardOutput * Math.cos(currentRotation) + strafeOutput * Math.sin(currentRotation);
     // rotatedStrafeOutput = strafeOutput * Math.cos(currentRotation) - forwardOutput * Math.sin(currentRotation);
@@ -158,7 +149,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
 
   @Override
   public boolean isFinished() {
-    return (forwardController.atGoal() && strafeController.atGoal()) || (isElevated && pitchSupplier.get().getDegrees() > -8.5);
+    return forwardController.atGoal() && strafeController.atGoal();
   }
 
   private void log() {

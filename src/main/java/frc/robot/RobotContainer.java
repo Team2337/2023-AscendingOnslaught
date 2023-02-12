@@ -34,6 +34,9 @@ import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.common.DoNothingCommand;
+import frc.robot.commands.auto.drive.CartesianProfiledPointToPointCommand;
+import frc.robot.commands.auto.drive.CartesianVectorProfileToPointCommand;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
@@ -43,14 +46,17 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
+import frc.robot.commands.auto.test.vectorBlueRightMiddleToBottom;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
+import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.Elbow;
+import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
@@ -62,10 +68,11 @@ public class RobotContainer {
 
   private final AutoDrive autoDrive = new AutoDrive();
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
-  private final Vision vision = new Vision();
-  private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Elbow elbow = new Elbow();
+  private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
+  private final Intake intake = new Intake();
   private final Shoulder shoulder = new Shoulder();
+  private final Vision vision = new Vision();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -85,8 +92,7 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain,
-    // vision));
+    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () -> operatorController));
@@ -168,28 +174,8 @@ public class RobotContainer {
         .withPosition(DriverDashboardPositions.ALLIANCE.x, DriverDashboardPositions.ALLIANCE.y)
         .withSize(3, 3)
         .withProperties(Map.of("Color when true", "#ff3333", "Color when false", "#3333ff"));
-
-    /*
-     * if (Constants.DO_SYSTEMS_CHECK) {
-     * Constants.SYSTEMS_CHECK_TAB.addBoolean("Pixy Cam Connected",
-     * pixyCam::isConnected)
-     * .withPosition(SystemsCheckPositions.PIXY_CAM.x,
-     * SystemsCheckPositions.PIXY_CAM.y)
-     * .withSize(3, 3);
-     * }
-     */
   }
 
-  /*
-   * public void resetRobot() {
-   * // Other option here is Constants.STARTING_ANGLE for booting against Hub
-   * pigeon.setYaw(0, 250);
-   * drivetrain.resetPosition(
-   * new Pose2d(
-   * Constants.Auto.kStartAtZero.toFieldCoordinate(),
-   * drivetrain.getGyroscopeRotation()));
-   * }
-   */
   public void resetRobot2023() {
     // Other option here is Constants.STARTING_ANGLE for booting against Hub
     pigeon.setYaw(0, 250);
@@ -366,12 +352,12 @@ public class RobotContainer {
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
           Map.ofEntries(
-              Map.entry(CommandSelector.ONE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, this),
-              new RedConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue)),
-              Map.entry(CommandSelector.TWO,  new ConditionalCommand(new BlueConstructTeleopAutoCommand2(autoDrive, drivetrain, heading, this),
-              new RedConstructTeleopAutoCommand2(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue)),
-              Map.entry(CommandSelector.THREE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, this),
-              new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue))),
+              Map.entry(CommandSelector.ONE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand1(autoDrive, drivetrain, heading),
+              new RedConstructTeleopAutoCommand1(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)),
+              Map.entry(CommandSelector.TWO,  new ConditionalCommand(new BlueConstructTeleopAutoCommand2(autoDrive, drivetrain, heading),
+              new RedConstructTeleopAutoCommand2(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)),
+              Map.entry(CommandSelector.THREE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
+              new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
 
 
