@@ -14,8 +14,8 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3 extends SequentialCommandGroup{
-    public blueStartRightyRightScoreC1GBotScoreC2GMidScoreC3(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, Shoulder shoulder) {
+public class blueStartRightyRightScoreC9GBotScoreC8GMidScoreC7 extends SequentialCommandGroup{
+    public blueStartRightyRightScoreC9GBotScoreC8GMidScoreC7(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, Shoulder shoulder) {
         addCommands(
             new ScoreConeHigh(elbow, intake, shoulder),
             new DriveToPickupCone1(Constants.Auto.blueBottomStagingMark, autoDrive, drivetrain, elbow, heading, intake, shoulder),

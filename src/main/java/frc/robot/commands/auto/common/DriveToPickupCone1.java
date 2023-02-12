@@ -25,12 +25,12 @@ public class DriveToPickupCone1 extends ParallelCommandGroup{
                 Constants.Auto.trajectoryTolerance,
                 3.0, 
                 Units.inchesToMeters(162),
-                Units.inchesToMeters(30), 
+                Units.inchesToMeters(60), 
                 autoDrive, 
                 drivetrain,
                 heading
                 ),
-            new WaitCommand(1).andThen(new ArmAutoSetpointWait(elbow, shoulder, Constants.Arm.AUTOPICKUP.SHOULDER, Constants.Arm.AUTOPICKUP.ELBOW)),
+            new WaitCommand(1).andThen(new ArmAutoSetpointWait(elbow, shoulder, Constants.Arm.AUTOPICKUP.SHOULDER, Constants.Arm.AUTOPICKUP.ELBOW).withTimeout(2)),
             new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake).withTimeout(1.5))
         );
     }

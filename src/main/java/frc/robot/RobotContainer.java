@@ -71,8 +71,9 @@ public class RobotContainer {
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final Intake intake = new Intake();
+  private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final Shoulder shoulder = new Shoulder();
-  private final Vision vision = new Vision();
+  private final Vision vision = new Vision(this);
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -101,33 +102,34 @@ public class RobotContainer {
 
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
-    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Full Field Straight Vector", new CartesianVectorProfileToPointCommand(
-        new Translation2d(16, 0), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
-    autonChooser.addOption("Full Field Straight XY",
-        new CartesianProfiledPointToPointCommand(new Translation2d(16, 0), drivetrain::getTranslation,
-            drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
-    autonChooser.addOption("Full Field Diagonal Vector", new CartesianVectorProfileToPointCommand(
-        new Translation2d(16, 8), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
-    autonChooser.addOption("Full Field Diagonal XY",
-        new CartesianProfiledPointToPointCommand(new Translation2d(16, 8), drivetrain::getTranslation,
-            drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
-    autonChooser.addOption("Full Field Box Vector",
-        new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 0.5), drivetrain::getTranslation, 1.5,
-            Units.inchesToMeters(80), autoDrive, heading)
-            .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 7.5), drivetrain::getTranslation,
-                1.5, Units.inchesToMeters(80), autoDrive, heading))
-            .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 7.5), drivetrain::getTranslation,
-                1.5, Units.inchesToMeters(80), autoDrive, heading))
-            .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 0.5), drivetrain::getTranslation,
-                1.5, Units.inchesToMeters(80), autoDrive, heading))
-            .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15, 7), drivetrain::getTranslation, 1.5,
-                Units.inchesToMeters(80), autoDrive, heading)));
+    // autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    // autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
+    // autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
+    // autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
+    // autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
+    // autonChooser.addOption("Full Field Straight Vector", new CartesianVectorProfileToPointCommand(
+    //     new Translation2d(16, 0), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
+    // autonChooser.addOption("Full Field Straight XY",
+    //     new CartesianProfiledPointToPointCommand(new Translation2d(16, 0), drivetrain::getTranslation,
+    //         drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
+    // autonChooser.addOption("Full Field Diagonal Vector", new CartesianVectorProfileToPointCommand(
+    //     new Translation2d(16, 8), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
+    // autonChooser.addOption("Full Field Diagonal XY",
+    //     new CartesianProfiledPointToPointCommand(new Translation2d(16, 8), drivetrain::getTranslation,
+    //         drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
+    // autonChooser.addOption("Full Field Box Vector",
+    //     new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 0.5), drivetrain::getTranslation, 1.5,
+    //         Units.inchesToMeters(80), autoDrive, heading)
+    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 7.5), drivetrain::getTranslation,
+    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
+    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 7.5), drivetrain::getTranslation,
+    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
+    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 0.5), drivetrain::getTranslation,
+    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
+    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15, 7), drivetrain::getTranslation, 1.5,
+    //             Units.inchesToMeters(80), autoDrive, heading)));
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -465,6 +467,14 @@ public class RobotContainer {
 
   public boolean getDriverInput() {
     return (Math.abs(driverController.getRightX()) > 0.2) || (Math.abs(driverController.getLeftY()) > 0.2);
+  }
+
+  public double getPDHChannelRed() {
+    return powerDistributionHub.getChannelCurrent(4);
+  }
+
+  public double getPDHChannelBlue() {
+    return powerDistributionHub.getChannelCurrent(6);
   }
 
 }

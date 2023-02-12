@@ -2,14 +2,16 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.nerdyfiles.vision.LimelightUtilities;
 
@@ -93,13 +95,22 @@ public class Vision extends SubsystemBase {
   private LimelightColor color;
   private String allianceColor;
   private String botPoseColor = "botpose_wpi";
+  RobotContainer robotContainer;
+  private String pipelineAllianceColor;
 
   public int relocalizeCounter = 0;
 
-  public Vision() {
+  public Vision(RobotContainer robotContainer) {
     // Automatically switch our Limelight to our default pipeline on construction
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
+
+    //TODO: Uncomment for limelight testing
+    if (robotContainer.getPDHChannelBlue() != 0) {
+      pipelineAllianceColor = "blue";
+    } else {
+      pipelineAllianceColor = "red";
+    }
 
     // Systems check
     if (Constants.DO_SYSTEMS_CHECK) {
@@ -126,6 +137,7 @@ public class Vision extends SubsystemBase {
     }
     botPoseColor = botPoseColor + allianceColor;
     SmartDashboard.putString("Bot Pose Color", botPoseColor);
+    SmartDashboard.putString("Pipeline Alliance Color", pipelineAllianceColor);
 
     tposeB = NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry(botPoseColor).getDoubleArray(defaultPose);
     currentPipelineB = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.BLUE));
@@ -138,6 +150,12 @@ public class Vision extends SubsystemBase {
     distanceToTargetMetersB = 0.0;
     if (hasValidTargetB) {
       distanceToTargetMetersB = calculateDistanceToTargetMeters(LimelightColor.BLUE);
+    }
+
+    //TODO: Uncomment for limelight testing 
+    if (currentPipelineB == Pipeline.DEFAULT && pipelineAllianceColor == "blue") {
+      NetworkTable limelightBlue = NetworkTableInstance.getDefault().getTable("limelight-blue");
+      limelightBlue.getEntry("pipeline").setNumber(1);
     }
 
     tposeO = NetworkTableInstance.getDefault().getTable("limelight-orange").getEntry(botPoseColor).getDoubleArray(defaultPose);

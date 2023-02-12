@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 
 /**
@@ -50,6 +51,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
     double strafeAcceleration,
     Supplier<Rotation2d> pitchSupplier,
     AutoDrive autoDrive,
+    Drivetrain drivetrain,
     Heading heading
   ) {
     super(
@@ -57,7 +59,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
       translationSupplier,
       () -> false,
       () -> false,
-      null,
+      drivetrain,
       heading,
       null
     );
