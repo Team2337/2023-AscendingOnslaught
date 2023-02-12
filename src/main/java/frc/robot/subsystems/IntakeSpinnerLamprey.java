@@ -6,20 +6,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.nerdyfiles.utilities.CTREUtils;
 
 public class IntakeSpinnerLamprey extends PIDSubsystem {
     
     private TalonFX intakeSpinnerMotor = new TalonFX(50);
-    private double lampreyVoltage = RobotController.getVoltage3V3();
+    private double lampreyVoltage = 3.306;
     private double fullRange = 360 / lampreyVoltage;
     private double offset = 0;
     private Supplier<Double> voltage;
