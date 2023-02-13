@@ -73,10 +73,10 @@ public class RobotContainer {
 
   private final AutoDrive autoDrive = new AutoDrive();
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
+  private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
-  private final Intake intake = new Intake();
   private final LED led = new LED();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final Shoulder shoulder = new Shoulder();
@@ -100,7 +100,8 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-                    shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus())); //TODO: This is the override switch for the lamprey failing, please dont let that happen
+                   // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
+    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
     vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));

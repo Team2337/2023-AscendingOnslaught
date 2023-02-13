@@ -48,9 +48,9 @@ public class Intake extends SubsystemBase {
         return intakeSensor.get();
     }
 
-    // public double getIntakeSpinnerLampreyVoltage() {
-    //     return intakeSpinnerLamprey.getVoltage();
-    // }
+     public double getIntakeSpinnerLampreyVoltage() {
+         return intakeSpinnerLamprey.getVoltage();
+    }
 
     @Override
     public void periodic() {

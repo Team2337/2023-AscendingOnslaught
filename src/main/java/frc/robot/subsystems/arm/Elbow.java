@@ -16,14 +16,12 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elbow extends PIDSubsystem {
 
-  double offset = -180;
+  double offset = -188;
   // double lampreyVoltage = RobotController.getVoltage3V3();
   double lampreyVoltage = 3.306;
   double fullRange = 360 * (RobotController.getVoltage5V()/lampreyVoltage);
@@ -36,8 +34,8 @@ public class Elbow extends PIDSubsystem {
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
   double allowableError = 3;
-  private double speedlimit = 0.3;
-  private double closedLoopLimit = 0.3;
+  private double speedlimit = 0.5;
+  private double closedLoopLimit = 0.5;
   
   /** Creates a new ExampleSubsystem. */
   public Elbow() {

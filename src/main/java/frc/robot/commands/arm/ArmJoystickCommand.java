@@ -192,6 +192,12 @@ public class ArmJoystickCommand extends CommandBase {
         } else {
             // Change boolean so that if joysticks go back to zero, we will get position/set setpoint, stoping the arms movement.
             shouldHoldArm = true;    
+            if (elbowTarget > 160) {
+                elbowTarget = 160;
+            }
+            if (elbowTarget < -160) {
+                elbowTarget = -160;
+            }
 
             shoulder.setSetpoint(shoulderTarget);
             elbow.setSetpoint(elbowTarget);
