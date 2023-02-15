@@ -33,7 +33,7 @@ public class Elbow extends PIDSubsystem {
   static double elbowkP = 0.025;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
-  double allowableError = 3;
+  double allowableError = 1;
   private double speedlimit = 0.5;
   private double closedLoopLimit = 0.5;
   
