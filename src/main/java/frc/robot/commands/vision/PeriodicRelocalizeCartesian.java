@@ -47,17 +47,18 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
         return;
       }
       if (vision.getVisionPose(color).length != 0) {
-
         double visionPoseX = vision.getVisionPoseX(color);
         double visionPoseY = vision.getVisionPoseY(color);
         double visionRotation = vision.getVisionRotation(color);
-      
-        Pose2d pose = new Pose2d(
-          new Translation2d(visionPoseX, visionPoseY),
-          Rotation2d.fromDegrees(visionRotation)
-        );
 
-        drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency(color) + 2) / 1000));
+        if (visionPoseX > 0 && visionPoseY > 0) {
+          Pose2d pose = new Pose2d(
+            new Translation2d(visionPoseX, visionPoseY),
+            Rotation2d.fromDegrees(visionRotation)
+          );
+  
+          drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency(color) + 2) / 1000));
+        }
       }
       relocalizationCounter = -1;
     }
