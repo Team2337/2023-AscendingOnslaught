@@ -28,11 +28,14 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("Reading Limelight", readLimelight);
     if(drivetrain.getPose().getX() < 6) {
       color = LimelightColor.ORANGE;
+      readLimelight = true;
       SmartDashboard.putString("We are...", "orange!");
     } else if (drivetrain.getPose().getX() > 8) {
       color = LimelightColor.BLUE;
+      readLimelight = true;
       SmartDashboard.putString("We are...", "blue!");
     } else {
       readLimelight = false;

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
 
 /**
@@ -28,6 +29,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   private Translation2d target;
   private Heading heading;
   private AutoDrive autoDrive;
+  private Drivetrain drivetrain;
 
   private ProfiledPIDController forwardController;
   private ProfiledPIDController strafeController;
@@ -46,6 +48,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     double forwardAcceleration,
     double strafeAcceleration,
     AutoDrive autoDrive,
+    Drivetrain drivetrain,
     Heading heading
   ) {
     super(
@@ -53,7 +56,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
       translationSupplier,
       () -> false,
       () -> false,
-      null,
+      drivetrain,
       heading,
       null
     );
@@ -61,6 +64,7 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
     this.target = target;
     this.heading = heading;
     this.autoDrive = autoDrive;
+    this.drivetrain = drivetrain;
     this.translationSupplier = translationSupplier;
     this.rotationSupplier = rotationSupplier;
 

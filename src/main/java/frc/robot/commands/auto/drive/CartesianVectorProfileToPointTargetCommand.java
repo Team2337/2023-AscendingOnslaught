@@ -132,7 +132,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     // }
 
     // turn negative controller output (decrease distance) into positive drive forward
-    double driveOutput = -1 * driveController.calculate(
+    double driveOutput = 1 * driveController.calculate(
       distanceFromTarget,
       0 // goal = 0 distance to target
     );
