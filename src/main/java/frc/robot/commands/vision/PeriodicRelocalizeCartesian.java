@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -16,6 +17,7 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
   private int relocalizationCounterLimit = 5;
   private int relocalizationCounter = 0;
   private LimelightColor color;
+  private boolean readLimelight;
 
   public PeriodicRelocalizeCartesian(Drivetrain drivetrain, Vision vision) {
     this.vision = vision;
@@ -26,15 +28,22 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
 
   @Override
   public void execute() {
-    if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
+    SmartDashboard.putBoolean("Reading Limelight", readLimelight);
+    if(drivetrain.getPose().getX() < 6) {
       color = LimelightColor.ORANGE;
-    } else {
+      readLimelight = true;
+      SmartDashboard.putString("We are...", "orange!");
+    } else if (drivetrain.getPose().getX() > 8) {
       color = LimelightColor.BLUE;
+      readLimelight = true;
+      SmartDashboard.putString("We are...", "blue!");
+    } else {
+      readLimelight = false;
     }
-
+    
     if (relocalizationCounter == relocalizationCounterLimit){
       //TODO: When do we turn this off?
-      if (DriverStation.isAutonomous() && disableRelocalizationInAuto) {
+      if ((DriverStation.isAutonomous() && disableRelocalizationInAuto) || !readLimelight) {
         return;
       }
       if (vision.getVisionPose(color).length != 0) {

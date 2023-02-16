@@ -263,6 +263,7 @@ public class Drivetrain extends SubsystemBase {
   public void setTeleopAutoPosition(int position) {
     teleopAutoPosition = position;
     if (isAllianceBlue()) {
+      SmartDashboard.putString("Vision/We are...", "blue!");
       switch (teleopAutoPosition) {
         case 9:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
@@ -321,6 +322,7 @@ public class Drivetrain extends SubsystemBase {
           break;
       } 
     } else {
+      SmartDashboard.putString("Vision/We are...", "red!");
       switch (teleopAutoPosition) {
         case 9:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;

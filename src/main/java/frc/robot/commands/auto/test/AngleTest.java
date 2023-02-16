@@ -22,6 +22,7 @@ public class AngleTest extends SequentialCommandGroup{
                 Units.inchesToMeters(30), 
                 Units.inchesToMeters(30), 
                 autoDrive, 
+                drivetrain,
                 heading
                 )
         );

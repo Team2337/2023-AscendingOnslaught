@@ -22,6 +22,7 @@ public class blueRightMiddleToBottom extends SequentialCommandGroup{
                 Units.inchesToMeters(90), 
                 Units.inchesToMeters(90), 
                 autoDrive, 
+                drivetrain,
                 heading
                 ),
             new WaitCommand(1),
@@ -34,6 +35,7 @@ public class blueRightMiddleToBottom extends SequentialCommandGroup{
                 Units.inchesToMeters(90), 
                 Units.inchesToMeters(90), 
                 autoDrive, 
+                drivetrain,
                 heading
                 )
         );

@@ -35,6 +35,7 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
+import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.drive.CartesianProfiledPointToPointCommand;
@@ -73,10 +74,10 @@ public class RobotContainer {
 
   private final AutoDrive autoDrive = new AutoDrive();
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
+  private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
-  private final Intake intake = new Intake();
   private final LED led = new LED();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final Shoulder shoulder = new Shoulder();
@@ -100,8 +101,9 @@ public class RobotContainer {
     heading.setDefaultCommand(
         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-                    shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus())); //TODO: This is the override switch for the lamprey failing, please dont let that happen
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+                   // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
+    shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
@@ -371,17 +373,16 @@ public class RobotContainer {
           this::selectTeleopAuto));
 
 
-    triggerDriverLeft.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));
-    triggerDriverRight.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
+    
 
     // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
     // delivery, kicker));
     // driverRightBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.RED,
     // delivery, kicker));
 
-    driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
+    // driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
 
-   // driverX.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
+   driverX.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
 
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
@@ -405,10 +406,14 @@ public class RobotContainer {
     JoystickButton yellowButton = new JoystickButton(operatorStation, 8);
     JoystickButton blueButton = new JoystickButton(operatorStation, 9);
 
+    triggerOperatorLeft.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));
+    triggerOperatorRight.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
+
     operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
-    triggerOperatorRight.whileTrue(intake.RunIntake());
-    triggerOperatorLeft.whileTrue((intake.RunOuttake()));
+    // triggerOperatorRight.whileTrue(new IntakeCommand(intake));
+    // triggerOperatorLeft.whileTrue((intake.RunOuttake()));
     operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELEFALLENCONE.SHOULDER, Constants.Arm.TELEFALLENCONE.ELBOW));
+    operatorA.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELESTANDINGCONE.SHOULDER, Constants.Arm.TELESTANDINGCONE.ELBOW));
     operatorX.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
     operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
 

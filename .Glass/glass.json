@@ -1,0 +1,41 @@
+{
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "VectorProfile2P": {
+          "open": true
+        },
+        "Vision": {
+          "open": true
+        },
+        "field": {
+          "open": true
+        },
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/DRIVER DASHBOARD/Auton Chooser": "String Chooser",
+      "/Shuffleboard/DRIVER DASHBOARD/Starting Angle Chooser": "String Chooser",
+      "/Shuffleboard/DRIVER DASHBOARD/Starting Pos Chooser": "String Chooser",
+      "/SmartDashboard/AutonChooser": "String Chooser",
+      "/SmartDashboard/Scheduler": "Scheduler",
+      "/SmartDashboard/StartingAngleChooser": "String Chooser",
+      "/SmartDashboard/StartingPositionChooser": "String Chooser",
+      "/SmartDashboard/field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/field": {
+        "image": "C:\\Users\\EngiNERDS-1\\Pictures\\Capture.PNG",
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "2337"
+  }
+}
