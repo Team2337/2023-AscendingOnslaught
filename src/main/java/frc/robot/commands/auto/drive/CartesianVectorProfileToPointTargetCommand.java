@@ -1,9 +1,15 @@
 package frc.robot.commands.auto.drive;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +48,8 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   private Translation2d intermediateTarget = new Translation2d();
   private Translation2d driveVector = new Translation2d();
   private double trajectoryCutoff = 0;
+  private Trajectory m_trajectory;
+
 
   public CartesianVectorProfileToPointTargetCommand(
     Supplier<Translation2d> target,
@@ -70,6 +78,7 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     this.velocity = velocity;
     this.heading = heading;
     this.autoDrive = autoDrive;
+    this.drivetrain = drivetrain;
     this.translationSupplier = translationSupplier;
 
     driveController = new ProfiledPIDController(
@@ -97,6 +106,15 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     
     startPos = translationSupplier.get();
     driveController.reset(target.get().getDistance(startPos) - Units.inchesToMeters(1), -velocity.get());
+
+    // m_trajectory =
+    // TrajectoryGenerator.generateTrajectory(
+    //   drivetrain.getPose(),
+    //   List.of(new Translation2d(target.get().getX(), target.get().getY())),
+    //   new Pose2d(new Translation2d(target.get().getX(), target.get().getY()), Rotation2d.fromDegrees(180)),
+    //     new TrajectoryConfig(Units.inchesToMeters(160.0), Units.inchesToMeters(80.0)));
+    // // Push the trajectory to Field2d.
+    // drivetrain.field.getObject("traj").setTrajectory(m_trajectory);
 
     // field.getObject("startPos").setPose(new Pose2d(startPos, new Rotation2d(0)));
     // field.getObject("targetPos").setPose(new Pose2d(target, new Rotation2d(0)));
