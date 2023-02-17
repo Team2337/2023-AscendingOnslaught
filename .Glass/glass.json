@@ -28,6 +28,13 @@
     "windows": {
       "/SmartDashboard/field": {
         "image": "C:\\Users\\EngiNERDS-1\\Pictures\\Capture.PNG",
+        "traj": {
+          "arrowSize": 56,
+          "arrowWeight": 1.0,
+          "arrows": false,
+          "style": "Track",
+          "weight": 1.0
+        },
         "window": {
           "visible": true
         }

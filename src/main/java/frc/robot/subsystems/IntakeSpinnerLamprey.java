@@ -19,8 +19,8 @@ import frc.robot.nerdyfiles.utilities.CTREUtils;
 public class IntakeSpinnerLamprey extends PIDSubsystem {
     
     private TalonFX intakeSpinnerMotor = new TalonFX(50);
-    private double lampreyVoltage = RobotController.getVoltage3V3();
-    private double fullRange = 360 / lampreyVoltage;
+    private double lampreyVoltage = 2.26;
+    private double fullRange = 360.0 / lampreyVoltage;
     private double offset = 0;
     private Supplier<Double> voltage;
 

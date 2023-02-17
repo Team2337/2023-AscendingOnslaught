@@ -58,6 +58,7 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
      SmartDashboard.putNumber("Intake/motorTemp", getIntakeMotorTemperature());
+     SmartDashboard.putNumber("Intake/Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
      SmartDashboard.putBoolean("Intake/Beam Break", beamBreak.isPressed());
     }
 

@@ -52,11 +52,11 @@ public class ArmSetpointCommand extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        if (elbowSetpoint > 160) {
-            elbowSetpoint = 160;
+        if (elbowSetpoint > 155) {
+            elbowSetpoint = 155;
         }
-        if (elbowSetpoint < -160) {
-            elbowSetpoint = -160;
+        if (elbowSetpoint < -155) {
+            elbowSetpoint = -155;
         }
         
         shoulder.setSetpoint(shoulderSetpoint);
