@@ -5,11 +5,11 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
 import frc.robot.subsystems.arm.Intake;
 
-public class IntakeCommand extends CommandBase{
+public class OuttakeCommand extends CommandBase{
     Intake intake;
     RobotContainer robotContainer;
 
-    public IntakeCommand(Intake intake, RobotContainer robotContainer) {
+    public OuttakeCommand(Intake intake, RobotContainer robotContainer) {
         this.intake = intake;
         this.robotContainer = robotContainer;
 
@@ -23,14 +23,9 @@ public class IntakeCommand extends CommandBase{
     @Override
     public void execute() {
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
-            if (intake.hasCone() == false) {
-                intake.setIntakeSpeed(0.66);
-            }
-            else {
-                intake.setIntakeSpeed(0);
-            }    
+            intake.setIntakeSpeed(-0.66);  
         } else {
-            intake.setIntakeSpeed(-0.66);
+            intake.setIntakeSpeed(0.66);
         }
         
     }

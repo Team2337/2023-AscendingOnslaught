@@ -20,8 +20,6 @@ public class ArmAutoSetpointNoWait extends InstantCommand {
         this.shoulder = shoulder;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
-        this.elbowSetpoint = elbowSetpoint;
-        this.shoulderSetpoint = shoulderSetpoint;
         addRequirements(elbow, shoulder);
     }
 
@@ -29,8 +27,8 @@ public class ArmAutoSetpointNoWait extends InstantCommand {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.setSetpoint(armPosition.shoulder);
-        elbow.setSetpoint(armPosition.elbow);
+        shoulder.setSetpoint(armPosition.shoulderCone);
+        elbow.setSetpoint(armPosition.elbowCone);
         intakespinner.setPosition(armPosition);
     }
     
