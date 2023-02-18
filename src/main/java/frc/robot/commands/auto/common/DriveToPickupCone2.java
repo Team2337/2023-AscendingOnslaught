@@ -11,12 +11,13 @@ import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetComm
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
+import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class DriveToPickupCone2 extends SequentialCommandGroup{
-    public DriveToPickupCone2(Translation2d waypoint, Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, Shoulder shoulder) {
+    public DriveToPickupCone2(Translation2d waypoint, Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(
                 waypoint, 
@@ -43,7 +44,7 @@ public class DriveToPickupCone2 extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 ),
-                new ArmAutoSetpointWait(elbow, shoulder, Constants.Arm.AUTOPICKUP.SHOULDER, Constants.Arm.AUTOPICKUP.ELBOW),
+                new ArmAutoSetpointWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.AUTOPICKUP),
                 new IntakeForwardAuto(intake).withTimeout(1.5)
             )
     

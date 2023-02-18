@@ -1,19 +1,13 @@
 package frc.robot.commands.auto.drive;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotContainer;
+import frc.robot.Constants;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
@@ -48,7 +42,6 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   private Translation2d intermediateTarget = new Translation2d();
   private Translation2d driveVector = new Translation2d();
   private double trajectoryCutoff = 0;
-  private Trajectory m_trajectory;
 
 
   public CartesianVectorProfileToPointTargetCommand(
@@ -106,23 +99,6 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
     
     startPos = translationSupplier.get();
     driveController.reset(target.get().getDistance(startPos) - Units.inchesToMeters(1), -velocity.get());
-
-    // m_trajectory =
-    // TrajectoryGenerator.generateTrajectory(
-    //   drivetrain.getPose(),
-    //   List.of(new Translation2d(target.get().getX(), target.get().getY())),
-    //   new Pose2d(new Translation2d(target.get().getX(), target.get().getY()), Rotation2d.fromDegrees(180)),
-    //     new TrajectoryConfig(Units.inchesToMeters(160.0), Units.inchesToMeters(80.0)));
-    // // Push the trajectory to Field2d.
-    // drivetrain.field.getObject("traj").setTrajectory(m_trajectory);
-
-    // field.getObject("startPos").setPose(new Pose2d(startPos, new Rotation2d(0)));
-    // field.getObject("targetPos").setPose(new Pose2d(target, new Rotation2d(0)));
-    // intTargetPlot = field.getObject("intTargetPos");
-    // intRobotPlot = field.getObject("intRobotPos");
-    // intTargetPlotPoses = new ArrayList<>(intTargetPlot.getPoses());
-    // intRobotPlotPoses = new ArrayList<>(intRobotPlot.getPoses());
-    // posePlotCounter = posePlotFrequencyMS;
   }
 
   @Override
@@ -194,24 +170,23 @@ public class CartesianVectorProfileToPointTargetCommand extends CartesianHeading
   }
 
   private void log() {
-    SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.get().getX()));
-    SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.get().getY()));
-    SmartDashboard.putNumber("VectorProfile2P/Target Angle (deg)", target.get().minus(translationSupplier.get()).getAngle().getDegrees());
-    SmartDashboard.putNumber("VectorProfile2P/Target Dist (in)", Units.metersToInches(translationSupplier.get().getDistance(target.get())));
-
-    SmartDashboard.putNumber("VectorProfile2P/Int Target X (in)", Units.metersToInches(intermediateTarget.getX()));
-    SmartDashboard.putNumber("VectorProfile2P/Int Target Y (in)", Units.metersToInches(intermediateTarget.getY()));
-    SmartDashboard.putNumber("VectorProfile2P/Int Target Angle (deg)", driveVector.getAngle().getDegrees());
-
-    SmartDashboard.putNumber("VectorProfile2P/Robot X (in)", Units.metersToInches(translationSupplier.get().getX()));
-    SmartDashboard.putNumber("VectorProfile2P/Robot Y (in)", Units.metersToInches(translationSupplier.get().getY()));
-
-    SmartDashboard.putNumber("VectorProfile2P/Controller Error", driveController.getPositionError());
-    SmartDashboard.putBoolean("VectorProfile2P/Controller At Goal", driveController.atGoal());
-    
-    SmartDashboard.putNumber("VectorProfile2P/Output Drive", driveVector.getNorm());
-    SmartDashboard.putNumber("VectorProfile2P/Output Forward", driveVector.getX());
-    SmartDashboard.putNumber("VectorProfile2P/Output Strafe", driveVector.getY());
+    if (Constants.DashboardLogging.AUTO) {
+      SmartDashboard.putNumber("VectorProfile2P/Target X (in)", Units.metersToInches(target.get().getX()));
+      SmartDashboard.putNumber("VectorProfile2P/Target Y (in)", Units.metersToInches(target.get().getY()));
+      SmartDashboard.putNumber("VectorProfile2P/Target Angle (deg)", target.get().minus(translationSupplier.get()).getAngle().getDegrees());
+      SmartDashboard.putNumber("VectorProfile2P/Target Dist (in)", Units.metersToInches(translationSupplier.get().getDistance(target.get())));
+  
+      SmartDashboard.putNumber("VectorProfile2P/Robot X (in)", Units.metersToInches(translationSupplier.get().getX()));
+      SmartDashboard.putNumber("VectorProfile2P/Robot Y (in)", Units.metersToInches(translationSupplier.get().getY()));
+  
+      SmartDashboard.putNumber("VectorProfile2P/Controller Error", driveController.getPositionError());
+      SmartDashboard.putBoolean("VectorProfile2P/Controller At Goal", driveController.atGoal());
+      
+      SmartDashboard.putNumber("VectorProfile2P/Output Drive", driveVector.getNorm());
+      SmartDashboard.putNumber("VectorProfile2P/Output Forward", driveVector.getX());
+      SmartDashboard.putNumber("VectorProfile2P/Output Strafe", driveVector.getY());
+    }
+   
   }
 
 }

@@ -399,6 +399,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    log();
     pigeon.getYawPitchRoll(ypr_deg);
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND);
@@ -435,21 +436,27 @@ public class Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
     */
-    SmartDashboard.putNumber("Pose X", Units.metersToInches(pose.getX()));
-    SmartDashboard.putNumber("Pose Y", Units.metersToInches(pose.getY()));
-    SmartDashboard.putNumber("Pose Rotation", pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Gyro", getGyroscopeRotation().getDegrees());
-    SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
-    SmartDashboard.putNumber("Pitch", getGyroscopePitch().getDegrees());
-    SmartDashboard.putNumber("Accelerometer X", accelerometer.getX());
-    SmartDashboard.putNumber("Accelerometer Y", accelerometer.getY());
-    SmartDashboard.putNumber("Accelerometer Z", accelerometer.getZ());
-    SmartDashboard.putNumber("Teleop Auto Position", getTeleopAutoPosition());
-    SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
-    SmartDashboard.putNumber("Module 1", Units.metersToInches(modules[1].getPosition().distanceMeters));
-    SmartDashboard.putNumber("Module 2", Units.metersToInches(modules[2].getPosition().distanceMeters));
-    SmartDashboard.putNumber("Module 3", Units.metersToInches(modules[3].getPosition().distanceMeters));
+    
 
+  }
+
+  public void log() {
+    if (Constants.DashboardLogging.DRIVETRAIN) {
+      SmartDashboard.putNumber("Pose X", Units.metersToInches(pose.getX()));
+      SmartDashboard.putNumber("Pose Y", Units.metersToInches(pose.getY()));
+      SmartDashboard.putNumber("Pose Rotation", pose.getRotation().getDegrees());
+      SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
+      SmartDashboard.putNumber("Pitch", getGyroscopePitch().getDegrees());
+      SmartDashboard.putNumber("Accelerometer X", accelerometer.getX());
+      SmartDashboard.putNumber("Accelerometer Y", accelerometer.getY());
+      SmartDashboard.putNumber("Accelerometer Z", accelerometer.getZ());
+      SmartDashboard.putNumber("Module 0", Units.metersToInches(modules[0].getPosition().distanceMeters));
+      SmartDashboard.putNumber("Module 1", Units.metersToInches(modules[1].getPosition().distanceMeters));
+      SmartDashboard.putNumber("Module 2", Units.metersToInches(modules[2].getPosition().distanceMeters));
+      SmartDashboard.putNumber("Module 3", Units.metersToInches(modules[3].getPosition().distanceMeters));
+    }
+    SmartDashboard.putNumber("Startup/Gyro", getGyroscopeRotation().getDegrees());
+    SmartDashboard.putNumber("Startup/Teleop Auto Position", getTeleopAutoPosition());
   }
 
 }

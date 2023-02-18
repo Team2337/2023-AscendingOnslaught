@@ -6,35 +6,35 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.nerdyfiles.utilities.CTREUtils;
 
 public class IntakeSpinnerLamprey extends PIDSubsystem {
     
     private TalonFX intakeSpinnerMotor = new TalonFX(50);
-    private double lampreyVoltage = RobotController.getVoltage3V3();
-    private double fullRange = 360 / lampreyVoltage;
+    private double lampreyVoltage = 2.26;
+    private double fullRange = 360.0 / lampreyVoltage;
     private double offset = 0;
     private Supplier<Double> voltage;
+    private Supplier<GamePiece> gamePiece;
 
     private double peakOutput = 0.1;
     private double tolerance = 1;
     private static double kP = 0.1;
     private static double kI = 0;
     private static double kD = 0;
-    private double setpoint = 0;
 
-    public IntakeSpinnerLamprey(Supplier<Double> voltage) {
+    public IntakeSpinnerLamprey(Supplier<Double> voltage, Supplier<GamePiece> gamePiece) {
         super(new PIDController(kP, kI, kD));
         getController().setTolerance(tolerance);
-        this.voltage = voltage; 
+        this.voltage = voltage;
+        this.gamePiece = gamePiece;
 
         intakeSpinnerMotor.configFactoryDefault();
         intakeSpinnerMotor.configForwardSoftLimitThreshold(0);
@@ -61,10 +61,25 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
     }
+    public double getSetpoint() {
+        return m_controller.getSetpoint();
+    }
 
     public void setIntakeSpinnerMotorSpeed(double speed) {       
         intakeSpinnerMotor.set(ControlMode.PercentOutput, speed);
     }   
+
+    public void setPosition(ArmPosition armPosition) {
+        double setpoint;
+        if (gamePiece.get() == GamePiece.Cone) {
+            setpoint = armPosition.cone;
+        }
+        else {
+            setpoint = armPosition.cube;
+
+        }
+        setSetpoint(setpoint);
+    }
    
     public double getTemperature() {
         return intakeSpinnerMotor.getTemperature();
@@ -77,8 +92,14 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        SmartDashboard.putNumber("encoder degrees", getEncoderDegrees());
+        log();
     }
 
+    public void log() {
+        if (Constants.DashboardLogging.INTAKESPINNER) {
+            SmartDashboard.putNumber("Arm/ Wrist Setpoint", getSetpoint());
+        }
+        SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
+    }
   
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.nerdyfiles.swerve.configuration.ModuleConfiguration;
 import frc.robot.nerdyfiles.utilities.CTREUtils;
 
@@ -166,13 +167,16 @@ public class FXSwerveModule {
   }
 
   public void logDebug() {
-    String prefix = "Swerve/" + moduleNumber + "/";
-    SmartDashboard.putNumber(prefix + "Angle Position (Degrees)", canCoder.getPosition());
-    SmartDashboard.putNumber(prefix + "Angle Absolute Position (Degrees)", canCoder.getAbsolutePosition());
-    SmartDashboard.putNumber(prefix + "Velocity (ft per s)", Units.metersToFeet(getVelocity()));
-    SmartDashboard.putNumber(prefix + "Drive Motor Temperature (C)", getDriveMotorTemperature());
-    SmartDashboard.putNumber(prefix + "Angle Motor Temperature (C)", getAngleMotorTemperature());
-    SmartDashboard.putNumber(prefix + "Angle Motor Error", angleMotor.getClosedLoopError());
+    if (Constants.DashboardLogging.SWERVE) {
+      String prefix = "Swerve/" + moduleNumber + "/";
+      SmartDashboard.putNumber(prefix + "Angle Position (Degrees)", canCoder.getPosition());
+      SmartDashboard.putNumber(prefix + "Angle Absolute Position (Degrees)", canCoder.getAbsolutePosition());
+      SmartDashboard.putNumber(prefix + "Velocity (ft per s)", Units.metersToFeet(getVelocity()));
+      SmartDashboard.putNumber(prefix + "Drive Motor Temperature (C)", getDriveMotorTemperature());
+      SmartDashboard.putNumber(prefix + "Angle Motor Temperature (C)", getAngleMotorTemperature());
+      SmartDashboard.putNumber(prefix + "Angle Motor Error", angleMotor.getClosedLoopError());
+    }
+   
   }
 
 }

@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shoulder extends PIDSubsystem {
@@ -43,11 +41,6 @@ public class Shoulder extends PIDSubsystem {
   public Shoulder() {
     super(new PIDController(shoulderkP, shoulderkI, shoulderkD));
     getController().setTolerance(allowableError);
-
-
-
-
-
 
     shoulderMotor.configFactoryDefault();
     shoulderMotor.config_kP(0, shoulderkP);
@@ -105,8 +98,6 @@ public class Shoulder extends PIDSubsystem {
   public double getShoulderPositionTicks() {
     return shoulderMotor.getSelectedSensorPosition();
   }
-
-  
 
     /**
    * Converts given ticks to radians.
@@ -167,8 +158,7 @@ public void periodic() {
 }
 
   public void log() {
-    if (Constants.DashboardLogging.ARM) {
-      SmartDashboard.putNumber("Arm/Shoulder Encoder Position (degrees)", getShoulderLampreyDegrees());
+    if (Constants.DashboardLogging.SHOULDER) {
       SmartDashboard.putNumber("Arm/Shoulder Lamprey Voltage", shoulderLamprey.getVoltage());
       SmartDashboard.putNumber("Arm/System Voltage 5", RobotController.getCurrent5V());
       SmartDashboard.putNumber("Arm/System Voltage 3", RobotController.getCurrent3V3());
@@ -179,6 +169,7 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
       //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
     }
+    SmartDashboard.putNumber("Arm/Shoulder Encoder Degrees", getShoulderLampreyDegrees());
   }
 
   

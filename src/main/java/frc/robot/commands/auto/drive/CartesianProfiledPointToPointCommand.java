@@ -8,7 +8,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.interfaces.AutoDrivableCommand;
 import frc.robot.subsystems.AutoDrive;
@@ -157,21 +159,22 @@ public class CartesianProfiledPointToPointCommand extends CartesianHeadingToTarg
   }
 
   private void log() {
-    
-    SmartDashboard.putNumber("ProfiledP2P/Target Forward (inches)", Units.metersToInches(target.getX()));
-    SmartDashboard.putNumber("ProfiledP2P/Target Strafe (inches)", Units.metersToInches(target.getY()));
-
-    SmartDashboard.putNumber("ProfiledP2P/Robot Forward X (inches)", Units.metersToInches(translationSupplier.get().getX()));
-    SmartDashboard.putNumber("ProfiledP2P/Robot Strafe Y (inches)", Units.metersToInches(translationSupplier.get().getY()));
-
-    SmartDashboard.putNumber("ProfiledP2P/Forward Output", forwardOutput);
-    SmartDashboard.putNumber("ProfiledP2P/Strafe Output", strafeOutput);
-
-    SmartDashboard.putNumber("ProfiledP2P/Forward Error (inches)", Units.metersToInches(forwardController.getPositionError()));
-    SmartDashboard.putNumber("ProfiledP2P/Strafe Error (inches)", Units.metersToInches(strafeController.getPositionError()));
-
-    SmartDashboard.putBoolean("ProfiledP2P/forwardController atGoal", forwardController.atGoal());
-    SmartDashboard.putBoolean("ProfiledP2P/strafeController atGoal", strafeController.atGoal());
+    if (Constants.DashboardLogging.AUTO) {
+      SmartDashboard.putNumber("ProfiledP2P/Target Forward (inches)", Units.metersToInches(target.getX()));
+      SmartDashboard.putNumber("ProfiledP2P/Target Strafe (inches)", Units.metersToInches(target.getY()));
+  
+      SmartDashboard.putNumber("ProfiledP2P/Robot Forward X (inches)", Units.metersToInches(translationSupplier.get().getX()));
+      SmartDashboard.putNumber("ProfiledP2P/Robot Strafe Y (inches)", Units.metersToInches(translationSupplier.get().getY()));
+  
+      SmartDashboard.putNumber("ProfiledP2P/Forward Output", forwardOutput);
+      SmartDashboard.putNumber("ProfiledP2P/Strafe Output", strafeOutput);
+  
+      SmartDashboard.putNumber("ProfiledP2P/Forward Error (inches)", Units.metersToInches(forwardController.getPositionError()));
+      SmartDashboard.putNumber("ProfiledP2P/Strafe Error (inches)", Units.metersToInches(strafeController.getPositionError()));
+  
+      SmartDashboard.putBoolean("ProfiledP2P/forwardController atGoal", forwardController.atGoal());
+      SmartDashboard.putBoolean("ProfiledP2P/strafeController atGoal", strafeController.atGoal());
+    }
     
   }
 

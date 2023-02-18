@@ -104,14 +104,8 @@ public class Vision extends SubsystemBase {
     // Automatically switch our Limelight to our default pipeline on construction
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
-
-    //TODO: Uncomment for limelight testing
-    if (robotContainer.getPDHChannelBlue() != 0) {
-      pipelineAllianceColor = "blue";
-    } else {
-      pipelineAllianceColor = "red";
-    }
-
+    //TODO: Fix this  
+    pipelineAllianceColor = "red";
     // Systems check
     if (Constants.DO_SYSTEMS_CHECK) {
       ShuffleboardTab systemsCheck = Constants.SYSTEMS_CHECK_TAB;
