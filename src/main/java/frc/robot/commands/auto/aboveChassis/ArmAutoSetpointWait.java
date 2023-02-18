@@ -27,8 +27,8 @@ public class ArmAutoSetpointWait extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.setSetpoint(armPosition.shoulder);
-        elbow.setSetpoint(armPosition.elbow);
+        shoulder.setSetpoint(armPosition.shoulderCone);
+        elbow.setSetpoint(armPosition.elbowCone);
         intakespinner.setPosition(armPosition);
     }
 

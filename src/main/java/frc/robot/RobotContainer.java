@@ -36,6 +36,7 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.intake.IntakeCommand;
+import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.drive.CartesianProfiledPointToPointCommand;
@@ -398,24 +399,24 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(intake));
-    triggerOperatorLeft.whileTrue((intake.RunOuttake()));
-    operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SUBSTATION));
-    operatorLeftBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY));
+    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this));
+    triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
+    operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
+    operatorLeftBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this));
 
-    operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH));
-    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID));
-    operatorA.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCORELOW));
+    operatorY.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this));
+    operatorB.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this));
+    operatorA.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this));
  
-    operatorStart.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELEFALLINGCONE));
-    operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE));
+    operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
+    operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
     operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
     operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
+    
+    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
+    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
 
-    //operatorB.whileTrue(new IntakeSpinnerJoystick(intakespinner, operatorController));
-    //operatorB.whileTrue(new InstantCommand(()->intakespinner.setIntakeSpinnerMotorSpeed(0.5),intakespinner));
-    //operatorX.whileTrue(new IntakeSpinnerSetPoint(intakespinner, 90));
     operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
@@ -423,8 +424,6 @@ public class RobotContainer {
     JoystickButton yellowButton = new JoystickButton(operatorStation, 10);
     JoystickButton purpleButton = new JoystickButton(operatorStation, 11);
 
-    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
-    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
   }
 
 

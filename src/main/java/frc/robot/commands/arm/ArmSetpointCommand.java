@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
@@ -20,6 +22,7 @@ public class ArmSetpointCommand extends CommandBase {
     Shoulder shoulder;
     IntakeSpinnerLamprey intakespinner;
     Supplier<CommandXboxController> joystick;
+    RobotContainer robotContainer;
 
     double shoulderP = 0.005;
     double shoulderI = 0;
@@ -42,13 +45,12 @@ public class ArmSetpointCommand extends CommandBase {
     ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
 
 
-    public ArmSetpointCommand(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+    public ArmSetpointCommand(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
         this.shoulder = shoulder;
+        this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
-        this.elbowSetpoint = elbowSetpoint;
         this.armPosition = armPosition;
-        this.shoulderSetpoint = shoulderSetpoint;
         addRequirements(elbow, shoulder);
 
     }
@@ -56,17 +58,32 @@ public class ArmSetpointCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        double elbowSetpoint = armPosition.elbow;
-        shoulder.enable();
-        elbow.enable();
-        if (armPosition.elbow > 155) {
-            elbowSetpoint = 155;
-        }
-        if (armPosition.elbow < -155) {
-            elbowSetpoint = -155;
+        if (robotContainer.getGamepiece() == GamePiece.Cone) {
+            elbowSetpoint = armPosition.elbowCone;
+            shoulder.enable();
+            elbow.enable();
+            if (armPosition.elbowCone > 155) {
+                elbowSetpoint = 155;
+            }
+            if (armPosition.elbowCone < -155) {
+                elbowSetpoint = -155;
+            }
+            shoulderSetpoint = armPosition.shoulderCone;
+        } else {
+            elbowSetpoint = armPosition.elbowCube;
+            shoulder.enable();
+            elbow.enable();
+            if (armPosition.elbowCube > 155) {
+                elbowSetpoint = 155;
+            }
+            if (armPosition.elbowCube < -155) {
+                elbowSetpoint = -155;
+            }
+            shoulderSetpoint = armPosition.shoulderCube;
         }
         
-        shoulder.setSetpoint(armPosition.shoulder);
+        
+        shoulder.setSetpoint(shoulderSetpoint);
         elbow.setSetpoint(elbowSetpoint);
         intakespinner.setPosition(armPosition);
     }

@@ -462,26 +462,30 @@ public final class Constants {
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
     public enum ArmPosition {
-      SCOREHIGH(110.0,54.0,35.0,25.0),
-      SUBSTATION(66.0,-37.0,35.0,25.0),
-      SCOREMID(59.0,127.0,35.0,25.0),
-      SCORELOW(100.0,145.0,35.0,25.0),
-      AUTOPICKUP(-5.0,9.0,35.0,25.0),
-      TELESTANDINGCONE(35.0,-72.0,35.0,25.0),
-      TELEFALLINGCONE(29.0,-76.0,35.0,25.0),
-      CARRY(-21.0,155.0,35.0,25.0);
+      SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
+      SCOREMID(59.0,127.0,110.0,90.0,165.0,23.0),
+      SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
+      SUBSTATION(66.0,-44.0,66.0,-61.0,255.0,114.0),
+      AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
+      TELESTANDINGCONE(35.0,-72.0,35.0,-72.0,194.0,75.0),
+      TELEFALLINGCONE(29.0,-76.0,29.0,-76.0,130.0,75.0),
+      CARRY(-21.0,155.0,-21.0,155.0,35.0,25.0);
       
 
-      public final double shoulder;
-      public final double elbow;
-      public final double cone;
-      public final double cube;
+      public final double shoulderCone;
+      public final double shoulderCube;
+      public final double elbowCone;
+      public final double elbowCube;
+      public final double wristCone;
+      public final double wristCube;
 
-      ArmPosition(double shoulder, double elbow, double cone, double cube) {
-        this.shoulder = shoulder;
-        this.elbow = elbow;
-        this.cone = cone;
-        this.cube = cube;
+      ArmPosition(double shoulderCone, double elbowCone, double shoulderCube, double elbowCube, double wristCone, double wristCube) {
+        this.shoulderCone = shoulderCone;
+        this.shoulderCube = shoulderCube;
+        this.elbowCone = elbowCone;
+        this.elbowCube = elbowCube;
+        this.wristCone = wristCone;
+        this.wristCube = wristCube;
       }
     }
 

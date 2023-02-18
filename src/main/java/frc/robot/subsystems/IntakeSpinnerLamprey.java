@@ -72,10 +72,10 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public void setPosition(ArmPosition armPosition) {
         double setpoint;
         if (gamePiece.get() == GamePiece.Cone) {
-            setpoint = armPosition.cone;
+            setpoint = armPosition.wristCone;
         }
         else {
-            setpoint = armPosition.cube;
+            setpoint = armPosition.wristCube;
 
         }
         setSetpoint(setpoint);
