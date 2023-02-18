@@ -6,13 +6,11 @@ import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
-
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
     
@@ -57,9 +55,15 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-     SmartDashboard.putNumber("Intake/motorTemp", getIntakeMotorTemperature());
-     SmartDashboard.putNumber("Intake/Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
-     SmartDashboard.putBoolean("Intake/Beam Break", beamBreak.isPressed());
+        log();
+    }
+
+    public void log() {
+        if (Constants.DashboardLogging.INTAKE) {
+            SmartDashboard.putNumber("Arm/Intake motorTemp", getIntakeMotorTemperature());
+            SmartDashboard.putNumber("Arm/Intake Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
+        }
+        SmartDashboard.putBoolean("Arm/Intake Beam Break", beamBreak.isPressed());
     }
 
 }

@@ -1,8 +1,10 @@
 package frc.robot.commands.LED;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.GamePiece;
 import frc.robot.nerdyfiles.leds.LED;
 
 public class LEDRunnable extends CommandBase{
@@ -17,10 +19,16 @@ public class LEDRunnable extends CommandBase{
   }
   @Override
   public void execute() {
-    if (robotContainer.getPDHChannelBlue() != 0) {
-        led.setColor(Color.kBlue);
-    } else {
-        led.setColor(Color.kRed);
+    // if (robotContainer.getPDHChannelBlue() != 0) {
+    //     led.setColor(Color.kBlue);
+    // } else {
+    //     led.setColor(Color.kRed);
+    // }
+    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cone) {
+      led.setColor(Color.kYellow);
+    }
+    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cube) {
+      led.setColor(Color.kPurple);
     }
     // if (robotContainer.getYellowSwitchStatus() && robotContainer.getGyroscopeRoll() < Constants.CLIMBER_ROLL) {
     //   led.setColor(Color.kPurple);

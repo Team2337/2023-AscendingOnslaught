@@ -67,7 +67,6 @@ public class Elbow extends PIDSubsystem {
   @Override
   protected void useOutput(double output, double setpoint) {
     setElbowSpeed(output);
-    SmartDashboard.putNumber("Arm K/ Elbow Output", output);
   }
 
   @Override
@@ -128,10 +127,6 @@ public class Elbow extends PIDSubsystem {
     elbowMotor.set(ControlMode.Position, ticks);
   }
 
-
-
-
-
   public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
     return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
   }
@@ -144,16 +139,17 @@ public class Elbow extends PIDSubsystem {
 
 
   public void log() {
-    if (Constants.DashboardLogging.ARM) {
-      SmartDashboard.putNumber("Arm/Elbow Encoder Position (degrees)", getElbowLampreyDegrees());
+    if (Constants.DashboardLogging.ELBOW) {
       SmartDashboard.putNumber("Arm/Elbow Lamprey Voltage", elbowLamprey.getVoltage());
       //SmartDashboard.putNumber("Arm/Theoretical Elbow Motor Angle Via Encoder", convertTicksToRadians(getElbowPositionTicks()));
       SmartDashboard.putNumber("Arm/Elbow Motor Encoder Ticks", getElbowPositionTicks());
       //SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
+      // SmartDashboard.putNumber("Arm K/ Elbow Output", output);
       //SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
       //SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
     }
+    SmartDashboard.putNumber("Arm/Elbow Encoder Degrees", getElbowLampreyDegrees());
   }
 
   

@@ -59,16 +59,17 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
-    public static final boolean CLIMBER = false;
-    public static final boolean DELIVERY = false;
+    public static final boolean ARM = false;
+    public static final boolean AUTO = false;
+    public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
-    public static final boolean KICKER = false;
+    public static final boolean INTAKESPINNER = false;
     public static final boolean PDH = false;
-    public static final boolean SHOOTER = false;
-    public static final boolean VISION = true;
+    public static final boolean SHOULDER = false;
+    public static final boolean SWERVE = false;
+    public static final boolean VISION = false;
   }
 
   // Driver dashboard
@@ -134,7 +135,8 @@ public final class Constants {
 
   public Constants() {
     RobotType.Type robotType = RobotType.getRobotType();
-    SmartDashboard.putString("Constants Robot Type", robotType.description);
+    SmartDashboard.putString("Startup/Mac-Address", RobotType.getMACAddress());
+    SmartDashboard.putString("Startup/Robot Type", robotType.description);
     switch (robotType) {
       case SKILLSBOT:
         SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK3_STANDARD;
@@ -459,46 +461,31 @@ public final class Constants {
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
-    
-    public static class SCOREHIGH {
-      public static final double SHOULDER = 110.0;
-      public static final double ELBOW = 54.0;
-    }
-    public static class SUBSTATION {
-      public static final double SHOULDER = 66.0;
-      public static final double ELBOW = -37.0;
-    }
-    public static class SCOREMID {
-      public static final double SHOULDER = 59.0;
-      public static final double ELBOW = 127.0;
-    }
-    public static class SCORELOW {
-      public static final double SHOULDER = 100.0;
-      public static final double ELBOW = 145.0;
-    }
-    public static class AUTOPICKUP {
-      public static final double SHOULDER = -5.0;
-      public static final double ELBOW = 9.0;
-    }
-    public static class TELESTANDINGCONE {
-      public static final double SHOULDER = 35.0;
-      public static final double ELBOW = -72.0;
-    }
-    public static class TELEFALLENCONE {
-      public static final double SHOULDER = 29.0;
-      public static final double ELBOW = -76.0;
-    }
-    public static class CARRY {
-      public static final double SHOULDER = -21.0;
-      public static final double ELBOW = 155.0;
-    }
+    public enum ArmPosition {
+      SCOREHIGH(110.0,54.0,35.0,25.0),
+      SUBSTATION(66.0,-37.0,35.0,25.0),
+      SCOREMID(59.0,127.0,35.0,25.0),
+      SCORELOW(100.0,145.0,35.0,25.0),
+      AUTOPICKUP(-5.0,9.0,35.0,25.0),
+      TELESTANDINGCONE(35.0,-72.0,35.0,25.0),
+      TELEFALLINGCONE(29.0,-76.0,35.0,25.0),
+      CARRY(-21.0,155.0,35.0,25.0);
+      
 
+      public final double shoulder;
+      public final double elbow;
+      public final double cone;
+      public final double cube;
 
-
-
+      ArmPosition(double shoulder, double elbow, double cone, double cube) {
+        this.shoulder = shoulder;
+        this.elbow = elbow;
+        this.cone = cone;
+        this.cube = cube;
+      }
+    }
 
   }
-  
 /**
  * Based on a 75:1 Gear Ratio
  */
@@ -507,16 +494,22 @@ public final class Constants {
   public static final double ELBOW_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//-54.0);
   public static final double SHOULDER_OFFSET_FOR_PREMADE_SETPOINTS_IN_TICKS = (TICKS_PER_DEGREES * 90.0);//115.0);
 
-  public static enum BallColor {
+  public static enum GamePiece {
+    Cone,
+    Cube,
+    Nothing;
+  }
+
+  public static enum AllianceColor {
     Red,
     Blue,
     UNKNOWN;
 
-    public static BallColor getAllianceColor() {
+    public static AllianceColor getAllianceColor() {
       // If we're blue, return blue. Otherwise default to red (if red or invalid).
       return DriverStation.getAlliance() == Alliance.Blue ? Blue : Red;
     }
-    public static BallColor getOpposingColor() {
+    public static AllianceColor getOpposingColor() {
       // The inverse of getAllianceColor
       return DriverStation.getAlliance() == Alliance.Blue ? Red : Blue;
     }

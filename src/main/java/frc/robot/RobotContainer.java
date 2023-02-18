@@ -27,12 +27,12 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.BallColor;
+import frc.robot.Constants.AllianceColor;
 import frc.robot.Constants.DriverDashboardPositions;
+import frc.robot.Constants.GamePiece;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.LED.LEDRunnable;
 import frc.robot.commands.arm.ArmBasicJoystickCommand;
-import frc.robot.commands.arm.ArmDemoCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.intake.IntakeCommand;
@@ -49,7 +49,7 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
-import frc.robot.commands.intakeSpinner.IntakeSpinnerJoystick;
+import frc.robot.commands.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.intakeSpinner.IntakeSpinnerSetPoint;
 import frc.robot.commands.auto.test.vectorBlueRightMiddleToBottom;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
@@ -66,6 +66,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
+  private  GamePiece gamePiece = GamePiece.Nothing;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
@@ -75,13 +76,15 @@ public class RobotContainer {
   private final AutoDrive autoDrive = new AutoDrive();
   private final Drivetrain drivetrain = new Drivetrain(pigeon);
   private final Intake intake = new Intake();
-  private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
+  private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage, this::getGamepiece);
   private final Elbow elbow = new Elbow();
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
-  private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
+  // private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
+  private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
   private final Vision vision = new Vision(this);
+ 
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();
@@ -139,7 +142,7 @@ public class RobotContainer {
     //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15, 7), drivetrain::getTranslation, 1.5,
     //             Units.inchesToMeters(80), autoDrive, heading)));
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -182,7 +185,7 @@ public class RobotContainer {
             DriverDashboardPositions.STARTING_ANGLE_CHOOSER.height);
 
     // Put alliance on driver dashboard
-    Constants.DRIVER_DASHBOARD.addBoolean("Alliance", () -> BallColor.getAllianceColor() == BallColor.Red)
+    Constants.DRIVER_DASHBOARD.addBoolean("Alliance", () -> AllianceColor.getAllianceColor() == AllianceColor.Red)
         .withPosition(DriverDashboardPositions.ALLIANCE.x, DriverDashboardPositions.ALLIANCE.y)
         .withSize(3, 3)
         .withProperties(Map.of("Color when true", "#ff3333", "Color when false", "#3333ff"));
@@ -339,7 +342,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    SmartDashboard.putData(CommandScheduler.getInstance());
+    // SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
     // SwerveDriveCommand to turn on/off field orientation
@@ -352,14 +355,11 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-
-    driverStart.onTrue(new MaintainHeadingCommand(0, heading));
-    // driverA.whileTrue(
-    // new ConditionalCommand(new ConditionalCommand(new BlueConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, this),
-    // new RedConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue), 
-    // new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, this),
-    //     new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, this), drivetrain::isAllianceBlue), 
-    // triggerDriverLeft));
+    JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
+    
+    triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
+    triggerDriverLeft.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
 
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
@@ -372,18 +372,13 @@ public class RobotContainer {
               new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
 
-
+    driverLeftBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)).andThen(
+      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
+      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
+    driverRightBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(11)).andThen( 
+      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
+      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
     
-
-    // driverLeftBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.BLUE,
-    // delivery, kicker));
-    // driverRightBumper.whenPressed(new PrepareShooterCommandGroup(BallColor.RED,
-    // delivery, kicker));
-
-    // driverBack.whenPressed(new InstantRelocalizeCommand(drivetrain, vision));
-
-   driverX.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
-
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
 
@@ -393,49 +388,54 @@ public class RobotContainer {
     JoystickButton operatorY = new JoystickButton(operatorController, XboxController.Button.kY.value);
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
-    JoystickButton operatorRightBumper = new JoystickButton(operatorController,
-        XboxController.Button.kRightBumper.value);
+    JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
+    JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
-
-    // Operator left bumper used for vision tracking by default commands.
-    // Operator right bumper below in the configureButtonBindingsTeleop() method.
+    Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
+    Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
-    JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
-    JoystickButton yellowButton = new JoystickButton(operatorStation, 8);
-    JoystickButton blueButton = new JoystickButton(operatorStation, 9);
-
-    triggerOperatorLeft.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)));
-    triggerOperatorRight.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(7)));
-
-    operatorRightStick.whileHeld(new LimelightHeadingAndInstantRelocalizeCommand(drivetrain, heading, vision));
-    // triggerOperatorRight.whileTrue(new IntakeCommand(intake));
-    // triggerOperatorLeft.whileTrue((intake.RunOuttake()));
-    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELEFALLENCONE.SHOULDER, Constants.Arm.TELEFALLENCONE.ELBOW));
-    operatorA.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.TELESTANDINGCONE.SHOULDER, Constants.Arm.TELESTANDINGCONE.ELBOW));
-    operatorX.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SUBSTATION.SHOULDER, Constants.Arm.SUBSTATION.ELBOW));
-    operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.SCOREHIGH.SHOULDER, Constants.Arm.SCOREHIGH.ELBOW));
-
     
-    operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, Constants.Arm.CARRY.SHOULDER,Constants.Arm.CARRY.ELBOW ));
-    //operatorController.povUp().whileTrue(new ArmSetpointCommand(arm, -12500, -70500));
-    
+
+    triggerOperatorRight.whileTrue(new IntakeCommand(intake));
+    triggerOperatorLeft.whileTrue((intake.RunOuttake()));
+    operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SUBSTATION));
+    operatorLeftBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY));
+
+    operatorY.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH));
+    operatorB.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID));
+    operatorA.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCORELOW));
+ 
+    operatorStart.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELEFALLINGCONE));
+    operatorBack.whileTrue(new ArmSetpointCommand(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE));
+
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
+
     //operatorB.whileTrue(new IntakeSpinnerJoystick(intakespinner, operatorController));
     //operatorB.whileTrue(new InstantCommand(()->intakespinner.setIntakeSpinnerMotorSpeed(0.5),intakespinner));
     //operatorX.whileTrue(new IntakeSpinnerSetPoint(intakespinner, 90));
-    operatorStart.onTrue(new ArmDemoCommand(elbow, shoulder));
+    operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
-
-    
-    operatorA.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
-    // operatorLeftBumper().whileTrue(new ArmSetpointCommand(arm, -13000, -27000));
-    operatorRightBumper.whileTrue(new ArmSetpointCommand(elbow, shoulder, -40000, 17500));
-    /** Driverstation Controls * */
     // TODO: Create switch to flip between orange and blue
+    JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
+    JoystickButton yellowButton = new JoystickButton(operatorStation, 10);
+    JoystickButton purpleButton = new JoystickButton(operatorStation, 11);
+
+    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
+    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
   }
 
+
+
   public void instantiateSubsystemsTeleop() {
+  }
+  public void setGamePiece(GamePiece gamePiece){
+    this.gamePiece = gamePiece;
+  }
+  public GamePiece getGamepiece() {
+    return gamePiece;
   }
 
   public void configureButtonBindingsTeleop() {
@@ -500,13 +500,6 @@ public class RobotContainer {
 
   public double getOpYLeft() {
     return operatorController.getLeftY();
-  }
-  public double getPDHChannelRed() {
-    return powerDistributionHub.getChannelCurrent(4);
-  }
-
-  public double getPDHChannelBlue() {
-    return powerDistributionHub.getChannelCurrent(6);
   }
 
 }

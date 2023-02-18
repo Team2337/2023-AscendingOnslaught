@@ -4,17 +4,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointNoWait;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
+import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class DriveToScoreHigh1 extends ParallelCommandGroup{
-    public DriveToScoreHigh1(Translation2d target, double shoulderSetpoint, double elbowSetpoint, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, Shoulder shoulder) {
+    public DriveToScoreHigh1(Translation2d target, ArmPosition armPosition, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(
                 target, 
@@ -28,7 +30,7 @@ public class DriveToScoreHigh1 extends ParallelCommandGroup{
                 drivetrain,
                 heading
             ),
-                new ArmAutoSetpointNoWait(elbow, shoulder, shoulderSetpoint, elbowSetpoint)
+                new ArmAutoSetpointNoWait(elbow, shoulder, intakespinner, armPosition)
         );
     }
 }

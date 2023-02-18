@@ -1,6 +1,8 @@
 package frc.robot.commands.auto.aboveChassis;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Arm.ArmPosition;
+import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
@@ -8,14 +10,16 @@ public class ArmAutoSetpointWait extends CommandBase {
 
     Elbow elbow;
     Shoulder shoulder;
+    IntakeSpinnerLamprey intakespinner;
+    ArmPosition armPosition;
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
     
-    public ArmAutoSetpointWait(Elbow elbow, Shoulder shoulder, double shoulderSetpoint, double elbowSetpoint) {
+    public ArmAutoSetpointWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
         this.elbow = elbow;
         this.shoulder = shoulder;
-        this.elbowSetpoint = elbowSetpoint;
-        this.shoulderSetpoint = shoulderSetpoint;
+        this.intakespinner = intakespinner;
+        this.armPosition = armPosition;
         addRequirements(elbow, shoulder);
     }
 
@@ -23,8 +27,9 @@ public class ArmAutoSetpointWait extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.setSetpoint(shoulderSetpoint);
-        elbow.setSetpoint(elbowSetpoint);
+        shoulder.setSetpoint(armPosition.shoulder);
+        elbow.setSetpoint(armPosition.elbow);
+        intakespinner.setPosition(armPosition);
     }
 
     @Override

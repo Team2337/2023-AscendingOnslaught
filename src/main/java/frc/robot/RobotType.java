@@ -35,7 +35,7 @@ public class RobotType {
     return Type.COMPETITION;
   }
 
-  private static String getMACAddress() {
+  public static String getMACAddress() {
     try {
       NetworkInterface network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
       byte[] address = network.getHardwareAddress();
