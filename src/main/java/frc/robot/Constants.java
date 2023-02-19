@@ -60,9 +60,9 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = false;
-    public static final boolean AUTO = true;
+    public static final boolean AUTO = false;
     public static final boolean ELBOW = false;
-    public static final boolean DRIVETRAIN = true;
+    public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
     public static final boolean INTAKESPINNER = false;
@@ -179,22 +179,22 @@ public final class Constants {
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
         MODULE0_ANGLE_CANCODER_ID = 1;
-        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(94.39);
+        MODULE0_ANGLE_OFFSET = Rotation2d.fromDegrees(94.658203125);//94.39);
 
         MODULE1_DRIVE_MOTOR_ID = 1;
         MODULE1_ANGLE_MOTOR_ID = 2;
         MODULE1_ANGLE_CANCODER_ID = 2;
-        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-5.8867);
+        MODULE1_ANGLE_OFFSET = Rotation2d.fromDegrees(-7.20703125);//-5.8867);
 
         MODULE2_DRIVE_MOTOR_ID = 8;
         MODULE2_ANGLE_MOTOR_ID = 9;
         MODULE2_ANGLE_CANCODER_ID = 3;
-        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(48.259153);
+        MODULE2_ANGLE_OFFSET = Rotation2d.fromDegrees(48.8671875);//48.259153);
 
         MODULE3_DRIVE_MOTOR_ID = 10;
         MODULE3_ANGLE_MOTOR_ID = 11;
         MODULE3_ANGLE_CANCODER_ID = 4;
-        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(2.7246);
+        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(1.669921875);//2.7246);
 
         DRIVETRAIN_TRACK_WIDTH_INCHES = 19.75;
         DRIVETRAIN_WHEEL_BASE_INCHES = 24.75;
@@ -461,7 +461,41 @@ public final class Constants {
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
+    
+    /*
+    // Comp Arm
     public enum ArmPosition {
+    
+      SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
+      SCOREMID(59.0,127.0,110.0,90.0,165.0,23.0),
+      SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
+      SUBSTATION(66.0,-44.0,66.0,-61.0,255.0,114.0),
+      AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
+      TELESTANDINGCONE(35.0,-72.0,35.0,-72.0,194.0,75.0),
+      TELEFALLINGCONE(29.0,-76.0,29.0,-76.0,130.0,75.0),
+      CARRY(-21.0,155.0,-21.0,155.0,35.0,25.0);
+      
+
+      public final double shoulderCone;
+      public final double shoulderCube;
+      public final double elbowCone;
+      public final double elbowCube;
+      public final double wristCone;
+      public final double wristCube;
+
+      ArmPosition(double shoulderCone, double elbowCone, double shoulderCube, double elbowCube, double wristCone, double wristCube) {
+        this.shoulderCone = shoulderCone;
+        this.shoulderCube = shoulderCube;
+        this.elbowCone = elbowCone;
+        this.elbowCube = elbowCube;
+        this.wristCone = wristCone;
+        this.wristCube = wristCube;
+      }
+    }
+    */
+    // Practice Arm
+    public enum ArmPosition {
+    
       SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
       SCOREMID(59.0,127.0,110.0,90.0,165.0,23.0),
       SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),

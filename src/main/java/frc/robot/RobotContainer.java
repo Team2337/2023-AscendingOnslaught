@@ -67,7 +67,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
-  private  GamePiece gamePiece = GamePiece.Nothing;
+  private  GamePiece gamePiece = GamePiece.Cone;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
