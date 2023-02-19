@@ -67,7 +67,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
-  private  GamePiece gamePiece = GamePiece.Nothing;
+  private  GamePiece gamePiece = GamePiece.Cone;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
@@ -144,6 +144,7 @@ public class RobotContainer {
     //             Units.inchesToMeters(80), autoDrive, heading)));
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 

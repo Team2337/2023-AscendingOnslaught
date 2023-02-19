@@ -32,7 +32,6 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
 
     public IntakeSpinnerLamprey(Supplier<Double> voltage, Supplier<GamePiece> gamePiece) {
         super(new PIDController(kP, kI, kD));
-        getController().setTolerance(tolerance);
         this.voltage = voltage;
         this.gamePiece = gamePiece;
 
@@ -46,10 +45,15 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
         intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
+
+        getController().setTolerance(tolerance);
+        enable();
+        setSetpoint(getEncoderDegrees());
     }
 
       @Override
     protected void useOutput(double output, double setpoint) {
+    //    SmartDashboard.putNumber("Arm/Wrist PID Output", output);
         setIntakeSpinnerMotorSpeed(output);
     }
 
@@ -69,17 +73,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.set(ControlMode.PercentOutput, speed);
     }   
 
-    public void setPosition(ArmPosition armPosition) {
-        double setpoint;
-        if (gamePiece.get() == GamePiece.Cone) {
-            setpoint = armPosition.wristCone;
-        }
-        else {
-            setpoint = armPosition.wristCube;
-
-        }
-        setSetpoint(setpoint);
-    }
+  
    
     public double getTemperature() {
         return intakeSpinnerMotor.getTemperature();
@@ -98,8 +92,11 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public void log() {
         if (Constants.DashboardLogging.INTAKESPINNER) {
             SmartDashboard.putNumber("Arm/ Wrist Setpoint", getSetpoint());
+            SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
+            SmartDashboard.putNumber("Arm/Wrist Output", intakeSpinnerMotor.getMotorOutputPercent());
+            SmartDashboard.putString("Arm/Wrist Game Piece", gamePiece.get().toString());
         }
-        SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
+        
     }
   
 }

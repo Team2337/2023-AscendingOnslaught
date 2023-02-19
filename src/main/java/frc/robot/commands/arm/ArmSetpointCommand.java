@@ -38,6 +38,7 @@ public class ArmSetpointCommand extends CommandBase {
 
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
+    double wristSetpoint = 0;
     ArmPosition armPosition;
     
     
@@ -62,6 +63,7 @@ public class ArmSetpointCommand extends CommandBase {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();
+            intakespinner.enable();
             if (armPosition.elbowCone > 155) {
                 elbowSetpoint = 155;
             }
@@ -69,10 +71,13 @@ public class ArmSetpointCommand extends CommandBase {
                 elbowSetpoint = -155;
             }
             shoulderSetpoint = armPosition.shoulderCone;
+            wristSetpoint = armPosition.wristCone;
+
         } else {
             elbowSetpoint = armPosition.elbowCube;
             shoulder.enable();
             elbow.enable();
+            intakespinner.enable();
             if (armPosition.elbowCube > 155) {
                 elbowSetpoint = 155;
             }
@@ -80,12 +85,13 @@ public class ArmSetpointCommand extends CommandBase {
                 elbowSetpoint = -155;
             }
             shoulderSetpoint = armPosition.shoulderCube;
+            wristSetpoint = armPosition.wristCube;
         }
         
         
         shoulder.setSetpoint(shoulderSetpoint);
         elbow.setSetpoint(elbowSetpoint);
-        intakespinner.setPosition(armPosition);
+        intakespinner.setSetpoint(wristSetpoint);
     }
 
     

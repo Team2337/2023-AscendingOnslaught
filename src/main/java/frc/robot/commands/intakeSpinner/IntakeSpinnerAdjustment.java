@@ -19,6 +19,7 @@ public class IntakeSpinnerAdjustment extends InstantCommand {
 
     @Override
     public void initialize() {
+        intakeSpinner.enable();
         setpoint = intakeSpinner.getSetpoint();
         setpoint = setpoint + angleChange;
         intakeSpinner.setSetpoint(setpoint);

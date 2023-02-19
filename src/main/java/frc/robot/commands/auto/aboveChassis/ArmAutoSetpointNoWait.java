@@ -29,7 +29,7 @@ public class ArmAutoSetpointNoWait extends InstantCommand {
         elbow.enable();
         shoulder.setSetpoint(armPosition.shoulderCone);
         elbow.setSetpoint(armPosition.elbowCone);
-        intakespinner.setPosition(armPosition);
+        intakespinner.setSetpoint(armPosition.wristCone);
     }
     
 }

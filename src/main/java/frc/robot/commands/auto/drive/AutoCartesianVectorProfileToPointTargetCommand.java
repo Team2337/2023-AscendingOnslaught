@@ -69,6 +69,7 @@ public class AutoCartesianVectorProfileToPointTargetCommand extends CartesianHea
     this.velocity = velocity;
     this.heading = heading;
     this.autoDrive = autoDrive;
+    this.drivetrain = drivetrain;
     this.translationSupplier = translationSupplier;
 
     driveController = new ProfiledPIDController(
@@ -77,7 +78,7 @@ public class AutoCartesianVectorProfileToPointTargetCommand extends CartesianHea
     );
 
 
-    driveController.setTolerance(Units.inchesToMeters(2));
+    driveController.setTolerance(Units.inchesToMeters(1));
 
     log();
 
