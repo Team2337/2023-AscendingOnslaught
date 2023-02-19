@@ -24,11 +24,14 @@ public class LEDRunnable extends CommandBase{
     // } else {
     //     led.setColor(Color.kRed);
     // }
+    led.setFrontColor(Color.kRed);
     if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cone) {
-      led.setColor(Color.kYellow);
+      led.setLeftColor(Color.kYellow);
+      led.setRightColor(Color.kYellow);
     }
     if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cube) {
-      led.setColor(Color.kPurple);
+      led.setLeftColor(Color.kPurple);
+      led.setRightColor(Color.kPurple);
     }
     // if (robotContainer.getYellowSwitchStatus() && robotContainer.getGyroscopeRoll() < Constants.CLIMBER_ROLL) {
     //   led.setColor(Color.kPurple);

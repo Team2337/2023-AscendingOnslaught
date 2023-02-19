@@ -13,10 +13,15 @@ import frc.robot.Constants;
  */
 
 public class LED extends SubsystemBase {
+	/**
+	 * 0-60 are left LEDs
+	 * 61-79 are front LEDs
+	 * 80-142 are right LEDs
+	 */
 
 	private static AddressableLED led;
 	private static AddressableLEDBuffer ledBuffer;
-	private static int LED_LENGTH = 78;
+	private static int LED_LENGTH = 143;
 
 	/**
 	 * Controls the LEDs on the Robot 
@@ -85,6 +90,36 @@ public class LED extends SubsystemBase {
 			}
 		}
 	}
+		led.setData(ledBuffer);
+		led.start();
+	}
+
+	public void setFrontColor(Color color) {
+		for (int i = 0; i < LED_LENGTH; i++) {
+			if (i > 60 && i < 80) {
+				ledBuffer.setLED(i, color);
+			}
+		}
+		led.setData(ledBuffer);
+		led.start();
+	}
+
+	public void setLeftColor(Color color) {
+		for (int i = 0; i < LED_LENGTH; i++) {
+			if (i < 61) {
+				ledBuffer.setLED(i, color);
+			}
+		}
+		led.setData(ledBuffer);
+		led.start();
+	}
+
+	public void setRightColor(Color color) {
+		for (int i = 0; i < LED_LENGTH; i++) {
+			if (i > 79) {
+				ledBuffer.setLED(i, color);
+			}
+		}
 		led.setData(ledBuffer);
 		led.start();
 	}

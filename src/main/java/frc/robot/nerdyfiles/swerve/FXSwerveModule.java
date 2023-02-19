@@ -92,7 +92,7 @@ public class FXSwerveModule {
 
     configuration.statorCurrLimit = CTREUtils.defaultCurrentLimit();
 
-    configuration.slot0.kP = 0.9; //0.3
+    configuration.slot0.kP = 1.1; //0.3
     configuration.slot0.kI = 0.0;
     configuration.slot0.kD = 0.1;
 

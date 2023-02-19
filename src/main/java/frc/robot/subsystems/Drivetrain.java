@@ -66,7 +66,6 @@ public class Drivetrain extends SubsystemBase {
     )
   );
 
-  //private final SwerveDrivePoseEstimator odometry;
   private final SwerveDrivePoseEstimator odometry;
   private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[] {null, null, null, null};
 
