@@ -60,12 +60,12 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = false;
-    public static final boolean AUTO = false;
+    public static final boolean AUTO = true;
     public static final boolean ELBOW = false;
-    public static final boolean DRIVETRAIN = false;
+    public static final boolean DRIVETRAIN = true;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
-    public static final boolean INTAKESPINNER = false;
+    public static final boolean INTAKESPINNER = true;
     public static final boolean PDH = false;
     public static final boolean SHOULDER = false;
     public static final boolean SWERVE = false;
@@ -458,6 +458,8 @@ public final class Constants {
     public static final double shoulderP = 0.005;
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
+    public static final double WRIST_LOWER_LIMIT = 23.0;
+    public static final double WRIST_UPPER_LIMIT = 260.0;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;

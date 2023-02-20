@@ -26,7 +26,7 @@ public class AutoCartesianVectorProfileToPointTargetCommand extends CartesianHea
   // 0.1 = 4" error over 23ft, 10" error over 49 ft
   // 0.05 = almost no error, but can oscilate near target
   // TODO: investigate some sort of exponential backoff on the lead (i.e. go from 15% to 100%)
-  private static final double intTargetLead = 0.15; // percent, 0.0-1.0
+  private static final double intTargetLead = 0.90; // percent, 0.0-1.0
 
   private Heading heading;
   private AutoDrive autoDrive;

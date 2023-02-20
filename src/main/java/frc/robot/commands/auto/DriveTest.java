@@ -9,6 +9,7 @@ import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWait;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.common.DriveToPickupCone1;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
+import frc.robot.commands.auto.drive.CartesianProfiledPointToPointCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -23,29 +24,53 @@ public class DriveTest extends SequentialCommandGroup{
         this.drivetrain = drivetrain;
         addCommands(
             new WaitCommand(2),
-            new AutoCartesianVectorProfileToPointTargetCommand(
+            new CartesianProfiledPointToPointCommand(
                 new Translation2d(3.048, 0), 
                 drivetrain::getTranslation, 
-                drivetrain::velocity, 
-                Constants.Auto.trajectoryTolerance, 
+                drivetrain::getRotation, 
                 3.0, 
-                Units.inchesToMeters(60), 
+                3.0,
+                Units.inchesToMeters(15), 
                 Units.inchesToMeters(15), 
                 autoDrive, 
                 drivetrain, 
                 heading),
-            new WaitCommand(10),
-            new AutoCartesianVectorProfileToPointTargetCommand(
+            new WaitCommand(2),
+            new CartesianProfiledPointToPointCommand(
                 new Translation2d(0, 0), 
                 drivetrain::getTranslation, 
-                drivetrain::velocity, 
-                Constants.Auto.trajectoryTolerance, 
+                drivetrain::getRotation, 
                 3.0, 
-                Units.inchesToMeters(60), 
+                3.0,
+                Units.inchesToMeters(15), 
                 Units.inchesToMeters(15), 
                 autoDrive, 
                 drivetrain, 
-                heading)
+                heading),
+                new WaitCommand(2),
+                new CartesianProfiledPointToPointCommand(
+                    new Translation2d(3.048, 0), 
+                    drivetrain::getTranslation, 
+                    drivetrain::getRotation, 
+                    3.0, 
+                    3.0,
+                    Units.inchesToMeters(15), 
+                    Units.inchesToMeters(15), 
+                    autoDrive, 
+                    drivetrain, 
+                    heading),
+                new WaitCommand(2),
+                new CartesianProfiledPointToPointCommand(
+                    new Translation2d(0, 0), 
+                    drivetrain::getTranslation, 
+                    drivetrain::getRotation, 
+                    3.0, 
+                    3.0,
+                    Units.inchesToMeters(15), 
+                    Units.inchesToMeters(15), 
+                    autoDrive, 
+                    drivetrain, 
+                    heading)
             // new WaitCommand(2),
             // new DriveToPickupCone1(Constants.Auto.redMiddleStagingMark, autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder),
             // new WaitCommand(2),

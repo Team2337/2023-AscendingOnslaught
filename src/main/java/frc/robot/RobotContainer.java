@@ -44,9 +44,13 @@ import frc.robot.commands.auto.drive.CartesianVectorProfileToPointCommand;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
+import frc.robot.commands.auto.teleop.BlueTeleopAutoLeftSubstation;
+import frc.robot.commands.auto.teleop.BlueTeleopAutoRightSubstation;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
+import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
+import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
@@ -75,7 +79,7 @@ public class RobotContainer {
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
   private final AutoDrive autoDrive = new AutoDrive();
-  private final Drivetrain drivetrain = new Drivetrain(pigeon);
+  private final Drivetrain drivetrain = new Drivetrain(pigeon, (GamePiece x) -> setGamePiece(x));
   private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage, this::getGamepiece);
   private final Elbow elbow = new Elbow();
@@ -107,7 +111,7 @@ public class RobotContainer {
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
@@ -362,6 +366,9 @@ public class RobotContainer {
     
     triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
     triggerDriverLeft.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
+    driverX.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(1)));
+    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(2)));
+    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(3)));
 
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
@@ -374,12 +381,10 @@ public class RobotContainer {
               new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
 
-    driverLeftBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)).andThen(
-      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
-      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
-    driverRightBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(11)).andThen( 
-      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
-      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
+    driverLeftBumper.whileTrue(new ConditionalCommand(new BlueTeleopAutoLeftSubstation(autoDrive, drivetrain, heading),
+      new  RedTeleopAutoLeftSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
+    driverRightBumper.whileTrue(new ConditionalCommand(new  BlueTeleopAutoRightSubstation(autoDrive, drivetrain, heading),
+      new  RedTeleopAutoRightSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
     
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
@@ -412,8 +417,8 @@ public class RobotContainer {
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
     operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
-    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
-    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 4));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -4));
     
     operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
     operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
