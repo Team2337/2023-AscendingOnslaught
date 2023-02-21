@@ -32,7 +32,7 @@ public class DriveToPickupCone1 extends ParallelCommandGroup{
                 heading
                 ),
             new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE).withTimeout(5),
-            new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake))
+            new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake).withTimeout(8))
         );
     }
 }
