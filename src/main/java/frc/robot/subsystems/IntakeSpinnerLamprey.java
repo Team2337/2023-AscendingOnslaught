@@ -25,7 +25,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private Supplier<Double> voltage;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.4;
+    private double peakOutput = 0.2;
     private double tolerance = 0.5;
     private static double kP = 0.01;
     private static double kI = 0;
@@ -45,7 +45,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configStatorCurrentLimit(defaultCurrentLimit());
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
-        intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
+        intakeSpinnerMotor.setInverted(TalonFXInvertType.CounterClockwise);
 
         getController().setTolerance(tolerance);
         enable();

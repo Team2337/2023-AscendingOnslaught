@@ -34,8 +34,8 @@ public class Shoulder extends PIDSubsystem {
   static double shoulderkI = 0.0;
   static double shoulderkD = 0.0;
   private double allowableError = 1.0;
-  private double speedlimit = 0.5;
-  private double closedLoopLimit = 0.5;
+  private double speedlimit = 0.3;
+  private double closedLoopLimit = 0.3;
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {

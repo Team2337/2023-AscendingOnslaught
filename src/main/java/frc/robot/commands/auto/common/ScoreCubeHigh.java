@@ -14,7 +14,7 @@ public class ScoreCubeHigh extends SequentialCommandGroup{
     public ScoreCubeHigh(Elbow elbow, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
             new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH).withTimeout(3),
-            new IntakeForwardAuto(intake).withTimeout(0.3),
+            new IntakeForwardAuto(intake).withTimeout(0.75),
             new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)
         );
     }
