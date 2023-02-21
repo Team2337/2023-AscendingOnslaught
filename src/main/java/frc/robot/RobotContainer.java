@@ -47,8 +47,7 @@ import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
 import frc.robot.commands.vision.InstantRelocalizeCommand;
 import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.arm.Elbow;
-import frc.robot.subsystems.arm.Shoulder;
+import frc.robot.subsystems.arm.*;
 
 public class RobotContainer {
   private final XboxController driverController = new XboxController(0);
@@ -65,6 +64,7 @@ public class RobotContainer {
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage);
   private final Elbow elbow = new Elbow();
   private final Shoulder shoulder = new Shoulder();
+  private final ArmSim armSim = new ArmSim();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final SendableChooser<String> startingPosChooser = new SendableChooser<>();

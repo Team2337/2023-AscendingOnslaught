@@ -29,11 +29,6 @@
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
-      "/SmartDashboard/Arm Sim": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/SendableChooser[0]": {
         "window": {
           "visible": true
