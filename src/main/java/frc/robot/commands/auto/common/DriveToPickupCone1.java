@@ -5,7 +5,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
@@ -24,14 +24,14 @@ public class DriveToPickupCone1 extends ParallelCommandGroup{
                 drivetrain::getTranslation, 
                 drivetrain::velocity,
                 Constants.Auto.trajectoryTolerance,
-                3.5, 
-                Units.inchesToMeters(60),
+                3, 
+                Units.inchesToMeters(80),
                 Units.inchesToMeters(15), 
                 autoDrive, 
                 drivetrain,
                 heading
                 ),
-            new WaitCommand(1).andThen(new ArmAutoSetpointWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE).withTimeout(2)),
+            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE).withTimeout(5),
             new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake))
         );
     }

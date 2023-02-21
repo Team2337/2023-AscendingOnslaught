@@ -37,7 +37,8 @@ public class Vision extends SubsystemBase {
 
   public enum LimelightColor {
     BLUE,
-    ORANGE
+    ORANGE,
+    PINK
   }
 
   public static enum Pipeline {
@@ -82,16 +83,17 @@ public class Vision extends SubsystemBase {
   }
 
   // Only fetch our LL values once per periodic cycle
-  private Pipeline currentPipelineB, currentPipelineO;
-  private LEDMode currentLEDModeB, currentLEDModeO;
-  private double txB, txO = 0.0;
-  private double tyB, tyO = 0.0;
-  private double[] tposeB, tposeO = {0, 0, 0, 0, 0, 0};
+  private Pipeline currentPipelineB, currentPipelineO, currentPipelineP;
+  private LEDMode currentLEDModeB, currentLEDModeO, currentLEDModeP;
+  private double txB, txO, txP = 0.0;
+  private double tyB, tyO, tyP = 0.0;
+  private double[] tposeB, tposeO, tposeP = {0, 0, 0, 0, 0, 0};
   private double[] defaultPose = {0, 0, 0, 0, 0, 0};
-  private double latencyB, latencyO = 0.0;
-  private boolean hasValidTargetB, hasValidTargetO = false;
+  private double latencyB, latencyO, latencyP = 0.0;
+  private boolean hasValidTargetB, hasValidTargetO, hasValidTargetP = false;
   private double distanceToTargetMetersB = 0.0;
   private double distanceToTargetMetersO = 0.0;
+  private double distanceToTargetMetersP = 0.0;
   private LimelightColor color;
   private String allianceColor;
   private String botPoseColor = "botpose_wpi";
@@ -104,6 +106,7 @@ public class Vision extends SubsystemBase {
     // Automatically switch our Limelight to our default pipeline on construction
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.BLUE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
+    switchPipeLine(Pipeline.DEFAULT, LimelightColor.PINK);
     //TODO: Fix this  
     pipelineAllianceColor = "red";
     // Systems check
@@ -165,6 +168,20 @@ public class Vision extends SubsystemBase {
       distanceToTargetMetersO = calculateDistanceToTargetMeters(LimelightColor.ORANGE);
     }
 
+    tposeP = NetworkTableInstance.getDefault().getTable("limelight-pink").getEntry(botPoseColor).getDoubleArray(defaultPose);
+    currentPipelineP = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.PINK));
+    currentLEDModeP = LEDMode.withValue(getIntValue(LimelightKey.LEDMode, LimelightColor.PINK));
+    txP = getDoubleValue(LimelightKey.X, LimelightColor.PINK);
+    tyP = getDoubleValue(LimelightKey.Y, LimelightColor.PINK);
+    latencyP = getDoubleValue(LimelightKey.LATENCY, LimelightColor.PINK);
+    hasValidTargetP = getDoubleValue(LimelightKey.VALID_TARGET, LimelightColor.PINK) == 1.0;
+
+    distanceToTargetMetersP = 0.0;
+    if (hasValidTargetP) {
+      distanceToTargetMetersP = calculateDistanceToTargetMeters(LimelightColor.PINK);
+    }
+
+
     log();
   }
 
@@ -179,8 +196,13 @@ public class Vision extends SubsystemBase {
       SmartDashboard.putNumber("Vision/Orange Vision Pose Y", getVisionPoseY(LimelightColor.ORANGE));
       SmartDashboard.putNumber("Vision/latency orange", getLatency(LimelightColor.ORANGE));
       SmartDashboard.putBoolean("Vision/Valid Target orange", hasActiveTarget(LimelightColor.ORANGE));
+      SmartDashboard.putNumber("Vision/Pink Vision Pose X", getVisionPoseX(LimelightColor.PINK));
+      SmartDashboard.putNumber("Vision/Pink Vision Pose Y", getVisionPoseY(LimelightColor.PINK));
+      SmartDashboard.putNumber("Vision/Latency Pink", getLatency(LimelightColor.PINK));
+      SmartDashboard.putBoolean("Vision/Valid Target Pink", hasActiveTarget(LimelightColor.PINK));
       SmartDashboard.putNumber("Vision/Blue Distance To Target (inches)", Units.metersToInches(distanceToTargetMetersB));
       SmartDashboard.putNumber("Vision/Orange Distance To Target (inches)", Units.metersToInches(distanceToTargetMetersO));
+      SmartDashboard.putNumber("Vision/Pink Distance To Target (inches)", Units.metersToInches(distanceToTargetMetersP));
     //  SmartDashboard.putNumber("Vision/Robot Pose X", Units.metersToInches(getVisionPoseX()));
     //SmartDashboard.putNumber("Vision/Robot Pose Y", Units.metersToInches(getVisionPoseY()));
     }
@@ -196,6 +218,10 @@ public class Vision extends SubsystemBase {
     return NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry(key.key);
   }
 
+  private static NetworkTableEntry getLimelightEntryPink(LimelightKey key) {
+    return NetworkTableInstance.getDefault().getTable("limelight-pink").getEntry(key.key);
+  }
+
   /**
    * Get the double value for a key from the Limelight NetworkTables.
    *
@@ -206,6 +232,8 @@ public class Vision extends SubsystemBase {
   private static double getDoubleValue(LimelightKey key, LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return getLimelightEntryBlue(key).getDouble(0);
+    } else if (color == LimelightColor.PINK) {
+      return getLimelightEntryPink(key).getDouble(0);
     } else {
       return getLimelightEntryOrange(key).getDouble(0);
     }
@@ -222,6 +250,8 @@ public class Vision extends SubsystemBase {
   private static int getIntValue(LimelightKey key, LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return getLimelightEntryBlue(key).getNumber(0).intValue();
+    }  else if (color == LimelightColor.PINK) {
+      return getLimelightEntryPink(key).getNumber(0).intValue();
     } else {
       return getLimelightEntryOrange(key).getNumber(0).intValue();
     }
@@ -236,6 +266,8 @@ public class Vision extends SubsystemBase {
   private static boolean setValue(LimelightKey key, LimelightColor color, Number value) {
     if (color == LimelightColor.BLUE) {
       return getLimelightEntryBlue(key).setNumber(value);
+    }  else if (color == LimelightColor.PINK) {
+      return getLimelightEntryPink(key).setNumber(value);
     } else {
       return getLimelightEntryOrange(key).setNumber(value);
     }
@@ -253,6 +285,10 @@ public class Vision extends SubsystemBase {
           currentLEDModeB = mode;
         }
       }
+    }  else if (color == LimelightColor.PINK) {
+      if (currentLEDModeP != mode) {
+        currentLEDModeP = mode;
+      }
     } else {
       if (currentLEDModeO != mode) {
         if (setValue(LimelightKey.LEDMode, LimelightColor.ORANGE, mode.value)) {
@@ -268,6 +304,8 @@ public class Vision extends SubsystemBase {
   public LEDMode getLEDMode(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return currentLEDModeB;
+    } else if (color == LimelightColor.PINK) {
+      return currentLEDModeP;
     } else {
       return currentLEDModeO;
     }
@@ -281,6 +319,12 @@ public class Vision extends SubsystemBase {
       if (currentPipelineB != pipeline) {
         if (setValue(LimelightKey.Pipeline, LimelightColor.BLUE, pipeline.number)) {
           currentPipelineB = pipeline;
+        }
+      }
+    } else if (color == LimelightColor.PINK) {
+      if (currentPipelineP != pipeline) {
+        if (setValue(LimelightKey.Pipeline, LimelightColor.PINK, pipeline.number)) {
+          currentPipelineP = pipeline;
         }
       }
     } else {
@@ -299,6 +343,8 @@ public class Vision extends SubsystemBase {
   public Pipeline getPipeline(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return currentPipelineB;
+    } else if (color == LimelightColor.PINK) {
+      return currentPipelineP;
     } else {
       return currentPipelineO;
     }
@@ -312,6 +358,8 @@ public class Vision extends SubsystemBase {
   public double getTx(LimelightColor color) { 
     if (color == LimelightColor.BLUE) {
       return txB + Constants.VISION_OFFSET;
+    } else if (color == LimelightColor.PINK) {
+      return txP + Constants.VISION_OFFSET;
     } else {
       return txO + Constants.VISION_OFFSET;
     }
@@ -324,6 +372,8 @@ public class Vision extends SubsystemBase {
   public double getTy(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return tyB;
+    } else if (color == LimelightColor.PINK) {
+      return tyP;
     } else {
       return tyO;
     }
@@ -332,6 +382,8 @@ public class Vision extends SubsystemBase {
   public double[] getVisionPose(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return tposeB;
+    } else if (color == LimelightColor.PINK) {
+      return tposeP;
     } else {
       return tposeO;
     }
@@ -340,6 +392,8 @@ public class Vision extends SubsystemBase {
   public double getVisionPoseX(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return tposeB[0];
+    } else if (color == LimelightColor.PINK) {
+      return tposeP[0];
     } else {
       return tposeO[0];
     }
@@ -348,6 +402,8 @@ public class Vision extends SubsystemBase {
   public double getVisionPoseY(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return tposeB[1];
+    } else if (color == LimelightColor.PINK) {
+      return tposeP[1];
     } else {
       return tposeO[1];
     }
@@ -356,6 +412,8 @@ public class Vision extends SubsystemBase {
   public double getVisionRotation(LimelightColor color) { 
     if (color == LimelightColor.BLUE) {
       return tposeB[5];
+    } else if (color == LimelightColor.PINK) {
+      return tposeP[5];
     } else {
       return tposeO[5];
     }
@@ -364,6 +422,8 @@ public class Vision extends SubsystemBase {
   public double getLatency(LimelightColor color) {
     if (color == LimelightColor.BLUE) {
       return latencyB;
+    } else if (color == LimelightColor.PINK) {
+      return latencyP;
     } else {
       return latencyO;
     }
@@ -372,6 +432,8 @@ public class Vision extends SubsystemBase {
   public boolean hasActiveTarget(LimelightColor color) { 
     if (color == LimelightColor.BLUE) {
       return hasValidTargetB;
+    } else if (color == LimelightColor.PINK) {
+      return hasValidTargetP;
     } else {
       return hasValidTargetO;
     }
@@ -380,6 +442,8 @@ public class Vision extends SubsystemBase {
   public boolean isOnTarget(LimelightColor color) { 
     if (color == LimelightColor.BLUE) {
       return Math.abs(txB) < Constants.VISION_TOLERANCE;
+    } else if (color == LimelightColor.PINK) {
+      return Math.abs(txP) < Constants.VISION_TOLERANCE;
     } else {
       return Math.abs(txO) < Constants.VISION_TOLERANCE;
     }

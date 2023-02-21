@@ -5,7 +5,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.common.DriveToPickupCone1;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
@@ -25,7 +25,7 @@ public class DriveTest extends SequentialCommandGroup{
         addCommands(
             new WaitCommand(2),
             new CartesianProfiledPointToPointCommand(
-                new Translation2d(3.048, 0), 
+                new Translation2d(2, 0), 
                 drivetrain::getTranslation, 
                 drivetrain::getRotation, 
                 3.0, 
@@ -46,31 +46,7 @@ public class DriveTest extends SequentialCommandGroup{
                 Units.inchesToMeters(15), 
                 autoDrive, 
                 drivetrain, 
-                heading),
-                new WaitCommand(2),
-                new CartesianProfiledPointToPointCommand(
-                    new Translation2d(3.048, 0), 
-                    drivetrain::getTranslation, 
-                    drivetrain::getRotation, 
-                    3.0, 
-                    3.0,
-                    Units.inchesToMeters(15), 
-                    Units.inchesToMeters(15), 
-                    autoDrive, 
-                    drivetrain, 
-                    heading),
-                new WaitCommand(2),
-                new CartesianProfiledPointToPointCommand(
-                    new Translation2d(0, 0), 
-                    drivetrain::getTranslation, 
-                    drivetrain::getRotation, 
-                    3.0, 
-                    3.0,
-                    Units.inchesToMeters(15), 
-                    Units.inchesToMeters(15), 
-                    autoDrive, 
-                    drivetrain, 
-                    heading)
+                heading)
             // new WaitCommand(2),
             // new DriveToPickupCone1(Constants.Auto.redMiddleStagingMark, autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder),
             // new WaitCommand(2),

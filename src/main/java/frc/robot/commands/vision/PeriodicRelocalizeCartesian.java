@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.AllianceColor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision.LimelightColor;
@@ -34,7 +35,11 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
       readLimelight = true;
       SmartDashboard.putString("We are...", "orange!");
     } else if (drivetrain.getPose().getX() > 8) {
-      color = LimelightColor.BLUE;
+      if (AllianceColor.getAllianceColor() == AllianceColor.Blue) {
+        color = LimelightColor.PINK;
+      } else {
+        color = LimelightColor.BLUE;
+      }
       readLimelight = true;
       SmartDashboard.putString("We are...", "blue!");
     } else {

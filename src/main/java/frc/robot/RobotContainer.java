@@ -111,7 +111,7 @@ public class RobotContainer {
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
-    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
@@ -149,6 +149,7 @@ public class RobotContainer {
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
     autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -366,9 +367,6 @@ public class RobotContainer {
     
     triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
     triggerDriverLeft.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
-    driverX.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(1)));
-    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(2)));
-    driverB.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(3)));
 
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
@@ -417,8 +415,8 @@ public class RobotContainer {
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
     operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
-    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 4));
-    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -4));
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
     
     operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
     operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
