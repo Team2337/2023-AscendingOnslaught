@@ -327,6 +327,9 @@ public final class Constants {
     public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(132.19));
     public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(180.19));
 
+    public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(147.73), Units.inchesToMeters(36));
+    public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(11.000));
+
     // Red Staging Marks
     public static final Translation2d redBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(135.41));
     public static final Translation2d redMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(173.61));
@@ -458,6 +461,8 @@ public final class Constants {
     public static final double shoulderP = 0.005;
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
+    public static final double WRIST_LOWER_LIMIT = 23.0;
+    public static final double WRIST_UPPER_LIMIT = 260.0;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
@@ -497,9 +502,9 @@ public final class Constants {
     public enum ArmPosition {
     
       SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
-      SCOREMID(59.0,127.0,110.0,90.0,165.0,23.0),
+      SCOREMID(78.0,129.0,110.0,90.0,165.0,23.0),
       SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
-      SUBSTATION(66.0,-44.0,66.0,-61.0,255.0,114.0),
+      SUBSTATION(66.0,-48.0,66.0,-61.0,255.0,114.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       TELESTANDINGCONE(35.0,-72.0,35.0,-72.0,194.0,75.0),
       TELEFALLINGCONE(29.0,-76.0,29.0,-76.0,130.0,75.0),

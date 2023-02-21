@@ -6,7 +6,7 @@ import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ArmAutoSetpointWait extends CommandBase {
+public class ArmAutoSetpointCubeWait extends CommandBase {
 
     Elbow elbow;
     Shoulder shoulder;
@@ -15,7 +15,7 @@ public class ArmAutoSetpointWait extends CommandBase {
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
     
-    public ArmAutoSetpointWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+    public ArmAutoSetpointCubeWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.intakespinner = intakespinner;
@@ -27,9 +27,9 @@ public class ArmAutoSetpointWait extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.setSetpoint(armPosition.shoulderCone);
-        elbow.setSetpoint(armPosition.elbowCone);
-        intakespinner.setSetpoint(armPosition.wristCone);
+        shoulder.setSetpoint(armPosition.shoulderCube);
+        elbow.setSetpoint(armPosition.elbowCube);
+        intakespinner.setSetpoint(armPosition.wristCube);
     }
 
     @Override

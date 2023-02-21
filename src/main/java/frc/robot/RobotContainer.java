@@ -44,9 +44,13 @@ import frc.robot.commands.auto.drive.CartesianVectorProfileToPointCommand;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
+import frc.robot.commands.auto.teleop.BlueTeleopAutoLeftSubstation;
+import frc.robot.commands.auto.teleop.BlueTeleopAutoRightSubstation;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
+import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
+import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
 import frc.robot.commands.auto.test.AngleTest;
 import frc.robot.commands.auto.test.MoveForwardTest;
 import frc.robot.commands.auto.test.Test;
@@ -75,7 +79,7 @@ public class RobotContainer {
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
   private final AutoDrive autoDrive = new AutoDrive();
-  private final Drivetrain drivetrain = new Drivetrain(pigeon);
+  private final Drivetrain drivetrain = new Drivetrain(pigeon, (GamePiece x) -> setGamePiece(x));
   private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage, this::getGamepiece);
   private final Elbow elbow = new Elbow();
@@ -145,6 +149,7 @@ public class RobotContainer {
     autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
     autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -374,12 +379,10 @@ public class RobotContainer {
               new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
 
-    driverLeftBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(10)).andThen(
-      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
-      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
-    driverRightBumper.whileTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(11)).andThen( 
-      new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
-      new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)));
+    driverLeftBumper.whileTrue(new ConditionalCommand(new BlueTeleopAutoLeftSubstation(autoDrive, drivetrain, heading),
+      new  RedTeleopAutoLeftSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
+    driverRightBumper.whileTrue(new ConditionalCommand(new  BlueTeleopAutoRightSubstation(autoDrive, drivetrain, heading),
+      new  RedTeleopAutoRightSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
     
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand

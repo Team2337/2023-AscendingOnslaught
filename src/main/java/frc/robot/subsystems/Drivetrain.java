@@ -1,7 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.function.Consumer;
+
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Constants.DriverDashboardPositions;
+import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.SystemsCheckPositions;
 import frc.robot.nerdyfiles.utilities.Utilities;
 import frc.robot.nerdyfiles.swerve.FXSwerveModule;
@@ -84,14 +89,16 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d waypoint1_outer = new Translation2d(0, 0);
   private Translation2d waypoint2_inner = new Translation2d(0, 0);
   private Translation2d waypoint3_goal = new Translation2d(0, 0);
+  private Consumer<GamePiece> gamePiece;
 
   /**
    * Subsystem where swerve modules are configured,
    * and the calculations from the joystick inputs is handled.
    * Field orientation is set here as well
    */
-  public Drivetrain(PigeonIMU pigeon) {
+  public Drivetrain(PigeonIMU pigeon, Consumer<GamePiece> gamePiece) {
     this.pigeon = pigeon;
+    this.gamePiece = gamePiece;
 
     modules = new FXSwerveModule[] {
       new FXSwerveModule(
@@ -138,7 +145,9 @@ public class Drivetrain extends SubsystemBase {
       kinematics, 
       getGyroscopeRotation(), 
       modulePositions,
-      pose);
+      pose,
+      VecBuilder.fill(0.1, 0.1, 0.1), //VecBuilder.fill(0.1, 0.1, 0.1)
+      VecBuilder.fill(0.9, 0.9, 0.9)); //VecBuilder.fill(0.9, 0.9, 0.9))
     setupShuffleboard(Constants.DashboardLogging.DRIVETRAIN);
     SmartDashboard.putData("field", field);
   }
@@ -268,56 +277,55 @@ public class Drivetrain extends SubsystemBase {
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridRightRobotRight;
           waypoint3_goal = Constants.Auto.blueGridRightRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 8:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridRightRobotCenter;
           waypoint3_goal = Constants.Auto.blueGridRightRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 7:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
           waypoint3_goal = Constants.Auto.blueGridRightRobotLeft;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 6:
           waypoint1_outer = Constants.Auto.blueRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueRightIntermediaryAutoNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 5:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 4:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridMiddleRobotLeft;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 3:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 2:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridLeftRobotCenter;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 1:
           waypoint1_outer = Constants.Auto.blueLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.blueGridLeftRobotLeft;
           waypoint3_goal = Constants.Auto.blueGridLeftRobotLeft;
-          break;
-        case 10:
-          waypoint1_outer = Constants.Auto.blueSubstationIntermediary;
-          waypoint2_inner = Constants.Auto.blueLeftSubstationPickup;
-          waypoint3_goal = Constants.Auto.blueLeftSubstationPickup;
-          break;
-        case 11:
-          waypoint1_outer = Constants.Auto.blueSubstationIntermediary;
-          waypoint2_inner = Constants.Auto.blueRightSubstationPickup;
-          waypoint3_goal = Constants.Auto.blueRightSubstationPickup;
+          gamePiece.accept(GamePiece.Cone);
           break;
       } 
     } else {
@@ -327,58 +335,57 @@ public class Drivetrain extends SubsystemBase {
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridRightRobotRight;
           waypoint3_goal = Constants.Auto.redGridRightRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 8:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridRightRobotCenter;
           waypoint3_goal = Constants.Auto.redGridRightRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 7:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridRightRobotLeft;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 6:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
           waypoint2_inner = Constants.Auto.redRightIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 5:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 4:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridMiddleRobotLeft;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 3:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redLeftIntermediaryNear;
           waypoint3_goal = Constants.Auto.redGridLeftRobotRight;
+          gamePiece.accept(GamePiece.Cone);
           break;
         case 2:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridLeftRobotCenter;
           waypoint3_goal = Constants.Auto.redGridLeftRobotCenter;
+          gamePiece.accept(GamePiece.Cube);
           break;
         case 1:
           waypoint1_outer = Constants.Auto.redLeftIntermediaryFar;
           waypoint2_inner = Constants.Auto.redGridLeftRobotLeft;
           waypoint3_goal = Constants.Auto.redGridLeftRobotLeft;
+          gamePiece.accept(GamePiece.Cone);
           break;
-        case 10:
-          waypoint1_outer = Constants.Auto.redSubstationIntermediary;
-          waypoint2_inner = Constants.Auto.redLeftSubstationPickup;
-          waypoint3_goal = Constants.Auto.redLeftSubstationPickup;
-          break;
-        case 11:
-          waypoint1_outer = Constants.Auto.redSubstationIntermediary;
-          waypoint2_inner = Constants.Auto.redRightSubstationPickup;
-          waypoint3_goal = Constants.Auto.redRightSubstationPickup;
-          break;
-      }
+        }
 
     }
 

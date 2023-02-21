@@ -5,7 +5,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.Arm.ArmPosition;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointNoWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -55,7 +55,7 @@ public class DriveToScoreHigh3 extends ParallelCommandGroup{
                     drivetrain,
                     heading
                 )),
-                new ArmAutoSetpointNoWait(elbow, shoulder, intakespinner, armPosition)
+                new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, armPosition)
         ));
     }
 }

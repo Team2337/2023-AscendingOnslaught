@@ -1,9 +1,11 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.nerdyfiles.utilities.Utilities;
@@ -84,13 +86,16 @@ public class SwerveDriveCommand extends CommandBase {
     double vyMetersPerSecond = strafe * Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND;
     double omegaRadiansPerSecond = rotation * Constants.Swerve.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
 
+    SmartDashboard.putNumber("Drive/Strafe Output", strafe);
+    SmartDashboard.putNumber("Drive/Vy m/s", vyMetersPerSecond);
+
     if (isFieldOriented && DriverStation.isAutonomousEnabled()) {
       drivetrain.drive(
         ChassisSpeeds.fromFieldRelativeSpeeds(
           vxMetersPerSecond,
           vyMetersPerSecond,
           omegaRadiansPerSecond,
-          // drivetrain.getGyroscopeRotation()
+          //drivetrain.getGyroscopeRotation()
           drivetrain.getRotation()
         ) 
       );

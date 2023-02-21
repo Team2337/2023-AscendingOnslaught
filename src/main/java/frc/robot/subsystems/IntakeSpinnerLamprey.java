@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -24,9 +25,9 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private Supplier<Double> voltage;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.1;
-    private double tolerance = 1;
-    private static double kP = 0.1;
+    private double peakOutput = 0.4;
+    private double tolerance = 0.5;
+    private static double kP = 0.01;
     private static double kI = 0;
     private static double kD = 0;
 
@@ -41,7 +42,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configReverseSoftLimitThreshold(150000);
         intakeSpinnerMotor.configReverseSoftLimitEnable(false);
         intakeSpinnerMotor.setNeutralMode(NeutralMode.Brake);
-        intakeSpinnerMotor.configStatorCurrentLimit(CTREUtils.defaultCurrentLimit());
+        intakeSpinnerMotor.configStatorCurrentLimit(defaultCurrentLimit());
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
         intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
@@ -73,7 +74,9 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.set(ControlMode.PercentOutput, speed);
     }   
 
-  
+    public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
+        return new StatorCurrentLimitConfiguration(true, 10.0, 10.0, 1.0);
+      }
    
     public double getTemperature() {
         return intakeSpinnerMotor.getTemperature();

@@ -6,7 +6,7 @@ import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ArmAutoSetpointNoWait extends InstantCommand {
+public class ArmAutoSetpointConeNoWait extends InstantCommand {
 
     Elbow elbow;
     Shoulder shoulder;
@@ -15,7 +15,7 @@ public class ArmAutoSetpointNoWait extends InstantCommand {
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
     
-    public ArmAutoSetpointNoWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+    public ArmAutoSetpointConeNoWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.intakespinner = intakespinner;

@@ -70,6 +70,12 @@ public class ArmSetpointCommand extends CommandBase {
             if (armPosition.elbowCone < -155) {
                 elbowSetpoint = -155;
             }
+            if (armPosition.wristCone < Constants.Arm.WRIST_LOWER_LIMIT) {
+                wristSetpoint = Constants.Arm.WRIST_LOWER_LIMIT;
+            }
+            if (armPosition.wristCone > Constants.Arm.WRIST_UPPER_LIMIT) {
+                wristSetpoint = Constants.Arm.WRIST_UPPER_LIMIT;
+            }
             shoulderSetpoint = armPosition.shoulderCone;
             wristSetpoint = armPosition.wristCone;
 
@@ -83,6 +89,12 @@ public class ArmSetpointCommand extends CommandBase {
             }
             if (armPosition.elbowCube < -155) {
                 elbowSetpoint = -155;
+            }
+            if (armPosition.wristCube < Constants.Arm.WRIST_LOWER_LIMIT) {
+                wristSetpoint = Constants.Arm.WRIST_LOWER_LIMIT;
+            }
+            if (armPosition.wristCube > Constants.Arm.WRIST_UPPER_LIMIT) {
+                wristSetpoint = Constants.Arm.WRIST_UPPER_LIMIT;
             }
             shoulderSetpoint = armPosition.shoulderCube;
             wristSetpoint = armPosition.wristCube;
