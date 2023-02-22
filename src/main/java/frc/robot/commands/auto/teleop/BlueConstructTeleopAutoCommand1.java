@@ -7,16 +7,21 @@ import frc.robot.commands.auto.drive.CartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
+import frc.robot.subsystems.Vision;
 
 public class BlueConstructTeleopAutoCommand1 extends SequentialCommandGroup {
   AutoDrive autoDrive;
   Drivetrain drivetrain;
   Heading heading;
+  Vision vision;
 
-  public BlueConstructTeleopAutoCommand1(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
+  public BlueConstructTeleopAutoCommand1(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading, Vision vision) {
     this.autoDrive = autoDrive;
     this.drivetrain = drivetrain;
     this.heading = heading;
+    this.vision = vision;
+
+    addRequirements(vision);
 
     addCommands(
         new CartesianVectorProfileToPointTargetCommand(
@@ -25,8 +30,8 @@ public class BlueConstructTeleopAutoCommand1 extends SequentialCommandGroup {
             drivetrain::velocity,
             Constants.Auto.trajectoryTolerance,
             1.5,
-            Units.inchesToMeters(162),
-            Units.inchesToMeters(80),
+            Units.inchesToMeters(60),
+            Units.inchesToMeters(15),
             autoDrive,
             drivetrain,
             heading));

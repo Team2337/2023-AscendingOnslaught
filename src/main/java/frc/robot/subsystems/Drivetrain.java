@@ -270,6 +270,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void setTeleopAutoPosition(int position) {
     teleopAutoPosition = position;
+    SmartDashboard.putNumber("Teleop Auto Position", position);
     if (isAllianceBlue()) {
       SmartDashboard.putString("Vision/We are...", "blue!");
       switch (teleopAutoPosition) {

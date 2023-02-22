@@ -3,6 +3,7 @@ package frc.robot.commands.vision;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,11 +31,12 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
   @Override
   public void execute() {
     SmartDashboard.putBoolean("Reading Limelight", readLimelight);
-    if(drivetrain.getPose().getX() < 6) {
+    SmartDashboard.putNumber("Vision/Number of Relocalizations", relocalizationCounter);
+    if(drivetrain.getPose().getX() < 6.4) {
       color = LimelightColor.ORANGE;
       readLimelight = true;
       SmartDashboard.putString("We are...", "orange!");
-    } else if (drivetrain.getPose().getX() > 8) {
+    } else if (drivetrain.getPose().getX() > 7.6) {
       if (AllianceColor.getAllianceColor() == AllianceColor.Blue) {
         color = LimelightColor.PINK;
       } else {
@@ -56,11 +58,13 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
         double visionPoseY = vision.getVisionPoseY(color);
         double visionRotation = vision.getVisionRotation(color);
 
-        if (visionPoseX > 0 && visionPoseY > 0) {
+        if (visionPoseX > Units.inchesToMeters(36) && visionPoseY > 0 && visionPoseX < Constants.Auto.lengthOfField && visionPoseY < Constants.Auto.heightOfField) {
           Pose2d pose = new Pose2d(
             new Translation2d(visionPoseX, visionPoseY),
             Rotation2d.fromDegrees(visionRotation)
           );
+
+          SmartDashboard.putString("We are...", "relocalizing!");
   
           drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency(color) + 2) / 1000));
         }

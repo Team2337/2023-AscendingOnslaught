@@ -60,7 +60,7 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = false;
-    public static final boolean AUTO = false;
+    public static final boolean AUTO = true;
     public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final boolean PDH = false;
     public static final boolean SHOULDER = false;
     public static final boolean SWERVE = false;
-    public static final boolean VISION = false;
+    public static final boolean VISION = true;
   }
 
   // Driver dashboard
@@ -274,7 +274,7 @@ public final class Constants {
     public static final double centerOfRobotWidth = Units.inchesToMeters(15.5);
     public static final double centerOfRobotLength = Units.inchesToMeters(18);
     public static final double robotOffsetFromHybridAndPickupNodes = Units.inchesToMeters(21.5);
-    public static final double floorPickupArmReach = Units.inchesToMeters(12);
+    public static final double floorPickupArmReach = Units.inchesToMeters(24);
     public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
@@ -363,9 +363,9 @@ public final class Constants {
     public static final Translation2d blueSubstationIntermediary = new Translation2d(blueSubstation4.getX() - Units.inchesToMeters(100), blueSubstation4.getY() + centerOfRobotWidth);
 
     // Red Intermediary Points
-    public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
+    public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(60), Units.inchesToMeters(285));
     public static final Translation2d redLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(285));
-    public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
+    public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(60), Units.inchesToMeters(130));
     public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
     public static final Translation2d redSubstationIntermediary = new Translation2d(redSubstation5.getX() - Units.inchesToMeters(100), redSubstation5.getY() + centerOfRobotWidth);
   }

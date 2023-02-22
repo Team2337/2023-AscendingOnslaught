@@ -200,7 +200,7 @@ public class RobotContainer {
 
   public void resetRobot2023() {
     // Other option here is Constants.STARTING_ANGLE for booting against Hub
-    pigeon.setYaw(0, 250);
+    pigeon.setYaw(180, 250);
     drivetrain.resetPosition(
         new Pose2d(
             Constants.Auto.zeroPoint,
@@ -216,11 +216,11 @@ public class RobotContainer {
 
   private CommandSelector selectTeleopAuto() {
     if (driverController.getYButton()) {
-      return CommandSelector.ONE;
-    } else if (driverController.getXButton()) {
       return CommandSelector.TWO;
-    } else {
+    } else if (driverController.getXButton()) {
       return CommandSelector.THREE;
+    } else {
+      return CommandSelector.ONE;
     }
   }
 
@@ -371,18 +371,22 @@ public class RobotContainer {
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
           Map.ofEntries(
-              Map.entry(CommandSelector.ONE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand1(autoDrive, drivetrain, heading),
-              new RedConstructTeleopAutoCommand1(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)),
-              Map.entry(CommandSelector.TWO,  new ConditionalCommand(new BlueConstructTeleopAutoCommand2(autoDrive, drivetrain, heading),
-              new RedConstructTeleopAutoCommand2(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue)),
-              Map.entry(CommandSelector.THREE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
-              new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
+              Map.entry(CommandSelector.ONE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, vision),
+              new RedConstructTeleopAutoCommand1(autoDrive, drivetrain, heading, vision), drivetrain::isAllianceBlue)),
+              Map.entry(CommandSelector.TWO,  new ConditionalCommand(new BlueConstructTeleopAutoCommand2(autoDrive, drivetrain, heading, vision),
+              new RedConstructTeleopAutoCommand2(autoDrive, drivetrain, heading, vision), drivetrain::isAllianceBlue)),
+              Map.entry(CommandSelector.THREE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, vision),
+              new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading, vision), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
 
     driverLeftBumper.whileTrue(new ConditionalCommand(new BlueTeleopAutoLeftSubstation(autoDrive, drivetrain, heading),
       new  RedTeleopAutoLeftSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
     driverRightBumper.whileTrue(new ConditionalCommand(new  BlueTeleopAutoRightSubstation(autoDrive, drivetrain, heading),
       new  RedTeleopAutoRightSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
+
+    driverY.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(6)));
+    driverX.onTrue(new InstantCommand(() -> drivetrain.setTeleopAutoPosition(4)));
+
     
     /** Operator Controller * */
     // Note: Left X axis is used by DeliveryOverrideCommand
@@ -423,6 +427,7 @@ public class RobotContainer {
 
     operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
+    
     // TODO: Create switch to flip between orange and blue
     JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
     JoystickButton yellowButton = new JoystickButton(operatorStation, 10);

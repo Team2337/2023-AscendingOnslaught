@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
+import frc.robot.Constants.AllianceColor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision.LimelightColor;
@@ -24,8 +25,12 @@ public class InstantRelocalizeCartesianCommand extends InstantCommand {
   @Override
   public void initialize() {
     if(drivetrain.getPose().getX() < Constants.Vision.VISION_CAMERA_FIELD_ORIENTATION_SWITCHER) {
-      color = LimelightColor.BLUE;
-    } else {
+      if (AllianceColor.getAllianceColor() == AllianceColor.Blue) {
+        color = LimelightColor.PINK;
+      } else {
+        color = LimelightColor.BLUE;
+      }
+    }  else {
       color = LimelightColor.ORANGE;
     }
 
