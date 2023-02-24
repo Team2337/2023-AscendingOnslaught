@@ -14,7 +14,7 @@ public class ScoreConeHigh extends SequentialCommandGroup{
     public ScoreConeHigh(Elbow elbow, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
             new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH).withTimeout(1.5),
-            new IntakeReverseAuto(intake).withTimeout(0.3),
+            new IntakeReverseAuto(intake).withTimeout(0.75),
             new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)
         );
     }

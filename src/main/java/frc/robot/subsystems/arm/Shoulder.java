@@ -33,7 +33,7 @@ public class Shoulder extends PIDSubsystem {
   static double shoulderkP = 0.025;
   static double shoulderkI = 0.0;
   static double shoulderkD = 0.0;
-  private double allowableError = 1.0;
+  private double allowableError = 0.2;
   private double speedlimit = 0.5;
   private double closedLoopLimit = 0.5;
   
@@ -164,6 +164,7 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/System Voltage 3", RobotController.getCurrent3V3());
       SmartDashboard.putNumber("A/Theoretical Shoulder Motor Angle Via Encoder", convertDegreestoTicks(getShoulderPositionTicks()));
       SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
+      SmartDashboard.putNumber("Arm/Shoulder Setpoint", m_controller.getSetpoint());
       //SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);

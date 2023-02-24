@@ -35,6 +35,7 @@ import frc.robot.commands.LED.LEDRunnable;
 import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
+import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.auto.*;
@@ -71,7 +72,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
-  private  GamePiece gamePiece = GamePiece.Cone;
+  private  GamePiece gamePiece = GamePiece.Nothing;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
@@ -114,7 +115,7 @@ public class RobotContainer {
     vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
-    led.setDefaultCommand(new LEDRunnable(led, this).ignoringDisable(true));
+    led.setDefaultCommand(new LEDRunnable(led, this, ()->intake.hasCone()).ignoringDisable(true));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -403,10 +404,10 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this));
+    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
-    operatorLeftBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this));
+    operatorLeftBumper.whileTrue(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, elbow, shoulder, intakespinner, this).withTimeout(1.5).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)));
 
     operatorY.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this));
     operatorB.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this));

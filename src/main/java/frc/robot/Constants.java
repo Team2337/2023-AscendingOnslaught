@@ -59,15 +59,15 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = false;
+    public static final boolean ARM = true;
     public static final boolean AUTO = false;
-    public static final boolean ELBOW = false;
+    public static final boolean ELBOW = true;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
-    public static final boolean INTAKESPINNER = false;
+    public static final boolean INTAKESPINNER = true;
     public static final boolean PDH = false;
-    public static final boolean SHOULDER = false;
+    public static final boolean SHOULDER = true;
     public static final boolean SWERVE = false;
     public static final boolean VISION = false;
   }
@@ -467,18 +467,18 @@ public final class Constants {
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
     
-    /*
+    
     // Comp Arm
     public enum ArmPosition {
-    
-      SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
-      SCOREMID(59.0,127.0,110.0,90.0,165.0,23.0),
+      SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
+      SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
       SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
-      SUBSTATION(66.0,-44.0,66.0,-61.0,255.0,114.0),
+      SUBSTATION(65.0,-55.0,66.0,-61.0,255.0,114.0),
+      TELESTANDINGCONE(53.0,-115.0,35.0,-72.0,179.0,75.0),
+      TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,120.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
-      TELESTANDINGCONE(35.0,-72.0,35.0,-72.0,194.0,75.0),
-      TELEFALLINGCONE(29.0,-76.0,29.0,-76.0,130.0,75.0),
-      CARRY(-21.0,155.0,-21.0,155.0,35.0,25.0);
+      CARRY(-21.0,145.0,-21.0,145.0,35.0,25.0),
+      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0);
       
 
       public final double shoulderCone;
@@ -497,8 +497,9 @@ public final class Constants {
         this.wristCube = wristCube;
       }
     }
-    */
+  
     // Practice Arm
+    /* 
     public enum ArmPosition {
     
       SCOREHIGH(110.0,54.0,110.0,70.0,165.0,23.0),
@@ -508,7 +509,8 @@ public final class Constants {
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       TELESTANDINGCONE(35.0,-72.0,35.0,-72.0,194.0,75.0),
       TELEFALLINGCONE(29.0,-76.0,29.0,-76.0,130.0,75.0),
-      CARRY(-21.0,155.0,-21.0,155.0,35.0,25.0);
+      CARRY(-21.0,155.0,-21.0,155.0,35.0,25.0),
+      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0);
       
 
       public final double shoulderCone;
@@ -527,7 +529,7 @@ public final class Constants {
         this.wristCube = wristCube;
       }
     }
-
+ */
   }
 /**
  * Based on a 75:1 Gear Ratio
@@ -540,6 +542,7 @@ public final class Constants {
   public static enum GamePiece {
     Cone,
     Cube,
+    Carry,
     Nothing;
   }
 
