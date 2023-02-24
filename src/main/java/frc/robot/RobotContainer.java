@@ -151,6 +151,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
     autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
     autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 

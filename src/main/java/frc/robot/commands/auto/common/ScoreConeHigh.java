@@ -13,9 +13,9 @@ import frc.robot.subsystems.arm.Shoulder;
 public class ScoreConeHigh extends SequentialCommandGroup{
     public ScoreConeHigh(Elbow elbow, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
-            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH).withTimeout(1.5),
-            new IntakeReverseAuto(intake).withTimeout(0.75),
-            new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)
+            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH).withTimeout(4),
+            new IntakeReverseAuto(intake).withTimeout(0.5),
+            new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRYINTERMEDIATE)
         );
     }
 }
