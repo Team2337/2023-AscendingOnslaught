@@ -1,5 +1,7 @@
 package frc.robot.commands.LED;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,10 +12,12 @@ import frc.robot.nerdyfiles.leds.LED;
 public class LEDRunnable extends CommandBase{
   private final RobotContainer robotContainer;
   private final LED led;
+  private Supplier<Boolean> hasGamepiece;
 
-  public LEDRunnable(LED led, RobotContainer robotContainer) {
+  public LEDRunnable(LED led, RobotContainer robotContainer, Supplier<Boolean> hasGamepiece) {
     this.led = led;
     this.robotContainer = robotContainer;
+    this.hasGamepiece = hasGamepiece;
 
     addRequirements(led);
   }
@@ -33,6 +37,15 @@ public class LEDRunnable extends CommandBase{
       led.setLeftColor(Color.kPurple);
       led.setRightColor(Color.kPurple);
     }
+    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Nothing) {
+      led.setLeftColor(Color.kBlack);
+      led.setRightColor(Color.kBlack);
+    }
+    if (DriverStation.isTeleop() && hasGamepiece.get() == true) {
+      led.setLeftColor(Color.kRed);
+      led.setRightColor(Color.kRed);
+    }
+    
     // if (robotContainer.getYellowSwitchStatus() && robotContainer.getGyroscopeRoll() < Constants.CLIMBER_ROLL) {
     //   led.setColor(Color.kPurple);
     // } else if (robotContainer.isShooterUpToLEDSpeed() && robotContainer.hasActiveTarget()) {

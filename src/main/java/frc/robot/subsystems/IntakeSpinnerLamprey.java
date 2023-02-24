@@ -25,7 +25,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private Supplier<Double> voltage;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.4;
+    private double peakOutput = 0.5;
     private double tolerance = 0.5;
     private static double kP = 0.01;
     private static double kI = 0;
@@ -45,7 +45,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configStatorCurrentLimit(defaultCurrentLimit());
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
-        intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
+        intakeSpinnerMotor.setInverted(TalonFXInvertType.CounterClockwise);
 
         getController().setTolerance(tolerance);
         enable();
@@ -95,10 +95,10 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public void log() {
         if (Constants.DashboardLogging.INTAKESPINNER) {
             SmartDashboard.putNumber("Arm/ Wrist Setpoint", getSetpoint());
-            SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
             SmartDashboard.putNumber("Arm/Wrist Output", intakeSpinnerMotor.getMotorOutputPercent());
             SmartDashboard.putString("Arm/Wrist Game Piece", gamePiece.get().toString());
         }
+        SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
         
     }
   

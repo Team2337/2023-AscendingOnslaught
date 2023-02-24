@@ -55,6 +55,25 @@ public class Utilities {
     return Math.copySign(value * value, value);
   }
 
+   /**
+   * To be used to reduce drive inputs for fine control
+   * 
+   * Checks to see if the absolute value of the input is less than the deadband
+   * @param input - Value in which the deadband will be applied (0 < input < 1)
+   * @param deadband - Deadband to set on the input (double)
+   * @param scale - Scale the input outside the deadband to reduce input (double) 
+   * A deadband of .1 and a scale factor of 2 leads to a scaling of rougly 50% of max output
+   * A deadband of .1 and a scale factor or 3 leads to a scaling of rougly 30% of max output
+   * A deadband of .1 and a scale factor or 4 leads to a scaling of rougly 23% of max output
+   * A deadband of .1 and a scale factor or 5 leads to a scaling of rougly 18% of max output
+   * @return - input double value adjusted for the deadband
+   */
+
+   public static double deadbandAndScale(double input, double deadband, double scale) {
+    if (Math.abs(input) < deadband) return 0;
+    return Math.copySign((Math.abs(input) - deadband) / (scale - deadband), input);
+  }
+
   /**
    * Calculates derivative based on the current and previous sensor inputs
    * @param error - double value reading the current sensor error (current - target)

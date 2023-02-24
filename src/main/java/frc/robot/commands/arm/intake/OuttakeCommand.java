@@ -8,6 +8,7 @@ import frc.robot.subsystems.arm.Intake;
 public class OuttakeCommand extends CommandBase{
     Intake intake;
     RobotContainer robotContainer;
+    private double speed;
 
     public OuttakeCommand(Intake intake, RobotContainer robotContainer) {
         this.intake = intake;
@@ -17,17 +18,18 @@ public class OuttakeCommand extends CommandBase{
     }
 
     @Override
-    public void initialize() {        
+    public void initialize() {       
+        
     }
 
     @Override
     public void execute() {
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
-            intake.setIntakeSpeed(-0.66);  
+            speed = -0.66;
         } else {
-            intake.setIntakeSpeed(0.66);
-        }
-        
+            speed = 0.66;
+        } 
+        intake.setIntakeSpeed(speed);
     }
 
     @Override
@@ -38,5 +40,6 @@ public class OuttakeCommand extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         intake.setIntakeSpeed(0);
+        robotContainer.setGamePiece(GamePiece.Nothing);
     }
 }

@@ -33,7 +33,7 @@ public class Elbow extends PIDSubsystem {
   static double elbowkP = 0.025;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
-  double allowableError = 1;
+  double allowableError = 0.2;
   private double speedlimit = 0.5;
   private double closedLoopLimit = 0.5;
   
@@ -145,6 +145,7 @@ public class Elbow extends PIDSubsystem {
       SmartDashboard.putNumber("Arm/Elbow Motor Encoder Ticks", getElbowPositionTicks());
       //SmartDashboard.putNumber("Arm/Elbow Motor Setpoint from Motor", elbowMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Elbow Motor Speed", elbowMotor.getMotorOutputPercent());
+      SmartDashboard.putNumber("Arm/Elbow Setpoint", m_controller.getSetpoint());
       // SmartDashboard.putNumber("Arm K/ Elbow Output", output);
       //SmartDashboard.putNumber("Arm/Elbow Motor Power (V)", elbowMotor.getStatorCurrent());
       //SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
