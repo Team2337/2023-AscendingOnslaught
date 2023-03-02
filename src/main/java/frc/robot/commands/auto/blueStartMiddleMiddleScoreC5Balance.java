@@ -4,15 +4,21 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.commands.auto.drive.AutoEngagePP2P;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
+import frc.robot.subsystems.IntakeSpinnerLamprey;
+import frc.robot.subsystems.arm.Elbow;
+import frc.robot.subsystems.arm.Intake;
+import frc.robot.subsystems.arm.Shoulder;
 
-public class blueStartMiddleMiddleBalance extends SequentialCommandGroup{
-    public blueStartMiddleMiddleBalance(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
+public class blueStartMiddleMiddleScoreC5Balance extends SequentialCommandGroup{
+    public blueStartMiddleMiddleScoreC5Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new WaitCommand(1),
+            new ScoreConeHigh(elbow, intake, intakespinner, robotContainer, shoulder),
             new AutoEngagePP2P(
                 Constants.Auto.blueCenterOfChargeStation, 
                 drivetrain::getTranslation, 

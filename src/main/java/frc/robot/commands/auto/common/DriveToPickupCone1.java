@@ -2,9 +2,12 @@ package frc.robot.commands.auto.common;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.GamePiece;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
@@ -17,7 +20,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class DriveToPickupCone1 extends ParallelCommandGroup{
-    public DriveToPickupCone1(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder){
+    public DriveToPickupCone1(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder){
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(
                 target, 
@@ -25,14 +28,15 @@ public class DriveToPickupCone1 extends ParallelCommandGroup{
                 drivetrain::velocity,
                 Constants.Auto.trajectoryTolerance,
                 3, 
-                Units.inchesToMeters(80),
-                Units.inchesToMeters(15), 
+                Units.inchesToMeters(160),
+                Units.inchesToMeters(30), 
                 autoDrive, 
                 drivetrain,
                 heading
                 ),
-            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.TELESTANDINGCONE).withTimeout(5),
-            new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake))
+            new InstantCommand(() -> robotContainer.setGamePiece(GamePiece.Cone)),
+            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, robotContainer, Constants.Arm.ArmPosition.TELESTANDINGCONE).withTimeout(6),
+            new WaitCommand(0.75).andThen(new IntakeForwardAuto(intake)).withTimeout(6.5)
         );
     }
 }

@@ -15,7 +15,7 @@ public class IntakeForwardAuto extends CommandBase{
 
     @Override
     public void initialize() {
-        intake.setIntakeSpeed(Constants.Auto.intakeForwardSpeed);
+        intake.setIntakeSpeed(Constants.Auto.intakeAutoForwardSpeed);
     }
 
     @Override
