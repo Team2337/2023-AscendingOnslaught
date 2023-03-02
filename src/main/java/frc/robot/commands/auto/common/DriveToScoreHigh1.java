@@ -24,8 +24,8 @@ public class DriveToScoreHigh1 extends ParallelCommandGroup{
                 drivetrain::velocity,
                 Constants.Auto.trajectoryTolerance,
                 3.0, 
-                Units.inchesToMeters(80),
-                Units.inchesToMeters(15), 
+                Units.inchesToMeters(160),
+                Units.inchesToMeters(30), 
                 autoDrive, 
                 drivetrain,
                 heading

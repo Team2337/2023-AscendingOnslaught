@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.Intake;
 
-public class IntakeReverseAuto extends CommandBase{
+public class IntakeReverseCube extends CommandBase{
     Intake intake;
 
-    public IntakeReverseAuto(Intake intake) {
+    public IntakeReverseCube(Intake intake) {
         this.intake = intake;
 
         addRequirements(intake);
@@ -15,8 +15,7 @@ public class IntakeReverseAuto extends CommandBase{
 
     @Override
     public void initialize() {
-        //TODO: Confirm intake direction
-        intake.setIntakeSpeed(Constants.Auto.intakeAutoReverseSpeed);
+        intake.setIntakeSpeed(Constants.Auto.intakeAutoForwardSpeed);
     }
 
     @Override

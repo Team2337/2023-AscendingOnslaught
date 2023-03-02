@@ -279,9 +279,10 @@ public final class Constants {
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
     public static final double trajectoryTolerance = 1;
-    public static final double intakeForwardSpeed = 0.5;
-    public static final double intakeReverseSpeed = -0.5;
-    public static final double robotScoringOffset = Units.inchesToMeters(8);
+    public static final double intakeAutoForwardSpeed = 1.0;
+    public static final double intakeAutoReverseSpeed = -0.5;
+    public static final double robotScoringOffset = Units.inchesToMeters(2);
+    public static final double pickupOffset = Units.inchesToMeters(14);
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -325,13 +326,13 @@ public final class Constants {
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(36.19));
     public static final Translation2d blueMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(84.19));
     public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(132.19));
-    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(180.19));
+    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(180.19));
 
-    public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(147.73), Units.inchesToMeters(36));
-    public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(11.000));
+    public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(207.73), Units.inchesToMeters(-22));
+    public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(6.000));
 
     // Red Staging Marks
-    public static final Translation2d redBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(135.41));
+    public static final Translation2d redBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(135.41));
     public static final Translation2d redMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(173.61));
     public static final Translation2d redTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(221.61));
     public static final Translation2d redToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(269.61));
@@ -474,11 +475,14 @@ public final class Constants {
       SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
       SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
       SUBSTATION(65.0,-55.0,66.0,-61.0,255.0,114.0),
-      TELESTANDINGCONE(53.0,-115.0,35.0,-72.0,179.0,75.0),
-      TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,120.0,59.0),
+      TELESTANDINGCONE(55.0,-118.0,35.0,-72.0,184.0,75.0),
+      TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
-      CARRY(-21.0,145.0,-21.0,145.0,35.0,25.0),
-      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0);
+      CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
+      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0),
+      FEEDSTATION(70, -134, 70, -130, 67, 184),
+      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0);
+      //67, -137
       
 
       public final double shoulderCone;
@@ -543,6 +547,7 @@ public final class Constants {
     Cone,
     Cube,
     Carry,
+    CarryObject,
     Nothing;
   }
 

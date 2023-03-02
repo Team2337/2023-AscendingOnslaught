@@ -5,6 +5,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
@@ -17,7 +18,7 @@ import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
 public class DriveToPickupCone3 extends SequentialCommandGroup{
-    public DriveToPickupCone3(Translation2d waypoint1, Translation2d waypoint2, Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
+    public DriveToPickupCone3(Translation2d waypoint1, Translation2d waypoint2, Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(
                 waypoint1, 
@@ -56,7 +57,7 @@ public class DriveToPickupCone3 extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 )),
-            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.AUTOPICKUP),
+            new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, robotContainer, Constants.Arm.ArmPosition.AUTOPICKUP),
             new IntakeForwardAuto(intake).withTimeout(1.5)
         ));
     }

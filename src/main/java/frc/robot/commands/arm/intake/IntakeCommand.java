@@ -37,17 +37,17 @@ public class IntakeCommand extends CommandBase{
     public void execute() {
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
             speed = 0.66;
+            if (intake.hasCone() == true) {
+                speed = 0.0;
+                //TODO: Fix this eventually, make the setpoint the intermediary.
+                //shoulder.setSetpoint(Constants.Arm.ArmPosition.CARRY.shoulderCube);
+                //elbow.setSetpoint(Constants.Arm.ArmPosition.CARRY.elbowCube);
+                //intakespinner.setSetpoint(Constants.Arm.ArmPosition.CARRY.wristCube);   
+            }
         } else {
             speed = -0.66;
         }
-        if (intake.hasCone() == true) {
-            speed = 0.0;
-            //TODO: Fix this eventually, make the setpoint the intermediary.
-            //shoulder.setSetpoint(Constants.Arm.ArmPosition.CARRY.shoulderCube);
-            //elbow.setSetpoint(Constants.Arm.ArmPosition.CARRY.elbowCube);
-            //intakespinner.setSetpoint(Constants.Arm.ArmPosition.CARRY.wristCube);
-            
-        }
+        
         intake.setIntakeSpeed(speed);
     }
         

@@ -112,7 +112,7 @@ public class RobotContainer {
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
-    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this, ()->intake.hasCone()).ignoringDisable(true));
@@ -147,11 +147,17 @@ public class RobotContainer {
     //             1.5, Units.inchesToMeters(80), autoDrive, heading))
     //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15, 7), drivetrain::getTranslation, 1.5,
     //             Units.inchesToMeters(80), autoDrive, heading)));
-    autonChooser.addOption("Charge Station Test", new blueStartMiddleMiddleBalance(autoDrive, drivetrain, heading));
-    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Blue Middle Middle Score 1 Balance", new blueStartMiddleMiddleScoreC5Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Middle Middle Score 1 Balance", new redStartMiddleMiddleScoreC5Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
-    autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
-    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
+    autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
+    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Righty Right Score 2", new blueRightyRightScoreC9GBotScoreO9(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+   
+    autonChooser.addOption("Blue Lefty Left Score 2", new blueLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 2", new redRightyRightScoreC9GBotScoreO9(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -368,7 +374,8 @@ public class RobotContainer {
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
     triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
-    triggerDriverLeft.onTrue(new InstantRelocalizeCartesianCommand(drivetrain, vision));
+    //If blue 90, if red -90
+    triggerDriverLeft.onTrue(new MaintainHeadingCommand(-90, heading));
 
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
@@ -413,6 +420,7 @@ public class RobotContainer {
     operatorY.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this));
     operatorB.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this));
     operatorA.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this));
+    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATION, elbow, shoulder, intakespinner, this));
  
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
     operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
@@ -423,7 +431,7 @@ public class RobotContainer {
     operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
     operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
 
-    operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
+    // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
     JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
