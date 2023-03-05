@@ -3,6 +3,7 @@ package frc.robot.commands.arm.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.LEDState;
 import frc.robot.subsystems.arm.Intake;
 
 public class OuttakeCommand extends CommandBase{
@@ -40,6 +41,6 @@ public class OuttakeCommand extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         intake.setIntakeSpeed(0);
-        robotContainer.setGamePiece(GamePiece.Nothing);
+        robotContainer.setLEDState(LEDState.Nothing);
     }
 }

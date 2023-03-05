@@ -34,8 +34,8 @@ public class Shoulder extends PIDSubsystem {
   static double shoulderkI = 0.0;
   static double shoulderkD = 0.0;
   private double allowableError = 0.2;
-  private double speedlimit = 0.7;
-  private double closedLoopLimit = 0.7;
+  private double speedlimit = Constants.Arm.SHOULDER_MAX_SPEED;
+  private double closedLoopLimit = Constants.Arm.SHOULDER_CLOSED_LOOP_SPEED;
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {
@@ -47,7 +47,7 @@ public class Shoulder extends PIDSubsystem {
     shoulderMotor.config_kI(0, shoulderkI);
     shoulderMotor.config_kD(0, shoulderkD);
     shoulderMotor.configForwardSoftLimitThreshold(275000);
-    shoulderMotor.configReverseSoftLimitThreshold(0);
+    shoulderMotor.configReverseSoftLimitThreshold(-28000);
     shoulderMotor.configForwardSoftLimitEnable(true);
     shoulderMotor.configReverseSoftLimitEnable(true);
     shoulderMotor.configAllowableClosedloopError(0, 0);
@@ -163,13 +163,13 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/System Voltage 5", RobotController.getCurrent5V());
       SmartDashboard.putNumber("Arm/System Voltage 3", RobotController.getCurrent3V3());
       SmartDashboard.putNumber("A/Theoretical Shoulder Motor Angle Via Encoder", convertDegreestoTicks(getShoulderPositionTicks()));
-      SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
       SmartDashboard.putNumber("Arm/Shoulder Setpoint", m_controller.getSetpoint());
       //SmartDashboard.putNumber("Arm/Shoulder Motor Setpoint from Motor", shoulderMotor.getClosedLoopTarget());
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
       //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
     }
+    SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
     SmartDashboard.putNumber("Arm/Shoulder Encoder Degrees", getShoulderLampreyDegrees());
   }
 

@@ -30,11 +30,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.LEDState;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.LED.LEDRunnable;
 import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
+import frc.robot.commands.arm.ArmSetpointShoulder;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.OuttakeCommand;
@@ -73,6 +75,7 @@ import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
   private  GamePiece gamePiece = GamePiece.Nothing;
+  private LEDState ledState = LEDState.Nothing;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
@@ -415,21 +418,21 @@ public class RobotContainer {
     triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
-    operatorLeftBumper.whileTrue(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, elbow, shoulder, intakespinner, this).withTimeout(1.5).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)));
+    operatorLeftBumper.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this, 3).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)));
 
-    operatorY.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this));
+    operatorY.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this, 1.25).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this)));
     operatorB.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this));
     operatorA.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this));
-    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATION, elbow, shoulder, intakespinner, this));
+    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATIONFRONT, elbow, shoulder, intakespinner, this));
  
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
     operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
-    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
-    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
     
-    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
-    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
+    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cone))));
+    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cube))));
 
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
@@ -450,7 +453,12 @@ public class RobotContainer {
   public GamePiece getGamepiece() {
     return gamePiece;
   }
-
+  public LEDState getLEDState() {
+    return ledState;
+  }
+  public void setLEDState(LEDState ledState) {
+    this.ledState = ledState;
+  }
   public void configureButtonBindingsTeleop() {
     JoystickButton redLeftSwitch = new JoystickButton(operatorStation, 11);
   }

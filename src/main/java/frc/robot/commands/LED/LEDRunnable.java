@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.LEDState;
 import frc.robot.nerdyfiles.leds.LED;
 
 public class LEDRunnable extends CommandBase{
@@ -29,17 +29,21 @@ public class LEDRunnable extends CommandBase{
     //     led.setColor(Color.kRed);
     // }
     led.setFrontColor(Color.kRed);
-    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cone) {
+    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Cone) {
       led.setLeftColor(Color.kYellow);
       led.setRightColor(Color.kYellow);
     }
-    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Cube) {
+    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Cube) {
       led.setLeftColor(Color.kPurple);
       led.setRightColor(Color.kPurple);
     }
-    if (DriverStation.isTeleop() && robotContainer.getGamepiece() == GamePiece.Nothing) {
+    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Nothing) {
       led.setLeftColor(Color.kBlack);
       led.setRightColor(Color.kBlack);
+    }
+    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.HasGamePiece) {
+      led.setLeftColor(Color.kBlue);
+      led.setRightColor(Color.kBlue);
     }
     if (DriverStation.isTeleop() && hasGamepiece.get() == true) {
       led.setLeftColor(Color.kRed);

@@ -463,14 +463,23 @@ public final class Constants {
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
     public static final double WRIST_LOWER_LIMIT = 23.0;
-    public static final double WRIST_UPPER_LIMIT = 260.0;
+    public static final double WRIST_UPPER_LIMIT = 280.0;
+    public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
+    public static final double SHOULDER_MAX_SPEED = 0.7;
+    public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
+    public static final double ELBOW_CLOSED_LOOP_SPEED = 0.7;
+    public static final double ELBOW_MAX_SPEED = 0.7;
+    public static final double ELBOW_JOYSTICK_SPEED = 0.4;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
+    public static final double WRIST_ANGLE_ADJUSTMENT = 10.0;
+    public static final double ELBOW_LIMIT = 155;
     
     
     // Comp Arm
     public enum ArmPosition {
+      SCOREHIGHINTERMEDIATE(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
       SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
@@ -479,8 +488,9 @@ public final class Constants {
       TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0),
+      CARRYINTERMEDIATE(-21,120,-21,120,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
+      FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
       AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0);
       //67, -137
       
@@ -546,8 +556,13 @@ public final class Constants {
   public static enum GamePiece {
     Cone,
     Cube,
-    Carry,
-    CarryObject,
+    Nothing;
+  }
+
+  public static enum LEDState {
+    Cone,
+    Cube,
+    HasGamePiece,
     Nothing;
   }
 
