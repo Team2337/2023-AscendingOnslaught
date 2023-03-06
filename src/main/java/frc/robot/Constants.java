@@ -467,8 +467,10 @@ public final class Constants {
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
-    
-    
+    public static final double intakeP = 0.2;
+    public static final double intakeI = 0.0;
+    public static final double intakeD = 0.0;
+
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
