@@ -412,7 +412,7 @@ public class RobotContainer {
         new ConditionalCommand(
         new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
         new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
-        ()-> alternateCarry),
+        ()-> wasPastPositionSubstation()),
       ()-> alternateCarry)
       );
 
@@ -531,7 +531,7 @@ public class RobotContainer {
     alternateCarry = false;
   }
 
-  public boolean wasPastCarrySubstation() {
+  public boolean wasPastPositionSubstation() {
     return (shoulder.pastPosition == ArmPosition.SUBSTATION || shoulder.pastPosition == ArmPosition.SUBSTATIONPICKUP);
   }
 
