@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
+import frc.robot.Constants.Arm.ArmPosition;
 
 public class Shoulder extends PIDSubsystem {
 
@@ -36,7 +37,7 @@ public class Shoulder extends PIDSubsystem {
   private double allowableError = 0.2;
   private double speedlimit = Constants.Arm.SHOULDER_MAX_SPEED;
   private double closedLoopLimit = Constants.Arm.SHOULDER_CLOSED_LOOP_SPEED;
-  public String pastPosition; 
+  public ArmPosition pastPosition; 
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {

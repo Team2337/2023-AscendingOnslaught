@@ -108,7 +108,7 @@ public class ArmSetpointElbow extends CommandBase {
     public void end(boolean interrupted) {
         shoulder.enable();
         elbow.enable();
-        shoulder.pastPosition = armPosition.toString();
+        shoulder.pastPosition = armPosition;
     }
 
 

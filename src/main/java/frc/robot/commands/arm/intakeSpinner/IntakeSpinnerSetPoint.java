@@ -1,4 +1,4 @@
-package frc.robot.commands.intakeSpinner;
+package frc.robot.commands.arm.intakeSpinner;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.IntakeSpinnerLamprey;

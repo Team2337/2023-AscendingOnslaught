@@ -76,7 +76,6 @@ public final class Constants {
   // Driver dashboard
   // 28x13
   public static enum DriverDashboardPositions {
-    // TODO: could we make this easier by using a method to pass in the widget and one of these enums?
     AUTON_CHOOSER(9, 6, 6, 3),
     STARTING_POS_CHOOSER(9, 0, 6, 3),
     STARTING_ANGLE_CHOOSER(9, 3, 6, 3),
@@ -442,7 +441,6 @@ public final class Constants {
     public static final double VISION_TARGET_OFFSET_FROM_HUB_CENTER_METERS = Units.feetToMeters(2);
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
-    //TODO: Change to 7.5
     public static final double VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 7.5;
   }
 

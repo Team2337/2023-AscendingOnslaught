@@ -83,7 +83,6 @@ public class ArmBasicJoystickCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return false;
     }
     
