@@ -23,6 +23,7 @@ public final class Constants {
   public static double STARTING_ANGLE = 25;
 
   public final ModuleConfiguration SWERVE_MODULE_CONFIGURATION;
+  public static double MAX_VELOCITY_METERS_PER_SECOND = 0.0;
 
   public final int MODULE0_DRIVE_MOTOR_ID;
   public final int MODULE0_ANGLE_MOTOR_ID;
@@ -140,6 +141,17 @@ public final class Constants {
     switch (robotType) {
       case SKILLSBOT:
         SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK3_STANDARD;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+     MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK3_STANDARD.getDriveReduction() *
+    SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 0;
         MODULE0_ANGLE_MOTOR_ID = 4;
@@ -175,6 +187,17 @@ public final class Constants {
         break;
       case PRACTICE:
         SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L1;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+    MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK4_L1.getDriveReduction() *
+    SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
@@ -210,7 +233,18 @@ public final class Constants {
         break;
       case COMPETITION:
       default:
-        SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L1;
+        SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L3;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+     MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK4_L3.getDriveReduction() *
+    SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
@@ -387,17 +421,7 @@ public final class Constants {
       }
     }
 
-    //  The formula for calculating the theoretical maximum velocity is:
-    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
-    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
-    /**
-     * The maximum velocity of the robot in meters per second.
-     * <p>
-     * This is a measure of how fast the robot should be able to drive in a straight line.
-     */
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-      SdsModuleConfigurations.MK4_L1.getDriveReduction() *
-      SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
+    
 
       /**
      * The maximum angular velocity of the robot in radians per second.
@@ -482,16 +506,20 @@ public final class Constants {
       SCOREHIGHINTERMEDIATE(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
-      SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
-      SUBSTATION(65.0,-55.0,66.0,-61.0,255.0,114.0),
+      SCORELOW(82.0,145.0,100.0,145.0,185.0,75.0),
+      SUBSTATION(86.0,-76.0,86.0,-76.0,253.0,140.0),
+      SUBSTATIONPICKUP(86.0,-83.0,86.0,-88.0,253.0,138.0),
       TELESTANDINGCONE(55.0,-118.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,120,-21,120,35.0,25.0),
+      CARRYINTERMEDIATE(-21,125,-21,125,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
-      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0);
+      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
+      ALTERNATECARRY(90,-135,90,-135,253,59),
+      ALTERNATEINTERMEDIATE(90,-100,90,-100,253,59),
+      ALTERNATECARRYEND(90,-148,90,-148,253,59);
       //67, -137
       
 

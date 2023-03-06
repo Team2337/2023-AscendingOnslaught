@@ -91,8 +91,8 @@ public class SwerveDriveCommand extends CommandBase {
       rotation = heading.calculateRotation();
     }
 
-    double vxMetersPerSecond = forward * Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND;
-    double vyMetersPerSecond = strafe * Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND;
+    double vxMetersPerSecond = forward * Constants.MAX_VELOCITY_METERS_PER_SECOND;
+    double vyMetersPerSecond = strafe * Constants.MAX_VELOCITY_METERS_PER_SECOND;
     double omegaRadiansPerSecond = rotation * Constants.Swerve.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
 
     SmartDashboard.putNumber("Drive/Strafe Output", strafe);

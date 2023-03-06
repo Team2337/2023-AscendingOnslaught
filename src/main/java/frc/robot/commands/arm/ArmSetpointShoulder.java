@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Arm.ArmPosition;
+import frc.robot.nerdyfiles.utilities.Utilities;
 import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
@@ -40,26 +41,16 @@ public class ArmSetpointShoulder extends CommandBase {
     double shoulderSetpoint = 0;
     double wristSetpoint = 0;
     ArmPosition armPosition;
-    boolean isTimedOut = false;
-    private static double timeOut = 2;
-    double timerStart;
-    double timerCurrent;
     
     
-    //Seems to start slowing down at 45 degrees, will probably have to change due to gearings and such.
-    ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
+   
 
     public ArmSetpointShoulder(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
-        this(armPosition, elbow, shoulder, intakespinner, robotContainer, timeOut);
-    }
-
-    public ArmSetpointShoulder(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, double timeOut) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
-        this.timeOut = timeOut;
         addRequirements(elbow, shoulder);
 
     }
@@ -67,7 +58,6 @@ public class ArmSetpointShoulder extends CommandBase {
 
     @Override
     public void initialize() {
-        timerStart = Timer.getFPGATimestamp() / 1000000;
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
@@ -100,32 +90,25 @@ public class ArmSetpointShoulder extends CommandBase {
         
         shoulder.setSetpoint(shoulderSetpoint);
         intakespinner.setSetpoint(wristSetpoint);
-        SmartDashboard.putNumber("Start Timer", timerStart);
     }
     
     
     @Override
     public void execute() {
-        timerCurrent = Timer.getFPGATimestamp() / 1000000;
-        SmartDashboard.putNumber("Current Timer", Math.round(timerCurrent));
-        System.out.println(timerCurrent - timerStart);
-        if ((timerCurrent - timerStart) > timeOut) {
-            isTimedOut = true;    
-        }
     }
 
     @Override
     public void end(boolean interrupted) {
         shoulder.enable();
         elbow.enable();
-        
+        shoulder.pastPosition = armPosition.toString();
     }
 
 
 
     @Override
     public boolean isFinished() {
-       return shoulder.atSetpoint() || isTimedOut;
+       return Utilities.withinTolerance(shoulder.getSetpoint(), shoulder.getShoulderLampreyDegrees(), 15.0);
         
 
     }

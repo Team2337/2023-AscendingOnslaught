@@ -408,7 +408,7 @@ public class Drivetrain extends SubsystemBase {
     log();
     pigeon.getYawPitchRoll(ypr_deg);
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_VELOCITY_METERS_PER_SECOND);
 
     modulePositions[0] = modules[0].getPosition();
     modulePositions[1] = modules[1].getPosition();
@@ -419,7 +419,7 @@ public class Drivetrain extends SubsystemBase {
       FXSwerveModule module = modules[i];
       SwerveModuleState moduleState = states[i];
 
-      module.set(moduleState, Constants.Swerve.MAX_VELOCITY_METERS_PER_SECOND);
+      module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
       module.logDebug();
     }
 

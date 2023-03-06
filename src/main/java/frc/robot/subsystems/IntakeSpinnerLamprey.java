@@ -45,7 +45,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configStatorCurrentLimit(defaultCurrentLimit());
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
-        intakeSpinnerMotor.setInverted(TalonFXInvertType.CounterClockwise);
+        intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
 
         getController().setTolerance(tolerance);
         enable();

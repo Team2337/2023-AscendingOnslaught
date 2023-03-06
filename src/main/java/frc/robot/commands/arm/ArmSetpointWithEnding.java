@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Arm.ArmPosition;
+import frc.robot.nerdyfiles.utilities.Utilities;
 import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
@@ -23,6 +24,7 @@ public class ArmSetpointWithEnding extends CommandBase {
     IntakeSpinnerLamprey intakespinner;
     Supplier<CommandXboxController> joystick;
     RobotContainer robotContainer;
+    double tolerance;
 
     double shoulderP = 0.005;
     double shoulderI = 0;
@@ -46,12 +48,13 @@ public class ArmSetpointWithEnding extends CommandBase {
     ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
 
 
-    public ArmSetpointWithEnding(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+    public ArmSetpointWithEnding(ArmPosition armPosition, double tolerance, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
+        this.tolerance = tolerance;
         addRequirements(elbow, shoulder);
 
     }
@@ -116,15 +119,16 @@ public class ArmSetpointWithEnding extends CommandBase {
     public void end(boolean interrupted) {
         shoulder.enable();
         elbow.enable();
-        
+        shoulder.pastPosition = armPosition.toString();
     }
 
 
 
     @Override
     public boolean isFinished() {
-       return (shoulder.atSetpoint() && elbow.atSetpoint());
+       return (Utilities.withinTolerance(shoulder.getSetpoint(), shoulder.getShoulderLampreyDegrees(), tolerance)); //&& Utilities.withinTolerance(elbow.getSetpoint(), elbow.getElbowLampreyDegrees(), 5.0));
 
     }
     
 }
+

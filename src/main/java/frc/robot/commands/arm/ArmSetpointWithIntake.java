@@ -16,7 +16,7 @@ import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ArmSetpointCommand extends CommandBase {
+public class ArmSetpointWithIntake extends CommandBase {
 
     Elbow elbow;
     Shoulder shoulder;
@@ -40,13 +40,8 @@ public class ArmSetpointCommand extends CommandBase {
     double shoulderSetpoint = 0;
     double wristSetpoint = 0;
     ArmPosition armPosition;
-    
-    
-    //Seems to start slowing down at 45 degrees, will probably have to change due to gearings and such.
-    ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
 
-
-    public ArmSetpointCommand(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+    public ArmSetpointWithIntake(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.robotContainer = robotContainer;
@@ -59,7 +54,7 @@ public class ArmSetpointCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (robotContainer.getGamepiece() == GamePiece.Cone) {
+        if (robotContainer.getGamepiece() == GamePiece.Cone && (shoulder.getShoulderLampreyDegrees() > 80 && shoulder.getShoulderLampreyDegrees() < 100)) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();
@@ -78,7 +73,6 @@ public class ArmSetpointCommand extends CommandBase {
             }
             shoulderSetpoint = armPosition.shoulderCone;
             wristSetpoint = armPosition.wristCone;
-
         } else {
             elbowSetpoint = armPosition.elbowCube;
             shoulder.enable();
@@ -102,7 +96,7 @@ public class ArmSetpointCommand extends CommandBase {
         
         
         shoulder.setSetpoint(shoulderSetpoint);
-        elbow.setSetpoint(elbowSetpoint);
+        elbow.setSetpoint(elbowSetpoint - 5);
         intakespinner.setSetpoint(wristSetpoint);
     }
 
@@ -117,7 +111,6 @@ public class ArmSetpointCommand extends CommandBase {
         shoulder.enable();
         elbow.enable();
         shoulder.pastPosition = armPosition.toString();
-       // robotContainer.setAlternateCarryFalse();
     }
 
 

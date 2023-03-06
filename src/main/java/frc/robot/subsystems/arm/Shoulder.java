@@ -36,6 +36,7 @@ public class Shoulder extends PIDSubsystem {
   private double allowableError = 0.2;
   private double speedlimit = Constants.Arm.SHOULDER_MAX_SPEED;
   private double closedLoopLimit = Constants.Arm.SHOULDER_CLOSED_LOOP_SPEED;
+  public String pastPosition; 
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {
@@ -154,7 +155,6 @@ public class Shoulder extends PIDSubsystem {
 public void periodic() {
     super.periodic();
     log();
-
 }
 
   public void log() {
