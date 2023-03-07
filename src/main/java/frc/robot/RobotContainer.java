@@ -11,37 +11,36 @@ import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
 import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.LEDState;
+import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.commands.CartesianHeadingToTargetCommand;
 import frc.robot.commands.LED.LEDRunnable;
 import frc.robot.commands.arm.ArmBasicJoystickCommand;
-import frc.robot.commands.arm.ArmJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
+import frc.robot.commands.arm.ArmSetpointElbow;
+import frc.robot.commands.arm.ArmSetpointShoulder;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
+import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.OuttakeCommand;
+import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
-import frc.robot.commands.auto.drive.CartesianProfiledPointToPointCommand;
-import frc.robot.commands.auto.drive.CartesianVectorProfileToPointCommand;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
@@ -52,20 +51,10 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
-import frc.robot.commands.auto.test.AngleTest;
-import frc.robot.commands.auto.test.MoveForwardTest;
-import frc.robot.commands.auto.test.Test;
-import frc.robot.commands.intakeSpinner.IntakeSpinnerAdjustment;
-import frc.robot.commands.intakeSpinner.IntakeSpinnerSetPoint;
-import frc.robot.commands.auto.test.vectorBlueRightMiddleToBottom;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.leds.LED;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
-import frc.robot.commands.vision.InstantRelocalizeCartesianCommand;
-import frc.robot.commands.vision.InstantRelocalizeCommand;
-import frc.robot.commands.vision.LimelightHeadingAndInstantRelocalizeCommand;
-import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
@@ -73,6 +62,7 @@ import frc.robot.subsystems.arm.Shoulder;
 
 public class RobotContainer {
   private  GamePiece gamePiece = GamePiece.Nothing;
+  private LEDState ledState = LEDState.Nothing;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
@@ -101,6 +91,8 @@ public class RobotContainer {
     TWO,
     THREE
   }
+
+  private boolean alternateCarry = false;
 
   public RobotContainer() {
     JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
@@ -412,24 +404,32 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner));
+    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner).alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, elbow, shoulder, intakespinner, this)));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
-    operatorLeftBumper.whileTrue(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, elbow, shoulder, intakespinner, this).withTimeout(1.5).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)));
+    operatorLeftBumper.whileTrue(new ConditionalCommand(
+      new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.ALTERNATECARRY, 5, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)).alongWith((new InstantCommand(()-> setAlternateCarryFalse()))),
+        new ConditionalCommand(
+        new ArmSetpointElbow(Constants.Arm.ArmPosition.CARRY, 230, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
+        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
+        ()-> wasPastPositionSubstation()),
+      ()-> alternateCarry)
+      );
 
-    operatorY.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this));
-    operatorB.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this));
-    operatorA.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this));
-    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATION, elbow, shoulder, intakespinner, this));
+    operatorY.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this)));
+    operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
+    operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
+    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATIONFRONT, elbow, shoulder, intakespinner, this));
  
-    operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
-    operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
+    operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this).alongWith((new InstantCommand(()-> setAlternateCarryTrue()))));
 
-    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, 2));
-    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -2));
+    operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this).alongWith((new InstantCommand(()-> setAlternateCarryTrue()))));
+
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
     
-    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)));
-    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)));
+    operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cone))));
+    operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cube))));
 
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
@@ -450,7 +450,12 @@ public class RobotContainer {
   public GamePiece getGamepiece() {
     return gamePiece;
   }
-
+  public LEDState getLEDState() {
+    return ledState;
+  }
+  public void setLEDState(LEDState ledState) {
+    this.ledState = ledState;
+  }
   public void configureButtonBindingsTeleop() {
     JoystickButton redLeftSwitch = new JoystickButton(operatorStation, 11);
   }
@@ -513,6 +518,21 @@ public class RobotContainer {
 
   public double getOpYLeft() {
     return operatorController.getLeftY();
+  }
+  public boolean getAlternateCarry() {
+    return alternateCarry;
+  }
+
+  public void setAlternateCarryTrue() {
+    alternateCarry = true;
+  }
+
+  public void setAlternateCarryFalse() {
+    alternateCarry = false;
+  }
+
+  public boolean wasPastPositionSubstation() {
+    return (shoulder.pastPosition == ArmPosition.SUBSTATION || shoulder.pastPosition == ArmPosition.SUBSTATIONPICKUP);
   }
 
 }

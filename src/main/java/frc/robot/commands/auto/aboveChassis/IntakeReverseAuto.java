@@ -15,7 +15,6 @@ public class IntakeReverseAuto extends CommandBase{
 
     @Override
     public void initialize() {
-        //TODO: Confirm intake direction
         intake.setIntakeSpeed(Constants.Auto.intakeAutoReverseSpeed);
     }
 

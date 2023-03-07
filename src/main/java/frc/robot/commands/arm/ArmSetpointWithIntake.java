@@ -3,8 +3,7 @@ package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -15,7 +14,7 @@ import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ArmSetpointCommand extends CommandBase {
+public class ArmSetpointWithIntake extends CommandBase {
 
     Elbow elbow;
     Shoulder shoulder;
@@ -39,13 +38,8 @@ public class ArmSetpointCommand extends CommandBase {
     double shoulderSetpoint = 0;
     double wristSetpoint = 0;
     ArmPosition armPosition;
-    
-    
-    //Seems to start slowing down at 45 degrees, will probably have to change due to gearings and such.
-    ProfiledPIDController shoulderController = new ProfiledPIDController(shoulderP, shoulderI, shoulderD, new TrapezoidProfile.Constraints(106.3, 0.0001));
 
-
-    public ArmSetpointCommand(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+    public ArmSetpointWithIntake(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.robotContainer = robotContainer;
@@ -58,7 +52,7 @@ public class ArmSetpointCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (robotContainer.getGamepiece() == GamePiece.Cone) {
+        if (robotContainer.getGamepiece() == GamePiece.Cone && shoulder.pastPosition == ArmPosition.SUBSTATION) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();
@@ -78,7 +72,10 @@ public class ArmSetpointCommand extends CommandBase {
             shoulderSetpoint = armPosition.shoulderCone;
             wristSetpoint = armPosition.wristCone;
 
-        } else {
+            shoulder.setSetpoint(shoulderSetpoint);
+            elbow.setSetpoint(elbowSetpoint);
+            intakespinner.setSetpoint(wristSetpoint);
+        } else if (shoulder.pastPosition == ArmPosition.SUBSTATION) {
             elbowSetpoint = armPosition.elbowCube;
             shoulder.enable();
             elbow.enable();
@@ -97,12 +94,12 @@ public class ArmSetpointCommand extends CommandBase {
             }
             shoulderSetpoint = armPosition.shoulderCube;
             wristSetpoint = armPosition.wristCube;
+
+            shoulder.setSetpoint(shoulderSetpoint);
+            elbow.setSetpoint(elbowSetpoint);
+            intakespinner.setSetpoint(wristSetpoint);
         }
         
-        
-        shoulder.setSetpoint(shoulderSetpoint);
-        elbow.setSetpoint(elbowSetpoint);
-        intakespinner.setSetpoint(wristSetpoint);
     }
 
     
@@ -116,7 +113,6 @@ public class ArmSetpointCommand extends CommandBase {
         shoulder.enable();
         elbow.enable();
         shoulder.pastPosition = armPosition;
-       // robotContainer.setAlternateCarryFalse();
     }
 
 

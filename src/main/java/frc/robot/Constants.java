@@ -23,6 +23,7 @@ public final class Constants {
   public static double STARTING_ANGLE = 25;
 
   public final ModuleConfiguration SWERVE_MODULE_CONFIGURATION;
+  public static double MAX_VELOCITY_METERS_PER_SECOND = 0.0;
 
   public final int MODULE0_DRIVE_MOTOR_ID;
   public final int MODULE0_ANGLE_MOTOR_ID;
@@ -75,7 +76,6 @@ public final class Constants {
   // Driver dashboard
   // 28x13
   public static enum DriverDashboardPositions {
-    // TODO: could we make this easier by using a method to pass in the widget and one of these enums?
     AUTON_CHOOSER(9, 6, 6, 3),
     STARTING_POS_CHOOSER(9, 0, 6, 3),
     STARTING_ANGLE_CHOOSER(9, 3, 6, 3),
@@ -140,6 +140,17 @@ public final class Constants {
     switch (robotType) {
       case SKILLSBOT:
         SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK3_STANDARD;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+     MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK3_STANDARD.getDriveReduction() *
+    SdsModuleConfigurations.MK3_STANDARD.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 0;
         MODULE0_ANGLE_MOTOR_ID = 4;
@@ -175,6 +186,17 @@ public final class Constants {
         break;
       case PRACTICE:
         SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L1;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+    MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK4_L1.getDriveReduction() *
+    SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
@@ -210,7 +232,18 @@ public final class Constants {
         break;
       case COMPETITION:
       default:
-        SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L1;
+        SWERVE_MODULE_CONFIGURATION = SdsModuleConfigurations.MK4I_L3;
+        //  The formula for calculating the theoretical maximum velocity is:
+    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
+    /**
+     * The maximum velocity of the robot in meters per second.
+     * <p>
+     * This is a measure of how fast the robot should be able to drive in a straight line.
+     */
+     MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
+    SdsModuleConfigurations.MK4_L3.getDriveReduction() *
+    SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
 
         MODULE0_DRIVE_MOTOR_ID = 18;
         MODULE0_ANGLE_MOTOR_ID = 19;
@@ -387,17 +420,7 @@ public final class Constants {
       }
     }
 
-    //  The formula for calculating the theoretical maximum velocity is:
-    //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
-    //  By default this value is setup for a Mk4 L1 module using Falcon500s to drive.
-    /**
-     * The maximum velocity of the robot in meters per second.
-     * <p>
-     * This is a measure of how fast the robot should be able to drive in a straight line.
-     */
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-      SdsModuleConfigurations.MK4_L1.getDriveReduction() *
-      SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
+    
 
       /**
      * The maximum angular velocity of the robot in radians per second.
@@ -418,7 +441,6 @@ public final class Constants {
     public static final double VISION_TARGET_OFFSET_FROM_HUB_CENTER_METERS = Units.feetToMeters(2);
     public static final int RED_PIPELINE_INDEX = 0;
     public static final int BLUE_PIPELINE_INDEX = 1;
-    //TODO: Change to 7.5
     public static final double VISION_CAMERA_FIELD_ORIENTATION_SWITCHER = 7.5;
   }
 
@@ -463,25 +485,39 @@ public final class Constants {
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
     public static final double WRIST_LOWER_LIMIT = 23.0;
-    public static final double WRIST_UPPER_LIMIT = 260.0;
+    public static final double WRIST_UPPER_LIMIT = 280.0;
+    public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
+    public static final double SHOULDER_MAX_SPEED = 0.7;
+    public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
+    public static final double ELBOW_CLOSED_LOOP_SPEED = 0.7;
+    public static final double ELBOW_MAX_SPEED = 0.7;
+    public static final double ELBOW_JOYSTICK_SPEED = 0.4;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
+    public static final double WRIST_ANGLE_ADJUSTMENT = 10.0;
+    public static final double ELBOW_LIMIT = 155;
     
     
     // Comp Arm
     public enum ArmPosition {
+      SCOREHIGHINTERMEDIATE(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
       SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
-      SCORELOW(100.0,145.0,100.0,145.0,185.0,75.0),
-      SUBSTATION(65.0,-55.0,66.0,-61.0,255.0,114.0),
+      SCORELOW(82.0,145.0,100.0,145.0,185.0,75.0),
+      SUBSTATION(86.0,-76.0,86.0,-76.0,253.0,140.0),
+      SUBSTATIONPICKUP(86.0,-83.0,86.0,-88.0,253.0,138.0),
       TELESTANDINGCONE(55.0,-118.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,90,-21,90,35.0,25.0),
+      CARRYINTERMEDIATE(-21,125,-21,125,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
-      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0);
+      FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
+      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
+      ALTERNATECARRY(90,-135,90,-135,253,59),
+      ALTERNATEINTERMEDIATE(90,-100,90,-100,253,59),
+      ALTERNATECARRYEND(90,-148,90,-148,253,59);
       //67, -137
       
 
@@ -546,8 +582,13 @@ public final class Constants {
   public static enum GamePiece {
     Cone,
     Cube,
-    Carry,
-    CarryObject,
+    Nothing;
+  }
+
+  public static enum LEDState {
+    Cone,
+    Cube,
+    HasGamePiece,
     Nothing;
   }
 

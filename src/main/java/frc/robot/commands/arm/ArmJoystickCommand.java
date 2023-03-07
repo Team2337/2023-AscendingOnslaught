@@ -26,8 +26,6 @@ public class ArmJoystickCommand extends CommandBase {
     private double bottomSetpoint = 0;
     private double topSetpoint = 0;
     private boolean shouldHoldArm;
-    private double shoulderOffset = 0;
-    private double elbowOffset = 0;
     private double mathShoulderAngle, mathElbowAngle;
     private double ticksPerDegree = 1094.44;
     Supplier<Boolean>lampreyBroken;
@@ -43,13 +41,7 @@ public class ArmJoystickCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        //TODO:  can we change this to something that makes sense when you read it, such as needCurrentSetpoint? or switch logic so boolean reads haveCurrentSetpoint.
-        //shouldHoldArm = true;
 
-
-        
-
-        
     }
 
 
@@ -219,10 +211,6 @@ public class ArmJoystickCommand extends CommandBase {
             SmartDashboard.putNumber("Arm K/Bottom Predicted Ticks", shoulderTarget);
     }
     }
-
-
-        
-
 
     @Override
     public boolean isFinished() {
