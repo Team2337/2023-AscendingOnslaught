@@ -41,13 +41,7 @@ public class ArmJoystickCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        //TODO:  can we change this to something that makes sense when you read it, such as needCurrentSetpoint? or switch logic so boolean reads haveCurrentSetpoint.
-        //shouldHoldArm = true;
 
-
-        
-
-        
     }
 
 
@@ -217,10 +211,6 @@ public class ArmJoystickCommand extends CommandBase {
             SmartDashboard.putNumber("Arm K/Bottom Predicted Ticks", shoulderTarget);
     }
     }
-
-
-        
-
 
     @Override
     public boolean isFinished() {

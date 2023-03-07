@@ -3,6 +3,7 @@ package frc.robot.commands.arm.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
+import frc.robot.Constants.LEDState;
 import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
@@ -36,6 +37,7 @@ public class IntakeCommand extends CommandBase{
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
             speed = 0.66;
             if (intake.hasCone() == true) {
+                robotContainer.setLEDState(LEDState.HasGamePiece);
                 speed = 0.0;
                 //TODO: Fix this eventually, make the setpoint the intermediary.
                 //shoulder.setSetpoint(Constants.Arm.ArmPosition.CARRY.shoulderCube);
@@ -58,5 +60,6 @@ public class IntakeCommand extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         intake.setIntakeSpeed(0);
+        robotContainer.setLEDState(LEDState.HasGamePiece);
     }
 }
