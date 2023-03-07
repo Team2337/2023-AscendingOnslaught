@@ -407,7 +407,8 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner).alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, elbow, shoulder, intakespinner, this)));
+    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));//.alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner)));
+    triggerOperatorRight.whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(

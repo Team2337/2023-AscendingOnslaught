@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxLimitSwitch.Type;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 import frc.robot.Constants;
@@ -18,9 +19,8 @@ public class Intake extends PIDSubsystem {
     private CANSparkMax intakeMotor = new CANSparkMax(17, MotorType.kBrushless);
     private SparkMaxLimitSwitch beamBreak = intakeMotor.getReverseLimitSwitch(Type.kNormallyOpen);
     private SparkMaxAnalogSensor intakeSpinnerLamprey = intakeMotor.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
-    private PIDController controller;
     private RelativeEncoder intakeEncoder;
-    private double peakOutput = 0.66;
+    private double peakOutput = 1.0;
     
     
 
@@ -32,7 +32,7 @@ public class Intake extends PIDSubsystem {
         intakeMotor.setOpenLoopRampRate(peakOutput);
         intakeMotor.setSmartCurrentLimit(40, 40, 40); // TODO CHANGE LATER
         intakeEncoder = intakeMotor.getEncoder();
-        controller.setTolerance(100);
+        getController().setTolerance(5);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Intake extends PIDSubsystem {
             SmartDashboard.putNumber("Arm/Intake motorTemp", getIntakeMotorTemperature());
             SmartDashboard.putNumber("Arm/Intake Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
             SmartDashboard.putNumber("Arm/Intake Position", intakeEncoder.getPosition());
-            SmartDashboard.putNumber("Arm/Intake Get Setpoint", controller.getSetpoint());
+            SmartDashboard.putNumber("Arm/Intake Get Setpoint", getController().getSetpoint());
             SmartDashboard.putNumber("Arm/Intake Motor Speed", intakeMotor.getAppliedOutput());
 
         }

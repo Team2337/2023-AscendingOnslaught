@@ -17,6 +17,7 @@ public class IntakeHoldPosition extends CommandBase{
     @Override
     public void initialize() {
         intake.holdPosition(intake.getIntakePosition());
+        intake.enable();
     }
 
     @Override
