@@ -20,8 +20,7 @@ public class ArmSetpointWithIntake extends CommandBase {
     Shoulder shoulder;
     IntakeSpinnerLamprey intakespinner;
     Supplier<CommandXboxController> joystick;
-    RobotContainer robotContainer;
-
+    Supplier<GamePiece> gamePiece;
     double shoulderP = 0.005;
     double shoulderI = 0;
     double shoulderD = 0;
@@ -39,12 +38,12 @@ public class ArmSetpointWithIntake extends CommandBase {
     double wristSetpoint = 0;
     ArmPosition armPosition;
 
-    public ArmSetpointWithIntake(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+    public ArmSetpointWithIntake(ArmPosition armPosition, Supplier<GamePiece> gamePiece, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner) {
         this.elbow = elbow;
         this.shoulder = shoulder;
-        this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
+        this.gamePiece = gamePiece;
         addRequirements(elbow, shoulder);
 
     }
@@ -52,7 +51,7 @@ public class ArmSetpointWithIntake extends CommandBase {
 
     @Override
     public void initialize() {
-        if (robotContainer.getGamepiece() == GamePiece.Cone && shoulder.pastPosition == ArmPosition.SUBSTATION) {
+        if (gamePiece.get() == GamePiece.Cone && shoulder.pastPosition == ArmPosition.SUBSTATION) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();

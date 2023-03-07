@@ -37,6 +37,7 @@ import frc.robot.commands.arm.ArmSetpointShoulder;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.intake.IntakeCommand;
+import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.auto.*;
@@ -51,6 +52,7 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
+import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.leds.LED;
@@ -104,6 +106,7 @@ public class RobotContainer {
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
+    intake.setDefaultCommand(new IntakeHoldPosition(intake));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
@@ -404,7 +407,8 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(intake, this, shoulder, elbow, intakespinner).alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, elbow, shoulder, intakespinner, this)));
+    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));//.alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner)));
+    triggerOperatorRight.whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(

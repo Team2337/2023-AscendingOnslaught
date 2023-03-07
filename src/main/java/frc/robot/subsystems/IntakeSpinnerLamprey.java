@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 
-
 public class IntakeSpinnerLamprey extends PIDSubsystem {
     
     private TalonFX intakeSpinnerMotor = new TalonFX(50);
@@ -24,7 +23,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private Supplier<Double> voltage;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.5;
+    private double peakOutput = 0.8;
     private double tolerance = 0.5;
     private static double kP = 0.01;
     private static double kI = 0;

@@ -37,7 +37,7 @@ public class Shoulder extends PIDSubsystem {
   private double allowableError = 0.2;
   private double speedlimit = Constants.Arm.SHOULDER_MAX_SPEED;
   private double closedLoopLimit = Constants.Arm.SHOULDER_CLOSED_LOOP_SPEED;
-  public ArmPosition pastPosition; 
+  public ArmPosition pastPosition = Constants.Arm.ArmPosition.CARRY; 
   
   /** Creates a new ExampleSubsystem. */
   public Shoulder() {
@@ -169,6 +169,7 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/Shoulder Motor Speed", shoulderMotor.getMotorOutputPercent());
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
       //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
+      SmartDashboard.putString("Arm/Past Arm Position", pastPosition.toString());
     }
     SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
     SmartDashboard.putNumber("Arm/Shoulder Encoder Degrees", getShoulderLampreyDegrees());
