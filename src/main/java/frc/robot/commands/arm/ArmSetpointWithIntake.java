@@ -52,7 +52,7 @@ public class ArmSetpointWithIntake extends CommandBase {
 
     @Override
     public void initialize() {
-        if (robotContainer.getGamepiece() == GamePiece.Cone && (shoulder.getShoulderLampreyDegrees() > 80 && shoulder.getShoulderLampreyDegrees() < 100)) {
+        if (robotContainer.getGamepiece() == GamePiece.Cone && shoulder.pastPosition == ArmPosition.SUBSTATION) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();
@@ -71,7 +71,11 @@ public class ArmSetpointWithIntake extends CommandBase {
             }
             shoulderSetpoint = armPosition.shoulderCone;
             wristSetpoint = armPosition.wristCone;
-        } else {
+
+            shoulder.setSetpoint(shoulderSetpoint);
+            elbow.setSetpoint(elbowSetpoint);
+            intakespinner.setSetpoint(wristSetpoint);
+        } else if (shoulder.pastPosition == ArmPosition.SUBSTATION) {
             elbowSetpoint = armPosition.elbowCube;
             shoulder.enable();
             elbow.enable();
@@ -90,12 +94,12 @@ public class ArmSetpointWithIntake extends CommandBase {
             }
             shoulderSetpoint = armPosition.shoulderCube;
             wristSetpoint = armPosition.wristCube;
+
+            shoulder.setSetpoint(shoulderSetpoint);
+            elbow.setSetpoint(elbowSetpoint);
+            intakespinner.setSetpoint(wristSetpoint);
         }
         
-        
-        shoulder.setSetpoint(shoulderSetpoint);
-        elbow.setSetpoint(elbowSetpoint - 5);
-        intakespinner.setSetpoint(wristSetpoint);
     }
 
     

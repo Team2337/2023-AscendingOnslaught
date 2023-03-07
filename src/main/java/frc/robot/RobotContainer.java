@@ -408,9 +408,9 @@ public class RobotContainer {
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(
-      new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.ALTERNATECARRY, 5, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)).alongWith((new InstantCommand(()-> setAlternateCarryFalse()))),
+      new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.ALTERNATECARRY, 5, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)).alongWith((new InstantCommand(()-> setAlternateCarryFalse()))),
         new ConditionalCommand(
-        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
+        new ArmSetpointElbow(Constants.Arm.ArmPosition.CARRY, 230, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
         new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
         ()-> wasPastPositionSubstation()),
       ()-> alternateCarry)

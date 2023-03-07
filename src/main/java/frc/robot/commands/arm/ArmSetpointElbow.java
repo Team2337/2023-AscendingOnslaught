@@ -36,16 +36,18 @@ public class ArmSetpointElbow extends CommandBase {
     double shoulderSetpoint = 0;
     double wristSetpoint = 0;
     ArmPosition armPosition;
+    double tolerance;
     
     
    
 
-    public ArmSetpointElbow(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+    public ArmSetpointElbow(ArmPosition armPosition, double tolerance, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
+        this.tolerance = tolerance;
         addRequirements(elbow, shoulder);
 
     }
@@ -115,7 +117,7 @@ public class ArmSetpointElbow extends CommandBase {
 
     @Override
     public boolean isFinished() {
-       return Utilities.withinTolerance(elbow.getSetpoint(), elbow.getElbowLampreyDegrees(), 5.0);
+       return Utilities.withinTolerance(elbow.getSetpoint(), elbow.getElbowLampreyDegrees(), tolerance);
         
 
     }
