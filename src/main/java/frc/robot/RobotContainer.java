@@ -53,6 +53,7 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
+import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
 import frc.robot.nerdyfiles.leds.LED;
@@ -370,7 +371,9 @@ public class RobotContainer {
     
     triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
     //If blue 90, if red -90
-    triggerDriverLeft.onTrue(new MaintainHeadingCommand(-90, heading));
+    triggerDriverLeft.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
+    new MaintainHeadingCommand(-90, heading), 
+    () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
 
     driverA.whileTrue(new SelectCommand(
           // Maps selector values to commands
@@ -382,6 +385,8 @@ public class RobotContainer {
               Map.entry(CommandSelector.THREE,  new ConditionalCommand(new BlueConstructTeleopAutoCommand3(autoDrive, drivetrain, heading),
               new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
           this::selectTeleopAuto));
+
+    driverB.whileTrue(new Lockdown(autoDrive, drivetrain, heading));
 
     driverLeftBumper.whileTrue(new ConditionalCommand(new BlueTeleopAutoLeftSubstation(autoDrive, drivetrain, heading),
       new  RedTeleopAutoLeftSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));
@@ -407,8 +412,7 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
-    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));//.alongWith(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner)));
-    triggerOperatorRight.whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
+    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake)).whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(
