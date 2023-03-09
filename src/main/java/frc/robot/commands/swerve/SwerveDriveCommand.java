@@ -49,16 +49,13 @@ public class SwerveDriveCommand extends CommandBase {
        // scales inputs for fine control   
        forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 5);
        strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 5);
-       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.1, 5);
-    } else if (controller.getStartButton()) {
+       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 5);
+    } else {
       forward = Utilities.deadbandAndSquare(controller.getLeftY());
       strafe = Utilities.deadbandAndSquare(controller.getLeftX());
-      rotation = -Utilities.deadbandAndSquare(controller.getRightX());
-    } else {
-      forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 1.5);
-      strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 1.5);
-      rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.1, 1.5);
-    }
+      rotation = -Utilities.deadbandAndSquare(controller.getRightX(), 0.15);
+    } 
+  
     boolean isFieldOriented = !controller.getLeftBumper();
 
     AutoDrive.State autoDriveState = autoDrive.calculate(forward, strafe, isFieldOriented);
@@ -68,11 +65,18 @@ public class SwerveDriveCommand extends CommandBase {
       isFieldOriented = autoDriveState.isFieldOriented;
     }
 
+    //TODO: Re-slew
+    // if (DriverStation.isTeleopEnabled()) {
+    //   forward = forwardSlew.calculate(forward);
+    //   strafe = strafeSlew.calculate(strafe);
+    //   rotation = rotationSlew.calculate(rotation);
+    // }
+
     if (DriverStation.isTeleopEnabled()) {
-      forward = forwardSlew.calculate(forward);
-      strafe = strafeSlew.calculate(strafe);
-      rotation = rotationSlew.calculate(rotation);
-    }
+        forward = forward;
+        strafe = strafe;
+        rotation = rotation;
+      }
     
     // If a driver-initiated rotation is provided, disable our rotation
     // controller to let the driver rotate freely.

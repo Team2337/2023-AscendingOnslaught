@@ -11,11 +11,11 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ScoreCubeHigh extends SequentialCommandGroup{
-    public ScoreCubeHigh(Elbow elbow, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class ScoreCubeMid extends SequentialCommandGroup{
+    public ScoreCubeMid(Elbow elbow, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new ArmAutoSetpointShoulderCube(Constants.Arm.ArmPosition.SCOREHIGH, 15, elbow, shoulder, intakespinner, robotContainer),
-            new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH).withTimeout(2),
+            new ArmAutoSetpointShoulderCube(Constants.Arm.ArmPosition.SCOREMID, 15, elbow, shoulder, intakespinner, robotContainer),
+            new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID).withTimeout(2),
             new IntakeReverseCube(intake).withTimeout(0.5)
         );
     }

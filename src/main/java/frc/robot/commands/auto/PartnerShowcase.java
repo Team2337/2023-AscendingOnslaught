@@ -18,7 +18,7 @@ import frc.robot.subsystems.arm.Shoulder;
 public class PartnerShowcase extends SequentialCommandGroup{
     public PartnerShowcase(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new ScoreCubeHigh(elbow, intake, intakespinner, shoulder),
+            new ScoreCubeHigh(elbow, intake, intakespinner, robotContainer, shoulder),
             new DriveToPickupCone1(Constants.Auto.partnerShowcasePickup, autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer, shoulder),
             new DriveToScoreHigh1(Constants.Auto.partnerShowcaseScore, Constants.Arm.ArmPosition.SCOREHIGH, autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder),
             new ScoreConeHigh(elbow, intake, intakespinner, robotContainer, shoulder)

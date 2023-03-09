@@ -117,43 +117,17 @@ public class RobotContainer {
 
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
-    // autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
-    // autonChooser.addOption("Angle Test", new AngleTest(autoDrive, drivetrain, heading));
-    // autonChooser.addOption("Move Test", new blueRightMiddleToBottom(autoDrive, drivetrain, heading));
-    // autonChooser.addOption("Move Forward Test", new MoveForwardTest(autoDrive, drivetrain, heading));
-    // autonChooser.addOption("Vector Test", new vectorBlueRightMiddleToBottom(autoDrive, drivetrain, heading));
-    // autonChooser.addOption("Full Field Straight Vector", new CartesianVectorProfileToPointCommand(
-    //     new Translation2d(16, 0), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
-    // autonChooser.addOption("Full Field Straight XY",
-    //     new CartesianProfiledPointToPointCommand(new Translation2d(16, 0), drivetrain::getTranslation,
-    //         drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
-    // autonChooser.addOption("Full Field Diagonal Vector", new CartesianVectorProfileToPointCommand(
-    //     new Translation2d(16, 8), drivetrain::getTranslation, 1.5, Units.inchesToMeters(80), autoDrive, heading));
-    // autonChooser.addOption("Full Field Diagonal XY",
-    //     new CartesianProfiledPointToPointCommand(new Translation2d(16, 8), drivetrain::getTranslation,
-    //         drivetrain::getRotation, 1.5, 1.5, Units.inchesToMeters(80), Units.inchesToMeters(80), autoDrive, heading));
-    // autonChooser.addOption("Full Field Box Vector",
-    //     new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 0.5), drivetrain::getTranslation, 1.5,
-    //         Units.inchesToMeters(80), autoDrive, heading)
-    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15.5, 7.5), drivetrain::getTranslation,
-    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
-    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 7.5), drivetrain::getTranslation,
-    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
-    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(0.5, 0.5), drivetrain::getTranslation,
-    //             1.5, Units.inchesToMeters(80), autoDrive, heading))
-    //         .andThen(new CartesianVectorProfileToPointCommand(new Translation2d(15, 7), drivetrain::getTranslation, 1.5,
-    //             Units.inchesToMeters(80), autoDrive, heading)));
-    autonChooser.addOption("Blue Middle Middle Score 1 Balance", new blueStartMiddleMiddleScoreC5Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Middle Middle Score 1 Balance", new redStartMiddleMiddleScoreC5Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreC1GToppyScoreC2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Test", new DriveTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, shoulder));
-    autonChooser.addOption("Partner Showcase ", new PartnerShowcase(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Blue Righty Right Score 2", new blueRightyRightScoreC9GBotScoreO9(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-   
-    autonChooser.addOption("Blue Lefty Left Score 2", new blueLeftyLeftScoreC1GToppyScoreO1GTopScoreC2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Righty Right Score 2", new redRightyRightScoreC9GBotScoreO9(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Middle Right Score 1 Grab 1 Balance", new redStartMiddleRightScoreO6GMidBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 1 Grab 1 Balance", new redStartRightyRightScoreO9GBotBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 2 Balance", new redStartRightyRightScoreO9GBotScoreO7Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 2 Grab 1", new redStartRightyRightScoreO9GBotScoreO8GMid(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
+    autonChooser.addOption("Blue Middle Left Score 1 Grab 1 Balance", new blueStartMiddleLeftScoreO4GTopBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 1 Grab 1 Balance", new blueStartLeftyLeftScoreO1GToppyBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -419,7 +393,7 @@ public class RobotContainer {
       new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointWithEnding(Constants.Arm.ArmPosition.ALTERNATECARRY, 5, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)).alongWith((new InstantCommand(()-> setAlternateCarryFalse()))),
         new ConditionalCommand(
         new ArmSetpointElbow(Constants.Arm.ArmPosition.CARRY, 230, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
-        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 15, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
+        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
         ()-> wasPastPositionSubstation()),
       ()-> alternateCarry)
       );

@@ -2,6 +2,9 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
+        "ProfiledP2P": {
+          "open": true
+        },
         "VectorProfile2P": {
           "open": true
         },
