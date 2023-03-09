@@ -20,12 +20,12 @@ import frc.robot.subsystems.Heading;
  * Generate movement values to drive the robot between it's current position and
  * the specified point. Depends on the robot facing the Hub.
  */
-public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
+public class AutoEngagePP2PFront extends CartesianHeadingToTargetCommand implements AutoDrivableCommand {
 
   // These are confirmed tuned values for our Point to Point moves. Can be adjusted
   // individually per move if necessary.
-  private static final double forwardVelocity = Units.inchesToMeters(160);
-  private static final double strafeVelocity = Units.inchesToMeters(160);
+  private static final double forwardVelocity = Units.inchesToMeters(80);
+  private static final double strafeVelocity = Units.inchesToMeters(80);
 
   private Translation2d target;
   private Heading heading;
@@ -42,7 +42,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
 
   private boolean isElevated = false; 
 
-  public AutoEngagePP2P(
+  public AutoEngagePP2PFront(
     Translation2d target,
     Supplier<Translation2d> translationSupplier,
     Supplier<Rotation2d> rotationSupplier,
@@ -121,7 +121,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
       target.getY()
     );
 
-    if (pitchSupplier.get().getDegrees() < -10) {
+    if (pitchSupplier.get().getDegrees() < -12) {
       isElevated = true;
     }
 
@@ -161,7 +161,7 @@ public class AutoEngagePP2P extends CartesianHeadingToTargetCommand implements A
 
   @Override
   public boolean isFinished() {
-    return (forwardController.atGoal() && strafeController.atGoal()) || (isElevated && pitchSupplier.get().getDegrees() > -8.5);
+    return (forwardController.atGoal() && strafeController.atGoal()) || (isElevated && pitchSupplier.get().getDegrees() > -9.5);
   }
 
   private void log() {

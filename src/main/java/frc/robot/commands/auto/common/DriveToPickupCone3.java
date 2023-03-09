@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
@@ -20,7 +22,12 @@ import frc.robot.subsystems.arm.Shoulder;
 public class DriveToPickupCone3 extends SequentialCommandGroup{
     public DriveToPickupCone3(Translation2d waypoint1, Translation2d waypoint2, Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new AutoCartesianVectorProfileToPointTargetCommand(
+            new ParallelCommandGroup(
+                new SequentialCommandGroup(
+                    new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+                    new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+                ),
+                new AutoCartesianVectorProfileToPointTargetCommand(
                 waypoint1, 
                 drivetrain::getTranslation, 
                 drivetrain::velocity,
@@ -31,6 +38,7 @@ public class DriveToPickupCone3 extends SequentialCommandGroup{
                 autoDrive, 
                 drivetrain,
                 heading
+                )
             ),
             new ParallelCommandGroup(
                 new AutoCartesianVectorProfileToPointTargetCommand(

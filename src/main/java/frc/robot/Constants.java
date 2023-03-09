@@ -61,9 +61,9 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = true;
-    public static final boolean AUTO = false;
+    public static final boolean AUTO = true;
     public static final boolean ELBOW = true;
-    public static final boolean DRIVETRAIN = false;
+    public static final boolean DRIVETRAIN = true;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
     public static final boolean INTAKESPINNER = true;
@@ -308,7 +308,7 @@ public final class Constants {
     public static final double centerOfRobotLength = Units.inchesToMeters(18);
     public static final double robotOffsetFromHybridAndPickupNodes = Units.inchesToMeters(21.5);
     public static final double floorPickupArmReach = Units.inchesToMeters(12);
-    public static final double robotChargeStationYOffset = Units.inchesToMeters(24);
+    public static final double robotChargeStationYOffset = Units.inchesToMeters(20);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
     public static final double trajectoryTolerance = 1;
@@ -381,7 +381,7 @@ public final class Constants {
     // Blue Charge Station
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
-    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
 
     // Red Charge Station
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
@@ -402,6 +402,11 @@ public final class Constants {
     public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
     public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
     public static final Translation2d redSubstationIntermediary = new Translation2d(redSubstation5.getX() - Units.inchesToMeters(100), redSubstation5.getY() + centerOfRobotWidth);
+
+    public static final Translation2d redMobilityPoint = new Translation2d(Units.inchesToMeters(275), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+    public static final Translation2d redIntermediateMobilityPoint = new Translation2d(Units.inchesToMeters(255), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+    public static final Translation2d blueMobilityPoint = new Translation2d(Units.inchesToMeters(275), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
+    public static final Translation2d blueIntermediateMobilityPoint = new Translation2d(Units.inchesToMeters(255), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
   }
 
   // Robot-specific configuration for our swerve drive algorithm
@@ -515,7 +520,7 @@ public final class Constants {
       TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,100,-21,100,35.0,25.0),
+      CARRYINTERMEDIATE(-21,75,-21,100,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
       AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
