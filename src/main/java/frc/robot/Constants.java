@@ -61,12 +61,12 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = true;
-    public static final boolean AUTO = true;
+    public static final boolean AUTO = false;
     public static final boolean ELBOW = true;
-    public static final boolean DRIVETRAIN = true;
+    public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
-    public static final boolean INTAKESPINNER = true;
+    public static final boolean INTAKESPINNER = false;
     public static final boolean PDH = false;
     public static final boolean SHOULDER = true;
     public static final boolean SWERVE = false;
@@ -520,13 +520,14 @@ public final class Constants {
       TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,75,-21,100,35.0,25.0),
+      CARRYINTERMEDIATE(-21,42,-21,100,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
       AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
       ALTERNATECARRY(90,-135,90,-135,253,59),
       ALTERNATEINTERMEDIATE(90,-100,90,-100,253,59),
-      ALTERNATECARRYEND(90,-148,90,-148,253,59);
+      ALTERNATECARRYEND(90,-148,90,-148,253,59),
+      AUTOSCOREMID(68.0,89.0,75.0,120.0,140.0,23.0);
       //67, -137
       
 

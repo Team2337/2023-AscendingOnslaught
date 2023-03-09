@@ -118,6 +118,8 @@ public class RobotContainer {
     // Create auton selector
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
 
+    autonChooser.addOption("Arm Test", new armTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
     autonChooser.addOption("Red Middle Right Score 1 Grab 1 Balance", new redStartMiddleRightScoreO6GMidBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Righty Right Score 1 Grab 1 Balance", new redStartRightyRightScoreO9GBotBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Righty Right Score 2 Balance", new redStartRightyRightScoreO9GBotScoreO7Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
