@@ -502,7 +502,7 @@ public final class Constants {
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
-    public static final double intakeP = 0.005;
+    public static final double intakeP = 0.05;
     public static final double intakeI = 0.0;
     public static final double intakeD = 0.0;
 
@@ -519,7 +519,7 @@ public final class Constants {
       SUBSTATION(86.0,-70.0,86.0,-76.0,253.0,140.0),
       SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
-      TELEFALLINGCONE(24.0,-102.0,36.0,-102.5,162.0,59.0),
+      TELEFALLINGCONE(24.0,-102.0,35.0,-102.5,162.0,59.0),
       AUTOTELEFALLINGCONE(24.0,-102.0,38.0,-102.5,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),

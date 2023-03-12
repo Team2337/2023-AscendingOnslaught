@@ -17,7 +17,6 @@ public class IntakeHoldPosition extends CommandBase{
     @Override
     public void initialize() {
         intake.setIntakeSpeed(0);
-        intake.enable();
         intake.holdPosition(intake.getIntakePosition());
     }
 
