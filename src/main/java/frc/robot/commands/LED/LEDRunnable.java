@@ -28,7 +28,6 @@ public class LEDRunnable extends CommandBase{
     // } else {
     //     led.setColor(Color.kRed);
     // }
-    led.setFrontColor(Color.kRed);
     if (DriverStation.isTeleopEnabled() && robotContainer.getLEDState() == LEDState.Cone) {
       led.setLeftColor(Color.kYellow);
       led.setRightColor(Color.kYellow);

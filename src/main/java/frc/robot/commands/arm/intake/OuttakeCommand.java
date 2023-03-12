@@ -19,8 +19,7 @@ public class OuttakeCommand extends CommandBase{
     }
 
     @Override
-    public void initialize() {       
-        intake.disable();
+    public void initialize() {  
     }
 
     @Override

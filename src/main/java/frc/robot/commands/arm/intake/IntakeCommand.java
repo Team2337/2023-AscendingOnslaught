@@ -26,7 +26,6 @@ public class IntakeCommand extends CommandBase{
     @Override
     public void initialize() {
         firstTimeThru = true;
-        intake.disable();
     }
 
     @Override
@@ -42,7 +41,7 @@ public class IntakeCommand extends CommandBase{
                 //intakespinner.setSetpoint(Constants.Arm.ArmPosition.CARRY.wristCube);   
             }
         } else {
-            speed = -0.66;
+            speed = -1.0;
         }
         
         intake.setIntakeSpeed(speed);

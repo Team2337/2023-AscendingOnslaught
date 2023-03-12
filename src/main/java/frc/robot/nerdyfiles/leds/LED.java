@@ -15,13 +15,12 @@ import frc.robot.Constants;
 public class LED extends SubsystemBase {
 	/**
 	 * 0-60 are left LEDs
-	 * 61-77 are front LEDs
-	 * 78-141 are right LEDs
+	 * 61-130 are right LEDs
 	 */
 
 	private static AddressableLED led;
 	private static AddressableLEDBuffer ledBuffer;
-	private static int LED_LENGTH = 141;
+	private static int LED_LENGTH = 130;
 
 	/**
 	 * Controls the LEDs on the Robot 
@@ -116,7 +115,7 @@ public class LED extends SubsystemBase {
 
 	public void setRightColor(Color color) {
 		for (int i = 0; i < LED_LENGTH; i++) {
-			if (i > 77) {
+			if (i > 60) {
 				ledBuffer.setLED(i, color);
 			}
 		}

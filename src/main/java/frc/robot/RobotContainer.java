@@ -105,7 +105,7 @@ public class RobotContainer {
             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
-    // intake.setDefaultCommand(new IntakeHoldPosition(intake));
+    intake.setDefaultCommand(new IntakeHoldPosition(intake));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
