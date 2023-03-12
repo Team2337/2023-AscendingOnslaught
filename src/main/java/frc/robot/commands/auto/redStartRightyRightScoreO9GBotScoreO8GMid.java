@@ -4,8 +4,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointElbowCube;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointShoulderCube;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCube;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.DriveToPickupCone2;
 import frc.robot.commands.auto.common.DriveToPickupCube1;
@@ -62,9 +67,10 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
                 intakespinner, 
                 robotContainer, 
                 shoulder
-            )
-            // new ArmAutoSetpointWithEndingCube(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-            // new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+            ),
+            new ArmAutoSetpointElbowCube(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, robotContainer),
+            new ArmAutoSetpointShoulderCube(Constants.Arm.ArmPosition.ALTERNATECARRY, 15, elbow, shoulder, intakespinner, robotContainer),
+            new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, robotContainer)
         );
     }        
 }

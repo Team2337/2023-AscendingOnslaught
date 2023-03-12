@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,6 +16,7 @@ public class ArmBasicJoystickCommand extends CommandBase {
     Shoulder shoulder;
     Supplier<XboxController> joystick;
     boolean firstTimeThru = true;
+    double maxSpeed= 0.2;
 
 
     public ArmBasicJoystickCommand(Elbow elbow, Shoulder shoulder, Supplier<XboxController> joystick) {
@@ -28,10 +30,6 @@ public class ArmBasicJoystickCommand extends CommandBase {
     @Override
     public void initialize() {
         firstTimeThru = true;
-        shoulder.disable();
-        elbow.disable();
-
-        
     }
 
     @Override
@@ -45,7 +43,9 @@ public class ArmBasicJoystickCommand extends CommandBase {
             outputShoulder = Utilities.deadbandAndSquare(-joystick.get().getLeftY(), 0.15);
             outputElbow = Utilities.deadbandAndSquare(-joystick.get().getRightY(), 0.15);
         }
-        
+        outputShoulder = MathUtil.clamp(outputShoulder, -maxSpeed, maxSpeed);
+        outputElbow = MathUtil.clamp(outputElbow, -maxSpeed, maxSpeed);
+
         if ((outputShoulder == 0) && (outputElbow == 0)){ 
             if (firstTimeThru) {
                 SmartDashboard.putString("Are we holding?", "yes!");
