@@ -19,8 +19,8 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class DriveToPickupCube1 extends ParallelCommandGroup{
-    public DriveToPickupCube1(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder){
+public class DriveToPickupCube1Slow extends ParallelCommandGroup{
+    public DriveToPickupCube1Slow(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder){
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(
                 target, 
@@ -35,8 +35,8 @@ public class DriveToPickupCube1 extends ParallelCommandGroup{
                 heading
                 ),
             new InstantCommand(() -> robotContainer.setGamePiece(GamePiece.Cube)),
-            new WaitCommand(0.0).andThen(new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.AUTOTELEFALLINGCONE)).withTimeout(3),
-            new WaitCommand(0.5).andThen(new IntakeReverseAuto(intake)).withTimeout(3.5)
+            new WaitCommand(3.0).andThen(new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.AUTOTELEFALLINGCONE)).withTimeout(6),
+            new WaitCommand(3.0).andThen(new IntakeReverseAuto(intake)).withTimeout(6.5)
         );
     }
 }

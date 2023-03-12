@@ -8,8 +8,11 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
+import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.DriveToPickupCone1;
+import frc.robot.commands.auto.common.DriveToPickupCube1;
 import frc.robot.commands.auto.common.DriveToScoreHigh2;
+import frc.robot.commands.auto.common.DriveToScoreMid1Cube;
 import frc.robot.commands.auto.common.ScoreConeMid;
 import frc.robot.commands.auto.drive.AutoEngagePP2PFront;
 import frc.robot.commands.swerve.Lockdown;
@@ -25,7 +28,7 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
     public blueStartLeftyLeftScoreO1GToppyScoreO3Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new ScoreConeMid(elbow, intake, intakespinner, robotContainer , shoulder),
-            new DriveToPickupCone1(
+            new DriveToPickupCube1(
                 Constants.Auto.blueToppyTopStagingMark, 
                 autoDrive, 
                 drivetrain, 
@@ -36,10 +39,9 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
                 robotContainer, 
                 shoulder
             ),
-            new WaitCommand(0.5),
-            new DriveToScoreHigh2(
-                Constants.Auto.blueLeftIntermediaryNear, 
-                Constants.Auto.blueGridLeftRobotRight, 
+            new WaitCommand(0.25),
+            new DriveToScoreMid1Cube(
+                Constants.Auto.blueGridLeftRobotCenter, 
                 Constants.Arm.ArmPosition.SCOREMID, 
                 autoDrive, 
                 drivetrain, 
@@ -49,15 +51,15 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
                 intakespinner, 
                 shoulder
             ),
-            new ScoreConeMid(elbow, intake, intakespinner, robotContainer, shoulder),
-            new WaitCommand(1),
+            new IntakeReverseCube(intake).withTimeout(0.4),
+            new WaitCommand(0.25),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
                     new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
                     new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
                 ),
                 new AutoEngagePP2PFront(
-                    Constants.Auto.blueLeftCenterOfChargeStation, 
+                    Constants.Auto.blueRightCenterOfChargeStation, 
                     drivetrain::getTranslation, 
                     drivetrain::getRotation, 
                     3, 
@@ -69,8 +71,7 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
                     drivetrain,
                     heading
                 )
-            ),
-            new Lockdown(autoDrive, drivetrain, heading)
+            )
         );
     }        
 }

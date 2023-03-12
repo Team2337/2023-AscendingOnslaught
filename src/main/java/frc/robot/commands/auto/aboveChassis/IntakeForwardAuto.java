@@ -25,7 +25,7 @@ public class IntakeForwardAuto extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return intake.hasCone();
+        return false;
     }
 
     @Override
