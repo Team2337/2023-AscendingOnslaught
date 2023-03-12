@@ -3,6 +3,7 @@ package frc.robot.commands.auto.common;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
@@ -15,7 +16,7 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class DriveToScoreHigh2 extends ParallelCommandGroup{
+public class DriveToScoreHigh2 extends SequentialCommandGroup{
     public DriveToScoreHigh2(Translation2d waypoint, Translation2d target, ArmPosition armPosition, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
             new AutoCartesianVectorProfileToPointTargetCommand(

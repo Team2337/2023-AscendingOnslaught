@@ -6,11 +6,15 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
+import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.DriveToPickupCone2;
 import frc.robot.commands.auto.common.DriveToPickupCube1;
+import frc.robot.commands.auto.common.DriveToPickupCube2;
 import frc.robot.commands.auto.common.DriveToScoreHigh1;
+import frc.robot.commands.auto.common.DriveToScoreMid1Cube;
 import frc.robot.commands.auto.common.ScoreConeMid;
 import frc.robot.commands.auto.common.ScoreCubeHigh;
+import frc.robot.commands.auto.common.ScoreCubeMid;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -24,7 +28,7 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
         addCommands(
             new ScoreConeMid(elbow, intake, intakespinner, robotContainer , shoulder),
             new DriveToPickupCube1(
-                Constants.Auto.redTopStagingMark, 
+                Constants.Auto.redBottomStagingMark, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 
@@ -34,8 +38,8 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
                 robotContainer, 
                 shoulder
             ),
-            new WaitCommand(1),
-            new DriveToScoreHigh1(
+            new WaitCommand(0.25),
+            new DriveToScoreMid1Cube(
                 Constants.Auto.redGridRightRobotCenter, 
                 Constants.Arm.ArmPosition.SCOREMID, 
                 autoDrive, 
@@ -46,8 +50,8 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
                 intakespinner, 
                 shoulder
             ),
-            new ScoreCubeHigh(elbow, intake, intakespinner, robotContainer, shoulder),
-            new DriveToPickupCone2(
+            new IntakeReverseCube(intake).withTimeout(0.4),
+            new DriveToPickupCube2(
                 Constants.Auto.redRightIntermediaryFar, 
                 Constants.Auto.redMiddleStagingMark, 
                 autoDrive, 
@@ -58,9 +62,9 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
                 intakespinner, 
                 robotContainer, 
                 shoulder
-            ),
-            new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-            new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+            )
+            // new ArmAutoSetpointWithEndingCube(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+            // new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
         );
     }        
 }

@@ -61,11 +61,11 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = true;
-    public static final boolean AUTO = true;
+    public static final boolean AUTO = false;
     public static final boolean ELBOW = true;
-    public static final boolean DRIVETRAIN = true;
+    public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
-    public static final boolean INTAKE = false;
+    public static final boolean INTAKE = true;
     public static final boolean INTAKESPINNER = true;
     public static final boolean PDH = false;
     public static final boolean SHOULDER = true;
@@ -313,9 +313,9 @@ public final class Constants {
     public static final double trajectoryCutoff = 24;
     public static final double trajectoryTolerance = 1;
     public static final double intakeAutoForwardSpeed = 1.0;
-    public static final double intakeAutoReverseSpeed = -0.5;
+    public static final double intakeAutoReverseSpeed = -1.0;
     public static final double robotScoringOffset = Units.inchesToMeters(2);
-    public static final double pickupOffset = Units.inchesToMeters(14);
+    public static final double pickupOffset = Units.inchesToMeters(0);
 
     // Blue April Tag Locations
     public static final Translation2d blueTop6 = new Translation2d(Units.inchesToMeters(40.45), Units.inchesToMeters(174.19));
@@ -333,7 +333,7 @@ public final class Constants {
 
     // Blue Starting Locations
     public static final Translation2d blueGridLeftRobotLeft = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() + robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridLeftRobotCenter = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY());
+    public static final Translation2d blueGridLeftRobotCenter = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength - Units.inchesToMeters(6), blueTop6.getY() - Units.inchesToMeters(6));
     public static final Translation2d blueGridLeftRobotRight = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() - robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d blueGridMiddleRobotLeft = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY() + robotOffsetFromHybridAndPickupNodes);
     public static final Translation2d blueGridMiddleRobotCenter = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY());
@@ -358,15 +358,15 @@ public final class Constants {
     // Blue Staging Marks
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(36.19));
     public static final Translation2d blueMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(84.19));
-    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(132.19));
-    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(180.19));
+    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(126.19));
+    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(179.19));
 
     public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(207.73), Units.inchesToMeters(-22));
     public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(6.000));
 
     // Red Staging Marks
-    public static final Translation2d redBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(135.41));
-    public static final Translation2d redMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(173.61));
+    public static final Translation2d redBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(140.41));
+    public static final Translation2d redMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(173.61) + Units.inchesToMeters(40));
     public static final Translation2d redTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(221.61));
     public static final Translation2d redToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(269.61));
 
@@ -381,12 +381,13 @@ public final class Constants {
     // Blue Charge Station
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
-    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150), Units.inchesToMeters(108.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
 
     // Red Charge Station
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
     public static final Translation2d redLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) + robotChargeStationYOffset);
-    public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+    public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
+    public static final Translation2d redRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(170.8), Units.inchesToMeters(207.41));
 
     // Blue Intermediary Points
     public static final Translation2d blueLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(185));
@@ -400,7 +401,7 @@ public final class Constants {
     public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
     public static final Translation2d redLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(285));
     public static final Translation2d redRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(130));
-    public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(130));
+    public static final Translation2d redRightIntermediaryFar = new Translation2d(Units.inchesToMeters(210), Units.inchesToMeters(130));
     public static final Translation2d redSubstationIntermediary = new Translation2d(redSubstation5.getX() - Units.inchesToMeters(100), redSubstation5.getY() + centerOfRobotWidth);
 
     public static final Translation2d redMobilityPoint = new Translation2d(Units.inchesToMeters(275), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
@@ -500,7 +501,7 @@ public final class Constants {
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
     public static final double elbowD = 0.0;
-    public static final double intakeP = 0.02;
+    public static final double intakeP = 0.005;
     public static final double intakeI = 0.0;
     public static final double intakeD = 0.0;
 
@@ -510,23 +511,26 @@ public final class Constants {
     
     // Comp Arm
     public enum ArmPosition {
-      SCOREHIGHINTERMEDIATE(109.0,40.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(109.0,40.0,109.0,54.0,161.0,23.0),
-      SCOREMID(92.0,89.0,109.0,78.0,165.0,23.0),
+      SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
+      SCOREHIGH(109.0,38.0,109.0,40.0,145.0,23.0),
+      SCOREMID(82.0,105.0,91.0,100.0,165.0,23.0),
       SCORELOW(82.0,145.0,100.0,145.0,185.0,75.0),
-      SUBSTATION(86.0,-76.0,86.0,-76.0,253.0,140.0),
-      SUBSTATIONPICKUP(86.0,-83.0,86.0,-88.0,253.0,138.0),
-      TELESTANDINGCONE(55.0,-118.0,35.0,-72.0,184.0,75.0),
-      TELEFALLINGCONE(24.0,-102.0,36.0,-105.0,162.0,59.0),
+      SUBSTATION(86.0,-70.0,86.0,-76.0,253.0,140.0),
+      SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
+      TELESTANDINGCONE(60.0,-113.0,35.0,-72.0,184.0,75.0),
+      TELEFALLINGCONE(24.0,-102.0,36.0,-102.5,162.0,59.0),
+      AUTOTELEFALLINGCONE(24.0,-102.0,38.0,-102.5,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
-      CARRYINTERMEDIATE(-21,75,-21,100,35.0,25.0),
+      SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,250.0,25.0),
+      CARRYINTERMEDIATE(-21,42,-21,100,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
       AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
-      ALTERNATECARRY(90,-135,90,-135,253,59),
-      ALTERNATEINTERMEDIATE(90,-100,90,-100,253,59),
-      ALTERNATECARRYEND(90,-148,90,-148,253,59);
+      ALTERNATECARRY(90,-115,90,-115,253,59),
+      ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
+      ALTERNATECARRYEND(90,-148,90,-148,253,59),
+      AUTOSCOREMID(68.0,89.0,75.0,120.0,140.0,23.0);
       //67, -137
       
 

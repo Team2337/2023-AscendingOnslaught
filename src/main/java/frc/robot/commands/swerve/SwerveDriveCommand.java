@@ -47,9 +47,9 @@ public class SwerveDriveCommand extends CommandBase {
     
     if (controller.getBackButton()) {
        // scales inputs for fine control   
-       forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 5);
-       strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 5);
-       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 5);
+       forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 6);
+       strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 6);
+       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 6);
     } else {
       forward = Utilities.deadbandAndSquare(controller.getLeftY());
       strafe = Utilities.deadbandAndSquare(controller.getLeftX());

@@ -32,7 +32,7 @@ public class Intake extends PIDSubsystem {
         intakeMotor.setOpenLoopRampRate(peakOutput);
         intakeMotor.setSmartCurrentLimit(40, 40, 40); // TODO CHANGE LATER
         intakeEncoder = intakeMotor.getEncoder();
-        getController().setTolerance(5);
+        getController().setTolerance(20);
     }
 
     @Override

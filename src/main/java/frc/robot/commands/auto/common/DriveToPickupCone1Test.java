@@ -40,7 +40,7 @@ public class DriveToPickupCone1Test extends ParallelCommandGroup{
             new InstantCommand(() -> robotContainer.setGamePiece(GamePiece.Cone)),
             new WaitCommand(10),
             new SequentialCommandGroup(
-                new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+                new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 60, elbow, shoulder, intakespinner, robotContainer),
                 new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
             )
         );
