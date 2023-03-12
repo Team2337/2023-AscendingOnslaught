@@ -60,15 +60,15 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean AUTO = false;
-    public static final boolean ELBOW = true;
+    public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
-    public static final boolean INTAKE = true;
-    public static final boolean INTAKESPINNER = true;
+    public static final boolean INTAKE = false;
+    public static final boolean INTAKESPINNER = false;
     public static final boolean PDH = false;
-    public static final boolean SHOULDER = true;
+    public static final boolean SHOULDER = false;
     public static final boolean SWERVE = false;
     public static final boolean VISION = false;
   }
@@ -331,16 +331,16 @@ public final class Constants {
 
     public static final Translation2d zeroPoint = new Translation2d(0, 0);
 
-    // Blue Starting Locations
-    public static final Translation2d blueGridLeftRobotLeft = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() + robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridLeftRobotCenter = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength - Units.inchesToMeters(6), blueTop6.getY() - Units.inchesToMeters(6));
-    public static final Translation2d blueGridLeftRobotRight = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() - robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridMiddleRobotLeft = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY() + robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridMiddleRobotCenter = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY());
-    public static final Translation2d blueGridMiddleRobotRight = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY() - robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridRightRobotLeft = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() + robotOffsetFromHybridAndPickupNodes);
-    public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY());
-    public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() - robotOffsetFromHybridAndPickupNodes);
+    // Blue Starting Locations (X - 72.73 for all positions)
+    public static final Translation2d blueGridLeftRobotLeft = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() + robotOffsetFromHybridAndPickupNodes); //Y = 195.69
+    public static final Translation2d blueGridLeftRobotCenter = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength - Units.inchesToMeters(6), blueTop6.getY() - Units.inchesToMeters(6)); //Y = 174.19
+    public static final Translation2d blueGridLeftRobotRight = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength, blueTop6.getY() - robotOffsetFromHybridAndPickupNodes); //Y = 159.69
+    public static final Translation2d blueGridMiddleRobotLeft = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY() + robotOffsetFromHybridAndPickupNodes); //Y = 129.69
+    public static final Translation2d blueGridMiddleRobotCenter = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY()); //Y = 108.19
+    public static final Translation2d blueGridMiddleRobotRight = new Translation2d(blueMiddle7.getX() + centerOfRobotLength + hybridNodeLength, blueMiddle7.getY() - robotOffsetFromHybridAndPickupNodes); //Y = 86.69
+    public static final Translation2d blueGridRightRobotLeft = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() + robotOffsetFromHybridAndPickupNodes); //Y = 63.69
+    public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY()); //Y = 42.19
+    public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() - robotOffsetFromHybridAndPickupNodes); //Y = 20.69
 
     // Red Starting Locations
     public static final Translation2d redGridLeftRobotLeft = new Translation2d(redTop1.getX() + centerOfRobotLength + hybridNodeLength + robotScoringOffset, redTop1.getY() + robotOffsetFromHybridAndPickupNodes);
@@ -382,6 +382,7 @@ public final class Constants {
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
     public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
 
     // Red Charge Station
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
@@ -517,7 +518,7 @@ public final class Constants {
       SCORELOW(82.0,145.0,100.0,145.0,185.0,75.0),
       SUBSTATION(86.0,-70.0,86.0,-76.0,253.0,140.0),
       SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
-      TELESTANDINGCONE(60.0,-113.0,35.0,-72.0,184.0,75.0),
+      TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,36.0,-102.5,162.0,59.0),
       AUTOTELEFALLINGCONE(24.0,-102.0,38.0,-102.5,162.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),

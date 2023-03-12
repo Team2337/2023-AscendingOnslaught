@@ -55,6 +55,7 @@ public class ArmSetpointElbow extends CommandBase {
 
     @Override
     public void initialize() {
+        shoulder.pastPosition = armPosition;
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
             elbowSetpoint = armPosition.elbowCone;
             shoulder.disable();
@@ -110,7 +111,6 @@ public class ArmSetpointElbow extends CommandBase {
     public void end(boolean interrupted) {
         shoulder.enable();
         elbow.enable();
-        shoulder.pastPosition = armPosition;
     }
 
 

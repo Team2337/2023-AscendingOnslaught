@@ -7,10 +7,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.common.DriveToPickupCone1;
-import frc.robot.commands.auto.common.DriveToPickupCube1;
-import frc.robot.commands.auto.common.DriveToPickupCube1Slow;
-import frc.robot.commands.auto.common.ScoreConeMid;
+import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.commands.auto.drive.AutoEngagePP2PBack;
 import frc.robot.subsystems.AutoDrive;
@@ -24,7 +21,7 @@ import frc.robot.subsystems.arm.Shoulder;
 public class redStartMiddleRightScoreO6Balance extends SequentialCommandGroup{
     public redStartMiddleRightScoreO6Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new ScoreConeMid(elbow, intake, intakespinner, robotContainer , shoulder),
+            new ScoreConeHigh(elbow, intake, intakespinner, robotContainer , shoulder),
             new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
             new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY),
             new AutoCartesianVectorProfileToPointTargetCommand(

@@ -52,6 +52,7 @@ public class ArmSetpointWithIntake extends CommandBase {
     @Override
     public void initialize() {
         if (gamePiece.get() == GamePiece.Cone && shoulder.pastPosition == ArmPosition.SUBSTATION) {
+            shoulder.pastPosition = armPosition;
             elbowSetpoint = armPosition.elbowCone;
             shoulder.enable();
             elbow.enable();
@@ -75,6 +76,7 @@ public class ArmSetpointWithIntake extends CommandBase {
             elbow.setSetpoint(elbowSetpoint);
             intakespinner.setSetpoint(wristSetpoint);
         } else if (shoulder.pastPosition == ArmPosition.SUBSTATION) {
+            shoulder.pastPosition = armPosition;
             elbowSetpoint = armPosition.elbowCube;
             shoulder.enable();
             elbow.enable();
@@ -111,7 +113,6 @@ public class ArmSetpointWithIntake extends CommandBase {
     public void end(boolean interrupted) {
         shoulder.enable();
         elbow.enable();
-        shoulder.pastPosition = armPosition;
     }
 
 

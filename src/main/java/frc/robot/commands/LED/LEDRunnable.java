@@ -29,26 +29,30 @@ public class LEDRunnable extends CommandBase{
     //     led.setColor(Color.kRed);
     // }
     led.setFrontColor(Color.kRed);
-    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Cone) {
+    if (DriverStation.isTeleopEnabled() && robotContainer.getLEDState() == LEDState.Cone) {
       led.setLeftColor(Color.kYellow);
       led.setRightColor(Color.kYellow);
     }
-    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Cube) {
+    if (DriverStation.isTeleopEnabled() && robotContainer.getLEDState() == LEDState.Cube) {
       led.setLeftColor(Color.kPurple);
       led.setRightColor(Color.kPurple);
     }
-    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.Nothing) {
+    if (DriverStation.isTeleopEnabled() && robotContainer.getLEDState() == LEDState.Nothing) {
       led.setLeftColor(Color.kBlack);
       led.setRightColor(Color.kBlack);
     }
-    if (DriverStation.isTeleop() && robotContainer.getLEDState() == LEDState.HasGamePiece) {
-      led.setLeftColor(Color.kBlue);
-      led.setRightColor(Color.kBlue);
-    }
-    if (DriverStation.isTeleop() && hasGamepiece.get() == true) {
+    if (DriverStation.isTeleopEnabled() && robotContainer.getLEDState() == LEDState.HasGamePiece) {
       led.setLeftColor(Color.kRed);
       led.setRightColor(Color.kRed);
     }
+    if (DriverStation.isDisabled()) {
+      led.setLeftColor(Color.kRed);
+      led.setRightColor(Color.kRed);
+    }
+    // if (DriverStation.isTeleop() && hasGamepiece.get() == true) {
+    //   led.setLeftColor(Color.kRed);
+    //   led.setRightColor(Color.kRed);
+    // }
     
     // if (robotContainer.getYellowSwitchStatus() && robotContainer.getGyroscopeRoll() < Constants.CLIMBER_ROLL) {
     //   led.setColor(Color.kPurple);

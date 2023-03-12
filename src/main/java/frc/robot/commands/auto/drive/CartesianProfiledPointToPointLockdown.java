@@ -77,8 +77,8 @@ public class CartesianProfiledPointToPointLockdown extends CartesianHeadingToTar
       new TrapezoidProfile.Constraints(strafeVelocity, strafeAcceleration)
     );
 
-    forwardController.setTolerance(Units.inchesToMeters(0.0001));
-    strafeController.setTolerance(Units.inchesToMeters(0.0001));
+    forwardController.setTolerance(Units.inchesToMeters(0.4));
+    strafeController.setTolerance(Units.inchesToMeters(0.4));
 
     log();
 
@@ -99,7 +99,7 @@ public class CartesianProfiledPointToPointLockdown extends CartesianHeadingToTar
     forwardController.reset(robotCoordinate.getX());
 
     x = robotCoordinate.getX();
-    y = robotCoordinate.getY() + Units.inchesToMeters(1.0);
+    y = robotCoordinate.getY() + Units.inchesToMeters(0.5);
    // currentRotation = rotationSupplier.get().getRadians();
 
   }
@@ -141,7 +141,7 @@ public class CartesianProfiledPointToPointLockdown extends CartesianHeadingToTar
 
   public AutoDrive.State calculate(double forward, double strafe, boolean isFieldOriented) {
     return new AutoDrive.State(
-      -forwardOutput,
+      -0,
       -strafeOutput,
       true
     );
@@ -156,7 +156,7 @@ public class CartesianProfiledPointToPointLockdown extends CartesianHeadingToTar
 
   @Override
   public boolean isFinished() {
-    return false;
+    return strafeController.atGoal();
   }
 
   private void log() {
