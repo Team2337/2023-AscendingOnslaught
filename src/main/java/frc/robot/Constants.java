@@ -60,15 +60,15 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = false;
+    public static final boolean ARM = true;
     public static final boolean AUTO = false;
-    public static final boolean ELBOW = false;
+    public static final boolean ELBOW = true;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
-    public static final boolean INTAKE = false;
-    public static final boolean INTAKESPINNER = false;
+    public static final boolean INTAKE = true;
+    public static final boolean INTAKESPINNER = true;
     public static final boolean PDH = false;
-    public static final boolean SHOULDER = false;
+    public static final boolean SHOULDER = true;
     public static final boolean SWERVE = false;
     public static final boolean VISION = false;
   }
@@ -531,7 +531,8 @@ public final class Constants {
       ALTERNATECARRY(90,-115,90,-115,253,59),
       ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
-      AUTOSCOREMID(68.0,89.0,75.0,120.0,140.0,23.0);
+      AUTOSCOREMID(68.0,89.0,75.0,120.0,140.0,23.0),
+      SCORESIDEPICKUPLOW(102, 143, 102, 142, 219, 280);
       //67, -137
       
 

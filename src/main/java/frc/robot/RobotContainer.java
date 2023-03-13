@@ -76,7 +76,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(pigeon, (GamePiece x) -> setGamePiece(x));
   private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage, this::getGamepiece);
-  private final Elbow elbow = new Elbow();
+  private final Elbow elbow = new Elbow(this);
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
   // private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
@@ -382,6 +382,7 @@ public class RobotContainer {
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
     Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
+    Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
@@ -403,6 +404,7 @@ public class RobotContainer {
     operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
     operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATIONFRONT, elbow, shoulder, intakespinner, this));
+    operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
  
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
 
@@ -509,6 +511,10 @@ public class RobotContainer {
 
   public boolean wasPastPositionFloorPickup() {
     return (shoulder.pastPosition == ArmPosition.TELEFALLINGCONE || shoulder.pastPosition == ArmPosition.TELESTANDINGCONE);
+  }
+
+  public double getShoulderAngle() {
+    return shoulder.getShoulderLampreyDegrees();
   }
 
 }

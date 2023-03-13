@@ -12,12 +12,14 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Elbow extends PIDSubsystem {
 
@@ -30,6 +32,8 @@ public class Elbow extends PIDSubsystem {
   AnalogPotentiometer elbowLampreyPot = new AnalogPotentiometer(elbowLamprey, fullRange, offset);
   TalonFX elbowMotor = new TalonFX(16);
 
+  private RobotContainer robotContainer;
+
   static double elbowkP = 0.025;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
@@ -38,7 +42,7 @@ public class Elbow extends PIDSubsystem {
   private double closedLoopLimit = Constants.Arm.ELBOW_CLOSED_LOOP_SPEED;
   
   /** Creates a new ExampleSubsystem. */
-  public Elbow() {
+  public Elbow(RobotContainer robotContainer) {
     super(new PIDController(elbowkP, elbowkI, elbowkD));
     getController().setTolerance(allowableError);
 
@@ -61,13 +65,16 @@ public class Elbow extends PIDSubsystem {
     elbowMotor.configPeakOutputReverse(-speedlimit, 10);
     elbowMotor.setInverted(TalonFXInvertType.Clockwise);
     elbowMotor.setNeutralMode(NeutralMode.Brake);
+
+    this.robotContainer = robotContainer;
   }
 
 
   @Override
   protected void useOutput(double output, double setpoint) {
-    setElbowSpeed(output);
-    SmartDashboard.putNumber("Arm/ Elbow Output", output);
+    double ff = 0.05 * Math.cos(Units.degreesToRadians(getElbowLampreyDegrees() + robotContainer.getShoulderAngle()));
+    setElbowSpeed(output + ff);
+    SmartDashboard.putNumber("Arm/ Elbow Output", output + ff);
   }
 
   @Override
@@ -132,10 +139,16 @@ public class Elbow extends PIDSubsystem {
     return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 2.0);
   }
 
+  public void setElbowSetpoint(double setpoint, double p) {
+    getController().setP(p);
+    setSetpoint(setpoint);
+  }
+
   @Override
   public void periodic() {
       super.periodic();
       log();
+      // getController().setP(0.025 + 0.03 * Math.abs(Math.cos(Units.degreesToRadians(getElbowLampreyDegrees() + robotContainer.getShoulderAngle()))));
   }
 
 
@@ -154,6 +167,7 @@ public class Elbow extends PIDSubsystem {
       SmartDashboard.putNumber("Elbow Velocity Error", m_controller.getVelocityError());
     }
     SmartDashboard.putNumber("Arm/Elbow Encoder Degrees", getElbowLampreyDegrees());
+    SmartDashboard.putNumber("Arm/Elbow P", m_controller.getP());
   }
 
   
