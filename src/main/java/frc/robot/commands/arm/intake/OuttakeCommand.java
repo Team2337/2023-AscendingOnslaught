@@ -27,7 +27,7 @@ public class OuttakeCommand extends CommandBase{
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
             speed = -0.66;
         } else {
-            speed = 0.66;
+            speed = 1.0;
         } 
         intake.setIntakeSpeed(speed);
     }

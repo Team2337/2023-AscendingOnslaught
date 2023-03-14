@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -100,9 +101,10 @@ public class ArmSetpointCommand extends CommandBase {
             wristSetpoint = armPosition.wristCube;
         }
         
+        elbowP = 0.018 + 0.018 * Math.abs(Math.cos(Units.degreesToRadians(elbowSetpoint + shoulderSetpoint)));
         
         shoulder.setSetpoint(shoulderSetpoint);
-        elbow.setSetpoint(elbowSetpoint);
+        elbow.setElbowSetpoint(elbowSetpoint, elbowP);
         intakespinner.setSetpoint(wristSetpoint);
     }
 

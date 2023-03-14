@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
@@ -76,7 +77,7 @@ public class RobotContainer {
   private final Drivetrain drivetrain = new Drivetrain(pigeon, (GamePiece x) -> setGamePiece(x));
   private final Intake intake = new Intake();
   private final IntakeSpinnerLamprey intakespinner = new IntakeSpinnerLamprey(intake::getIntakeSpinnerLampreyVoltage, this::getGamepiece);
-  private final Elbow elbow = new Elbow();
+  private final Elbow elbow = new Elbow(this);
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
   // private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
@@ -343,11 +344,13 @@ public class RobotContainer {
     JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
-    triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
+    driverRightBumper.onTrue(new MaintainHeadingCommand(0, heading));
     //If blue 90, if red -90
-    triggerDriverLeft.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
+    driverLeftBumper.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
     new MaintainHeadingCommand(-90, heading), 
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
+
+    triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -382,12 +385,17 @@ public class RobotContainer {
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
     Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
+    Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
 
     triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));
-    triggerOperatorRight.whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
+    triggerOperatorRight.whileTrue(new ConditionalCommand( 
+      new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner), 
+      new WaitCommand(0), 
+      () -> wasPastPositionSubstation()));
+    
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(
@@ -403,6 +411,7 @@ public class RobotContainer {
     operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
     operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATIONFRONT, elbow, shoulder, intakespinner, this));
+    operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
  
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
 
@@ -509,6 +518,10 @@ public class RobotContainer {
 
   public boolean wasPastPositionFloorPickup() {
     return (shoulder.pastPosition == ArmPosition.TELEFALLINGCONE || shoulder.pastPosition == ArmPosition.TELESTANDINGCONE);
+  }
+
+  public double getShoulderAngle() {
+    return shoulder.getShoulderLampreyDegrees();
   }
 
 }
