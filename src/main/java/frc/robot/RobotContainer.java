@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
@@ -343,11 +344,13 @@ public class RobotContainer {
     JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
-    triggerDriverRight.onTrue(new MaintainHeadingCommand(0, heading));
+    driverRightBumper.onTrue(new MaintainHeadingCommand(0, heading));
     //If blue 90, if red -90
-    triggerDriverLeft.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
+    driverLeftBumper.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
     new MaintainHeadingCommand(-90, heading), 
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
+
+    triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -388,7 +391,11 @@ public class RobotContainer {
     
 
     triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));
-    triggerOperatorRight.whileTrue(new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner));
+    triggerOperatorRight.whileTrue(new ConditionalCommand( 
+      new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner), 
+      new WaitCommand(0), 
+      () -> wasPastPositionSubstation()));
+    
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
     operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
     operatorLeftBumper.whileTrue(new ConditionalCommand(
