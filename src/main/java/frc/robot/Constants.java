@@ -492,7 +492,7 @@ public final class Constants {
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
     public static final double WRIST_LOWER_LIMIT = 23.0;
-    public static final double WRIST_UPPER_LIMIT = 280.0;
+    public static final double WRIST_UPPER_LIMIT = 310.0;
     public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
     public static final double SHOULDER_MAX_SPEED = 0.7;
     public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
@@ -520,9 +520,9 @@ public final class Constants {
       SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,35.0,-102.5,162.0,59.0),
-      AUTOTELEFALLINGCONE(24.0,-102.0,38.0,-102.5,162.0,59.0),
+      AUTOTELEFALLINGCONE(24.0,-102.0,33.0,-102.5,132.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
-      CARRY(-21.0,145.0,-21.0,145.0,67.0,25.0),
+      CARRY(-21.0,145.0,-21.0,145.0,67.0,243.0),
       SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,254.0,25.0),
       CARRYINTERMEDIATE(-21,42,-21,42,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
@@ -531,8 +531,8 @@ public final class Constants {
       ALTERNATECARRY(90,-115,90,-115,253,59),
       ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
-      AUTOSCOREMID(68.0,89.0,75.0,120.0,140.0,23.0),
-      SCORESIDEPICKUPLOW(102, 143, 117, 142, 219, 280);
+      AUTOSCOREMID(75.0,100.0,91.0,100.0,165.0,23.0),
+      SCORESIDEPICKUPLOW(102, 143, 120, 142, 219, 310);
       //67, -137
       
 
