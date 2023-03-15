@@ -10,6 +10,7 @@ import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.commands.auto.drive.AutoEngagePP2PBack;
+import frc.robot.commands.swerve.Lockdown;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -49,7 +50,8 @@ public class redStartMiddleRightScoreO6Balance extends SequentialCommandGroup{
                 autoDrive, 
                 drivetrain,
                 heading
-                )
+            ),
+            new Lockdown(autoDrive, drivetrain, heading).withTimeout(0.25)
         );
     }        
 }

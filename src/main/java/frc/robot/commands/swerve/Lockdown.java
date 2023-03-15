@@ -20,8 +20,8 @@ public class Lockdown extends SequentialCommandGroup{
                 drivetrain::getRotation, 
                 2.0, 
                 3.0, 
-                Units.inchesToMeters(90), 
-                Units.inchesToMeters(90), 
+                Units.inchesToMeters(10), 
+                Units.inchesToMeters(10), 
                 autoDrive, 
                 drivetrain,
                 heading

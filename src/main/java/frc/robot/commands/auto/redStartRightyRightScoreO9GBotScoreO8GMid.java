@@ -5,21 +5,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.arm.ArmSetpointCommand;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointElbowCube;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointShoulderCube;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCube;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
-import frc.robot.commands.auto.common.DriveToPickupCone2;
 import frc.robot.commands.auto.common.DriveToPickupCube1;
 import frc.robot.commands.auto.common.DriveToPickupCube2;
-import frc.robot.commands.auto.common.DriveToScoreHigh1;
 import frc.robot.commands.auto.common.DriveToScoreMid1Cube;
 import frc.robot.commands.auto.common.ScoreConeMid;
-import frc.robot.commands.auto.common.ScoreCubeHigh;
-import frc.robot.commands.auto.common.ScoreCubeMid;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -46,7 +38,7 @@ public class redStartRightyRightScoreO9GBotScoreO8GMid extends SequentialCommand
             new WaitCommand(0.25),
             new DriveToScoreMid1Cube(
                 Constants.Auto.redGridRightRobotCenter, 
-                Constants.Arm.ArmPosition.SCOREMID, 
+                Constants.Arm.ArmPosition.AUTOSCOREMID, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 

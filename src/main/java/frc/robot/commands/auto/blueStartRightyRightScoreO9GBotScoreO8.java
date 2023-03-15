@@ -37,7 +37,7 @@ public class blueStartRightyRightScoreO9GBotScoreO8 extends SequentialCommandGro
             new WaitCommand(0.25),
             new DriveToScoreMid1Cube(
                 Constants.Auto.blueGridRightRobotCenter, 
-                Constants.Arm.ArmPosition.SCOREMID, 
+                Constants.Arm.ArmPosition.AUTOSCOREMID, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 

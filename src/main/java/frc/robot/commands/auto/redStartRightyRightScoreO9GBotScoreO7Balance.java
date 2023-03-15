@@ -13,6 +13,7 @@ import frc.robot.commands.auto.common.DriveToPickupCube1;
 import frc.robot.commands.auto.common.DriveToScoreMid1Cube;
 import frc.robot.commands.auto.common.ScoreConeMid;
 import frc.robot.commands.auto.drive.AutoEngagePP2PFront;
+import frc.robot.commands.swerve.Lockdown;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -39,7 +40,7 @@ public class redStartRightyRightScoreO9GBotScoreO7Balance extends SequentialComm
             new WaitCommand(0.25),
             new DriveToScoreMid1Cube(
                 Constants.Auto.redGridRightRobotCenter, 
-                Constants.Arm.ArmPosition.SCOREMID, 
+                Constants.Arm.ArmPosition.AUTOSCOREMID, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 
@@ -68,7 +69,8 @@ public class redStartRightyRightScoreO9GBotScoreO7Balance extends SequentialComm
                     drivetrain,
                     heading
                 )
-            )
+            ),
+            new Lockdown(autoDrive, drivetrain, heading).withTimeout(0.25)
         );
     }        
 }

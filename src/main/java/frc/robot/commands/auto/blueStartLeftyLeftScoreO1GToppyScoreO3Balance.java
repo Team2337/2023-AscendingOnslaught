@@ -9,9 +9,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
-import frc.robot.commands.auto.common.DriveToPickupCone1;
 import frc.robot.commands.auto.common.DriveToPickupCube1;
-import frc.robot.commands.auto.common.DriveToScoreHigh2;
 import frc.robot.commands.auto.common.DriveToScoreMid1Cube;
 import frc.robot.commands.auto.common.ScoreConeMid;
 import frc.robot.commands.auto.drive.AutoEngagePP2PFront;
@@ -42,7 +40,7 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
             new WaitCommand(0.25),
             new DriveToScoreMid1Cube(
                 Constants.Auto.blueGridLeftRobotCenter, 
-                Constants.Arm.ArmPosition.SCOREMID, 
+                Constants.Arm.ArmPosition.AUTOSCOREMID, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 
@@ -71,7 +69,8 @@ public class blueStartLeftyLeftScoreO1GToppyScoreO3Balance extends SequentialCom
                     drivetrain,
                     heading
                 )
-            )
+            ),
+            new Lockdown(autoDrive, drivetrain, heading).withTimeout(0.25)
         );
     }        
 }
