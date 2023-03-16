@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
@@ -175,6 +176,26 @@ public class RobotContainer {
         .withPosition(DriverDashboardPositions.ALLIANCE.x, DriverDashboardPositions.ALLIANCE.y)
         .withSize(3, 3)
         .withProperties(Map.of("Color when true", "#ff3333", "Color when false", "#3333ff"));
+
+    Constants.DRIVER_DASHBOARD.addNumber("Shoulder Lamprey", () -> shoulder.getShoulderLampreyDegrees())
+      .withPosition(DriverDashboardPositions.SHOULDERLAMPREY.x, DriverDashboardPositions.SHOULDERLAMPREY.y)
+      .withSize(3, 3);
+
+    Constants.DRIVER_DASHBOARD.addNumber("Elbow Lamprey", () -> elbow.getElbowLampreyDegrees())
+      .withPosition(DriverDashboardPositions.ELBOWLAMPREY.x, DriverDashboardPositions.ELBOWLAMPREY.y)
+      .withSize(3, 3);   
+      
+    Constants.DRIVER_DASHBOARD.addNumber("Intake Spinner Lamprey", () -> intakespinner.getEncoderDegrees())
+      .withPosition(DriverDashboardPositions.INTAKESPINNERLAMPREY.x, DriverDashboardPositions.INTAKESPINNERLAMPREY.y)
+      .withSize(3, 3);
+
+    Constants.DRIVER_DASHBOARD.addBoolean("Intake Spinner Sensor", () -> intake.hasCone())
+      .withPosition(DriverDashboardPositions.INTAKESENSOR.x, DriverDashboardPositions.INTAKESENSOR.y)
+      .withSize(3, 3);
+
+    Constants.DRIVER_DASHBOARD.addString("Past Arm Position", () -> shoulder.pastPosition.toString())
+      .withPosition(DriverDashboardPositions.PASTARMPOSITION.x, DriverDashboardPositions.PASTARMPOSITION.y)
+      .withSize(6, 3);
   }
 
   public void resetRobot2023() {
@@ -363,7 +384,7 @@ public class RobotContainer {
     //           new RedConstructTeleopAutoCommand3(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue))),
     //       this::selectTeleopAuto));
 
-    driverB.whileTrue(new Lockdown(autoDrive, drivetrain, heading));
+    driverB.whileTrue(new Lockdown(autoDrive, drivetrain, heading).withTimeout(0.2));
 
     // driverLeftBumper.whileTrue(new ConditionalCommand(new BlueTeleopAutoLeftSubstation(autoDrive, drivetrain, heading),
     //   new  RedTeleopAutoLeftSubstation(autoDrive, drivetrain, heading), drivetrain::isAllianceBlue));

@@ -15,6 +15,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -34,7 +35,7 @@ public class Elbow extends PIDSubsystem {
 
   private RobotContainer robotContainer;
 
-  static double elbowkP = 0.025;
+  static double elbowkP = 0.018;
   static double elbowkI = 0.0;
   static double elbowkD = 0.0;
   double allowableError = 0.2;
@@ -72,9 +73,13 @@ public class Elbow extends PIDSubsystem {
 
   @Override
   protected void useOutput(double output, double setpoint) {
-    double ff = 0.05 * Math.cos(Units.degreesToRadians(getElbowLampreyDegrees() + robotContainer.getShoulderAngle()));
-    setElbowSpeed(output + ff);
-    SmartDashboard.putNumber("Arm/ Elbow Output", output + ff);
+    if (DriverStation.isTeleop()) {
+      double ff = 0.05 * Math.cos(Units.degreesToRadians(getElbowLampreyDegrees() + robotContainer.getShoulderAngle()));
+      setElbowSpeed(output + ff);
+      SmartDashboard.putNumber("Arm/ Elbow Output", output + ff);
+    } else {
+      setElbowSpeed(output);
+    }
   }
 
   @Override
@@ -140,7 +145,9 @@ public class Elbow extends PIDSubsystem {
   }
 
   public void setElbowSetpoint(double setpoint, double p) {
-    getController().setP(p);
+    if (DriverStation.isTeleop()) {
+      getController().setP(p);
+    }
     setSetpoint(setpoint);
   }
 

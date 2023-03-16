@@ -116,11 +116,6 @@ public class Vision extends SubsystemBase {
       //   .withPosition(SystemsCheckPositions.LIMELIGHT.x, SystemsCheckPositions.LIMELIGHT.y)
       //   .withSize(3, 3);
     }
-      ShuffleboardTab driverDashboard = Constants.DRIVER_DASHBOARD;
-
-      driverDashboard.addNumber("Distance to Target (inches)", () -> Units.metersToInches(distanceToTargetMetersB))
-      .withPosition(DriverDashboardPositions.DISTANCE_TO_TARGET.x, DriverDashboardPositions.DISTANCE_TO_TARGET.y)
-      .withSize(3, 3);
     }
 
   @Override

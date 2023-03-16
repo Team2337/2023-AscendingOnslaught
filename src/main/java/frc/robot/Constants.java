@@ -60,15 +60,15 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean AUTO = false;
-    public static final boolean ELBOW = true;
+    public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
-    public static final boolean INTAKE = true;
-    public static final boolean INTAKESPINNER = true;
+    public static final boolean INTAKE = false;
+    public static final boolean INTAKESPINNER = false;
     public static final boolean PDH = false;
-    public static final boolean SHOULDER = true;
+    public static final boolean SHOULDER = false;
     public static final boolean SWERVE = false;
     public static final boolean VISION = false;
   }
@@ -82,9 +82,11 @@ public final class Constants {
     AUTODRIVE_COMMAND(9, 9, 6, 3),
     GYRO_DEGREES(16, 0, 3, 3),
     ALLIANCE(9, 9, 6, 3),
-    INTAKE_BEAM(7, 0, 3, 3),
-    DRIVER_CAM(14, 0, 10, 7),
-    DISTANCE_TO_TARGET(16, 3, 3, 3);
+    SHOULDERLAMPREY(11,0,3,3),
+    ELBOWLAMPREY(14,0,3,3),
+    INTAKESPINNERLAMPREY(17,0,3,3),
+    INTAKESENSOR(16, 3, 3, 3),
+    PASTARMPOSITION(11,3,6,3);
 
     public final int x, y, width, height;
 
@@ -100,6 +102,10 @@ public final class Constants {
   // Systems check
   public static enum SystemsCheckPositions {
     // Temperatures (3x4 widgets)
+    MODULE0(9, 4),
+    MODULE1(12,4),
+    MODULE2(15, 4),
+    MODULE3(18, 4),
     INTAKE_TEMP(0, 0),
     DELIVERY_TEMP(3, 0),
     L_SHOOTER_TEMP(0, 4),

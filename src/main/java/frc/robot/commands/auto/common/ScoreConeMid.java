@@ -17,7 +17,7 @@ public class ScoreConeMid extends SequentialCommandGroup{
         addCommands(
             new ArmAutoSetpointShoulderEndElbowCone(Constants.Arm.ArmPosition.AUTOSCOREMID, 15, elbow, shoulder, intakespinner, robotContainer),
             new ArmAutoSetpointConeWait(elbow, shoulder, intakespinner, robotContainer, Constants.Arm.ArmPosition.AUTOSCOREMID).withTimeout(0.75), 
-            new IntakeReverseAuto(intake).withTimeout(0.3)
+            new IntakeReverseAuto(intake).withTimeout(0.4)
         );
     }
 }

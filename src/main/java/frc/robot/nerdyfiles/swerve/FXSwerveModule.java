@@ -9,8 +9,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.SystemsCheckPositions;
 import frc.robot.nerdyfiles.swerve.configuration.ModuleConfiguration;
 import frc.robot.nerdyfiles.utilities.CTREUtils;
 
@@ -176,7 +178,6 @@ public class FXSwerveModule {
       SmartDashboard.putNumber(prefix + "Angle Motor Temperature (C)", getAngleMotorTemperature());
       SmartDashboard.putNumber(prefix + "Angle Motor Error", angleMotor.getClosedLoopError());
     }
-   
   }
 
 }
