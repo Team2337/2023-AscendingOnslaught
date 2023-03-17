@@ -364,7 +364,7 @@ public final class Constants {
     // Blue Staging Marks
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(36.19));
     public static final Translation2d blueMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(84.19));
-    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(126.19));
+    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(282.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(116.19));
     public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(179.19));
 
     public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(207.73), Units.inchesToMeters(-22));
@@ -387,7 +387,7 @@ public final class Constants {
     // Blue Charge Station
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
-    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(169.3), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
     public static final Translation2d blueRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
 
     // Red Charge Station
@@ -519,9 +519,9 @@ public final class Constants {
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(109.0,38.0,114.0,40.0,145.0,23.0),
+      SCOREHIGH(109.0,39.5,114.0,40.0,145.0,23.0),
       SCOREMID(82.0,105.0,91.0,100.0,165.0,23.0),
-      SCORELOW(-21.0,145.0,-21.0,145.0,110.0,25.0),
+      SCORELOW(-21.0,145.0,-21.0,145.0,83.0,25.0),
       SUBSTATION(86.0,-70.0,86.0,-76.0,253.0,140.0),
       SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
@@ -541,7 +541,7 @@ public final class Constants {
       SCORESIDEPICKUPLOW(102, 143, 120, 142, 219, 310);
       //67, -137
       
-
+             
       public final double shoulderCone;
       public final double shoulderCube;
       public final double elbowCone;
