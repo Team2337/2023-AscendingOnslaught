@@ -4,8 +4,11 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,6 +26,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -90,6 +96,7 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d waypoint2_inner = new Translation2d(0, 0);
   private Translation2d waypoint3_goal = new Translation2d(0, 0);
   private Consumer<GamePiece> gamePiece;
+  private Consumer<SwerveModuleState[]> swerveModuleStates;
 
   /**
    * Subsystem where swerve modules are configured,
@@ -99,6 +106,8 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain(PigeonIMU pigeon, Consumer<GamePiece> gamePiece) {
     this.pigeon = pigeon;
     this.gamePiece = gamePiece;
+    this.swerveModuleStates = swerveModuleStates;
+
 
     modules = new FXSwerveModule[] {
       new FXSwerveModule(
@@ -403,6 +412,15 @@ public class Drivetrain extends SubsystemBase {
     return (Robot.allianceColor.equals("Blue"));
   }
 
+  public void setModuleState(SwerveModuleState[] stateIncoming, double maxVelocity) {
+    for (int i = 0; i < stateIncoming.length; i++) {
+      FXSwerveModule module = modules[i];
+      SwerveModuleState moduleState = stateIncoming[i];
+  
+      module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+  }
+}
+
   @Override
   public void periodic() {
     log();
@@ -430,6 +448,8 @@ public class Drivetrain extends SubsystemBase {
       modules[3].getState()
     };
 
+
+
     realChassisSpeeds = kinematics.toChassisSpeeds(realStates);
 
     pose = odometry.update(
@@ -442,9 +462,12 @@ public class Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
     */
-    
+
 
   }
+
+
+
 
   public void log() {
     if (Constants.DashboardLogging.DRIVETRAIN) {
@@ -464,5 +487,38 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Startup/Gyro", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("Startup/Teleop Auto Position", getTeleopAutoPosition());
   }
+
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+    modules[0].set(desiredStates[0], Constants.MAX_VELOCITY_METERS_PER_SECOND);
+    modules[1].set(desiredStates[1], Constants.MAX_VELOCITY_METERS_PER_SECOND);
+    modules[2].set(desiredStates[2], Constants.MAX_VELOCITY_METERS_PER_SECOND);
+    modules[3].set(desiredStates[3], Constants.MAX_VELOCITY_METERS_PER_SECOND);
+  }
+
+
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    return new SequentialCommandGroup(
+         new InstantCommand(() -> {
+           // Reset odometry for the first path you run during auto
+           if(isFirstPath){
+               this.resetPosition(traj.getInitialHolonomicPose());
+           }
+         }),
+         new PPSwerveControllerCommand(
+             traj, 
+             this::getPose, // Pose supplier
+             kinematics, // SwerveDriveKinematics
+             new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             new PIDController(1, 0, 0), // Y controller (usually the same values as X controller)
+             new PIDController(1, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+             swerveModuleStates, // Module states consumer
+             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+             this // Requires this drive subsystem
+         )
+     );
+ }
+
+
 
 }

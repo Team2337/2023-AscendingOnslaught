@@ -54,6 +54,7 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
+import frc.robot.commands.auto.test.Test3M;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
@@ -130,6 +131,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
+    autonChooser.addOption("Test3M", new Test3M(drivetrain));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -144,6 +146,7 @@ public class RobotContainer {
     startingPosChooser.addOption("Left Right", "Left Right");
     startingPosChooser.addOption("Left Middle", "Left Middle");
     startingPosChooser.addOption("Left Left", "Left Left");
+
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
