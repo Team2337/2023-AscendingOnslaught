@@ -61,7 +61,7 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = false;
-    public static final boolean AUTO = false;
+    public static final boolean AUTO = true;
     public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
@@ -317,6 +317,7 @@ public final class Constants {
     public static final double robotChargeStationYOffset = Units.inchesToMeters(20);
     public static final double chargeAutoStationOffset = Units.inchesToMeters(24);
     public static final double trajectoryCutoff = 24;
+    public static final double trajectoryCutoffYoshi = 84;
     public static final double trajectoryTolerance = 1;
     public static final double intakeAutoForwardSpeed = 1.0;
     public static final double intakeAutoReverseSpeed = -1.0;
@@ -347,6 +348,7 @@ public final class Constants {
     public static final Translation2d blueGridRightRobotLeft = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() + robotOffsetFromHybridAndPickupNodes); //Y = 63.69
     public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY()); //Y = 42.19
     public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() - robotOffsetFromHybridAndPickupNodes); //Y = 20.69
+    public static final Translation2d blueGridLeftRobotCenterYoshi = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength + Units.inchesToMeters(6), blueTop6.getY() - Units.inchesToMeters(6)); //Y = 174.19
 
     // Red Starting Locations
     public static final Translation2d redGridLeftRobotLeft = new Translation2d(redTop1.getX() + centerOfRobotLength + hybridNodeLength + robotScoringOffset, redTop1.getY() + robotOffsetFromHybridAndPickupNodes);
@@ -364,8 +366,10 @@ public final class Constants {
     // Blue Staging Marks
     public static final Translation2d blueBottomStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(36.19));
     public static final Translation2d blueMiddleStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(84.19));
-    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(126.19));
-    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(179.19));
+    public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(282.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(116.19));
+    public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(175.19));
+    public static final Translation2d blueToppyTopStagingMarkYoshi = new Translation2d(Units.inchesToMeters(258.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(175.19));
+    public static final Translation2d blueTopStagingMarkYoshi = new Translation2d(Units.inchesToMeters(268.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(124.19));
 
     public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(207.73), Units.inchesToMeters(-22));
     public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(6.000));
@@ -387,22 +391,23 @@ public final class Constants {
     // Blue Charge Station
     public static final Translation2d blueCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8) + chargeAutoStationOffset, Units.inchesToMeters(108.19));
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
-    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(171.3), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
     public static final Translation2d blueRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
 
     // Red Charge Station
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
     public static final Translation2d redLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41) + robotChargeStationYOffset);
     public static final Translation2d redRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(207.41) - robotChargeStationYOffset);
-    public static final Translation2d redRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(170.8), Units.inchesToMeters(207.41));
+    public static final Translation2d redRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(176.8), Units.inchesToMeters(207.41));
 
     // Blue Intermediary Points
     public static final Translation2d blueLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(185));
-    public static final Translation2d blueLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(185));
+    public static final Translation2d blueLeftIntermediaryFar = new Translation2d(Units.inchesToMeters(195), Units.inchesToMeters(185));
     public static final Translation2d blueRightIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(30));
     public static final Translation2d blueRightIntermediaryAutoNear = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(30));
     public static final Translation2d blueRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(30));
     public static final Translation2d blueSubstationIntermediary = new Translation2d(blueSubstation4.getX() - Units.inchesToMeters(100), blueSubstation4.getY() + centerOfRobotWidth);
+    public static final Translation2d blueLeftIntermediaryFarYoshi = new Translation2d(Units.inchesToMeters(230), Units.inchesToMeters(185));
 
     // Red Intermediary Points
     public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
@@ -519,9 +524,9 @@ public final class Constants {
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(109.0,38.0,114.0,40.0,145.0,23.0),
+      SCOREHIGH(109.0,39.5,114.0,40.0,145.0,23.0),
       SCOREMID(82.0,105.0,91.0,100.0,165.0,23.0),
-      SCORELOW(-21.0,145.0,-21.0,145.0,110.0,25.0),
+      SCORELOW(-21.0,145.0,-21.0,145.0,83.0,25.0),
       SUBSTATION(86.0,-70.0,86.0,-76.0,253.0,140.0),
       SUBSTATIONPICKUP(86.0,-83.0,86.0,-91.0,253.0,138.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
@@ -537,11 +542,12 @@ public final class Constants {
       ALTERNATECARRY(90,-115,90,-115,253,59),
       ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
-      AUTOSCOREMID(75.0,100.0,91.0,100.0,165.0,23.0),
-      SCORESIDEPICKUPLOW(102, 143, 120, 142, 219, 310);
+      AUTOSCOREMID(75.0,107.0,91.0,100.0,140.0,23.0),
+      SCORESIDEPICKUPLOW(102, 143, 120, 142, 219, 310),
+      FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85);
       //67, -137
       
-
+             
       public final double shoulderCone;
       public final double shoulderCube;
       public final double elbowCone;

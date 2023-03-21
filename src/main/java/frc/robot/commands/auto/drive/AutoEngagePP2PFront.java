@@ -161,7 +161,7 @@ public class AutoEngagePP2PFront extends CartesianHeadingToTargetCommand impleme
 
   @Override
   public boolean isFinished() {
-    return (forwardController.atGoal() && strafeController.atGoal()) || (isElevated && pitchSupplier.get().getDegrees() > -9.5);
+    return (forwardController.atGoal() && strafeController.atGoal()) || (isElevated && pitchSupplier.get().getDegrees() > -9.1);
   }
 
   private void log() {

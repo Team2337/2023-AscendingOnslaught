@@ -1,6 +1,9 @@
 {
   "NetworkTables": {
     "transitory": {
+      "FMSInfo": {
+        "open": true
+      },
       "SmartDashboard": {
         "ProfiledP2P": {
           "open": true
@@ -30,7 +33,6 @@
     },
     "windows": {
       "/SmartDashboard/field": {
-        "image": "C:\\Users\\EngiNERDS-1\\Pictures\\Capture.PNG",
         "traj": {
           "arrowSize": 56,
           "arrowWeight": 1.0,
