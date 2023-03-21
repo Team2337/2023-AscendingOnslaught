@@ -129,6 +129,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 1 Grab 1 Balance", new blueStartLeftyLeftScoreO1GToppyBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Balance Yoshi", new blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
 
     SmartDashboard.putData("AutonChooser", autonChooser);
@@ -545,4 +546,7 @@ public class RobotContainer {
     return shoulder.getShoulderLampreyDegrees();
   }
 
+  public ArmPosition setPastArmPositionFallenCone() {
+    return shoulder.pastPosition = ArmPosition.TELEFALLINGCONE;
+  }
 }

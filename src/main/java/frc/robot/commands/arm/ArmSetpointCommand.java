@@ -101,7 +101,7 @@ public class ArmSetpointCommand extends CommandBase {
             wristSetpoint = armPosition.wristCube;
         }
         
-        elbowP = 0.018 + 0.018 * Math.abs(Math.cos(Units.degreesToRadians(elbowSetpoint + shoulderSetpoint)));
+        elbowP = 0.018 + 0.013 * Math.abs(Math.cos(Units.degreesToRadians(elbowSetpoint + shoulderSetpoint)));
         
         shoulder.setSetpoint(shoulderSetpoint);
         elbow.setElbowSetpoint(elbowSetpoint, elbowP);
