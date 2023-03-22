@@ -489,11 +489,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_VELOCITY_METERS_PER_SECOND);
-    modules[0].set(desiredStates[0], Constants.MAX_VELOCITY_METERS_PER_SECOND);
-    modules[1].set(desiredStates[1], Constants.MAX_VELOCITY_METERS_PER_SECOND);
-    modules[2].set(desiredStates[2], Constants.MAX_VELOCITY_METERS_PER_SECOND);
-    modules[3].set(desiredStates[3], Constants.MAX_VELOCITY_METERS_PER_SECOND);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 5.16);
+    modules[0].set(desiredStates[0], 5.16);
+    modules[1].set(desiredStates[1], 5.16);
+    modules[2].set(desiredStates[2], 5.16);
+    modules[3].set(desiredStates[3], 5.16);
   }
 
 

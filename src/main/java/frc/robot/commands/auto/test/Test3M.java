@@ -6,17 +6,19 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Heading;
 
 
 public class Test3M extends SequentialCommandGroup{
-    public Test3M(Drivetrain drivetrain) {
+    public Test3M(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
 
-        final PathPlannerTrajectory traj = PathPlanner.loadPath("Test3M", new PathConstraints(Constants.MAX_VELOCITY_METERS_PER_SECOND, 0.5));
+        final PathPlannerTrajectory traj = PathPlanner.loadPath("Test3M", new PathConstraints(5.16, 2.0));
 
         addCommands(
             
-            new FollowTrajectoryCommand(traj, true, drivetrain::getPose, drivetrain)
+            new FollowTrajectoryCommand(traj, true, drivetrain::getPose, autoDrive, drivetrain, heading)
         );
     }        
 }

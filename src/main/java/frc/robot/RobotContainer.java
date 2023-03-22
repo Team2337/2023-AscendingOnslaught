@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
@@ -103,9 +104,9 @@ public class RobotContainer {
     JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
-    heading.setDefaultCommand(
-        new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
-            driverRightBumper::getAsBoolean, drivetrain, heading, vision));
+    // heading.setDefaultCommand(
+    //     new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
+    //         driverRightBumper::getAsBoolean, drivetrain, heading, vision));
                    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
@@ -131,7 +132,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Test3M", new Test3M(drivetrain));
+    autonChooser.addOption("Test3M", new Test3M(autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -352,7 +353,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
     // SwerveDriveCommand to turn on/off field orientation
