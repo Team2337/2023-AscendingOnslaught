@@ -8,6 +8,10 @@ import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -73,6 +77,8 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
+  public JoystickButton driverRightBumper;
+  public JoystickButton operatorLeftBumper;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -103,11 +109,14 @@ public class RobotContainer {
     JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
 
+
+    PathPlannerTrajectory Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
+
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     // heading.setDefaultCommand(
     //     new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
     //         driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-                   // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
+    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
@@ -132,7 +141,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Test3M", new Test3M(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -366,7 +375,7 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-    JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
     driverRightBumper.onTrue(new MaintainHeadingCommand(0, heading));
@@ -405,7 +414,7 @@ public class RobotContainer {
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-    JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
@@ -460,6 +469,9 @@ public class RobotContainer {
 
 
   public void instantiateSubsystemsTeleop() {
+    heading.setDefaultCommand(
+         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
+             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
   }
   public void setGamePiece(GamePiece gamePiece){
     this.gamePiece = gamePiece;

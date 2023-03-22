@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
       m_robotContainer.resetRobotChooser(startingPos, startingAngle);
     }
 
-    // m_robotContainer.instantiateSubsystemsTeleop();
+    m_robotContainer.instantiateSubsystemsTeleop();
     // m_robotContainer.configureButtonBindingsTeleop();
   }
 

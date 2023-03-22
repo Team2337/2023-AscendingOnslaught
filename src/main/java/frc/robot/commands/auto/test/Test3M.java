@@ -12,9 +12,12 @@ import frc.robot.subsystems.Heading;
 
 
 public class Test3M extends SequentialCommandGroup{
-    public Test3M(AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
 
-        final PathPlannerTrajectory traj = PathPlanner.loadPath("Test3M", new PathConstraints(5.16, 2.0));
+    PathPlannerTrajectory traj;
+    
+    public Test3M(PathPlannerTrajectory traj, AutoDrive autoDrive, Drivetrain drivetrain, Heading heading) {
+
+        this.traj = traj;
 
         addCommands(
             
