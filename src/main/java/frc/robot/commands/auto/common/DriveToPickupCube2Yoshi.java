@@ -10,6 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
+import frc.robot.commands.auto.drive.AutoCartesianVectorNoCutoff;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -28,29 +29,29 @@ public class DriveToPickupCube2Yoshi extends SequentialCommandGroup{
                     drivetrain::getTranslation, 
                     drivetrain::velocity,
                     Constants.Auto.trajectoryCutoffYoshi,
-                    3.0, 
+                    2.0, 
                     Units.inchesToMeters(200),
                     Units.inchesToMeters(100), 
                     autoDrive, 
                     drivetrain,
                     heading
                 ), 
-                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI)
+                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI)
             ),   
             new ParallelCommandGroup(
-                new AutoCartesianVectorProfileToPointTargetCommand(
+                new AutoCartesianVectorNoCutoff(
                     target, 
                     drivetrain::getTranslation, 
                     drivetrain::velocity,
                     Constants.Auto.trajectoryTolerance,
-                    3.0, 
+                    2.0, 
                     Units.inchesToMeters(200),
                     Units.inchesToMeters(100), 
                     autoDrive, 
                     drivetrain,
                     heading
                 ),
-                new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI).withTimeout(1.5),
+                new ArmAutoSetpointCubeWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI).withTimeout(1.5),
                 new IntakeReverseAuto(intake).withTimeout(1.5)
                 // new InstantCommand(() -> robotContainer.setPastArmPositionFallenCone())
             )     

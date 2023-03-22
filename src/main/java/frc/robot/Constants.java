@@ -348,7 +348,7 @@ public final class Constants {
     public static final Translation2d blueGridRightRobotLeft = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() + robotOffsetFromHybridAndPickupNodes); //Y = 63.69
     public static final Translation2d blueGridRightRobotCenter = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY()); //Y = 42.19
     public static final Translation2d blueGridRightRobotRight = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, blueBottom8.getY() - robotOffsetFromHybridAndPickupNodes); //Y = 20.69
-    public static final Translation2d blueGridLeftRobotCenterYoshi = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength + Units.inchesToMeters(6), blueTop6.getY() - Units.inchesToMeters(6)); //Y = 174.19
+    public static final Translation2d blueGridLeftRobotCenterYoshi = new Translation2d(blueTop6.getX() + centerOfRobotLength + hybridNodeLength + Units.inchesToMeters(14), blueTop6.getY() - Units.inchesToMeters(6)); //Y = 174.19
 
     // Red Starting Locations
     public static final Translation2d redGridLeftRobotLeft = new Translation2d(redTop1.getX() + centerOfRobotLength + hybridNodeLength + robotScoringOffset, redTop1.getY() + robotOffsetFromHybridAndPickupNodes);
@@ -369,7 +369,8 @@ public final class Constants {
     public static final Translation2d blueTopStagingMark = new Translation2d(Units.inchesToMeters(282.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(116.19));
     public static final Translation2d blueToppyTopStagingMark = new Translation2d(Units.inchesToMeters(278.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(175.19));
     public static final Translation2d blueToppyTopStagingMarkYoshi = new Translation2d(Units.inchesToMeters(258.05) - centerOfRobotLength + pickupOffset, Units.inchesToMeters(175.19));
-    public static final Translation2d blueTopStagingMarkYoshi = new Translation2d(Units.inchesToMeters(268.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(124.19));
+    public static final Translation2d blueTopStagingMarkYoshi = new Translation2d(Units.inchesToMeters(272.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(124.19));
+    public static final Translation2d blueTopStagingMarkAdjustment = new Translation2d(Units.inchesToMeters(290.05) - centerOfRobotLength - floorPickupArmReach, Units.inchesToMeters(124.19));
 
     public static final Translation2d partnerShowcasePickup = new Translation2d(Units.inchesToMeters(207.73), Units.inchesToMeters(-22));
     public static final Translation2d partnerShowcaseScore = new Translation2d(blueBottom8.getX() + centerOfRobotLength + hybridNodeLength, Units.inchesToMeters(6.000));
@@ -393,6 +394,7 @@ public final class Constants {
     public static final Translation2d blueLeftCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(108.19) + robotChargeStationYOffset);
     public static final Translation2d blueRightCenterOfChargeStation = new Translation2d(Units.inchesToMeters(171.3), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
     public static final Translation2d blueRightFrontCenterOfChargeStation = new Translation2d(Units.inchesToMeters(165.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
+    public static final Translation2d blueRightBackCenterOfChargeStation = new Translation2d(Units.inchesToMeters(147.8), Units.inchesToMeters(116.19) - robotChargeStationYOffset);
 
     // Red Charge Station
     public static final Translation2d redCenterOfChargeStation = new Translation2d(Units.inchesToMeters(150.8), Units.inchesToMeters(207.41));
@@ -407,7 +409,7 @@ public final class Constants {
     public static final Translation2d blueRightIntermediaryAutoNear = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(30));
     public static final Translation2d blueRightIntermediaryFar = new Translation2d(Units.inchesToMeters(190), Units.inchesToMeters(30));
     public static final Translation2d blueSubstationIntermediary = new Translation2d(blueSubstation4.getX() - Units.inchesToMeters(100), blueSubstation4.getY() + centerOfRobotWidth);
-    public static final Translation2d blueLeftIntermediaryFarYoshi = new Translation2d(Units.inchesToMeters(230), Units.inchesToMeters(185));
+    public static final Translation2d blueLeftIntermediaryFarYoshi = new Translation2d(Units.inchesToMeters(230), Units.inchesToMeters(195));
 
     // Red Intermediary Points
     public static final Translation2d redLeftIntermediaryNear = new Translation2d(Units.inchesToMeters(100), Units.inchesToMeters(285));
@@ -544,7 +546,11 @@ public final class Constants {
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
       AUTOSCOREMID(75.0,107.0,91.0,100.0,140.0,23.0),
       SCORESIDEPICKUPLOW(102, 143, 120, 142, 219, 310),
-      FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85);
+      FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85),
+      FLOORPICKUP2YOSHI(-10,-12, -12, -12, 85, 85),
+      FLOORPICKUP3YOSHI(-10,-12, -12, -14, 85, 85),
+      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -14, 85, 100),
+      FLOORPICKUPWRIST2YOSHI(-10,-12, -13, -15, 85, 100);
       //67, -137
       
              

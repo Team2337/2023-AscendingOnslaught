@@ -8,10 +8,13 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
+import frc.robot.commands.auto.common.DriveToPickupCube1FastArmYoshi;
 import frc.robot.commands.auto.common.DriveToPickupCube1Yoshi;
+import frc.robot.commands.auto.common.DriveToPickupCube2Fast;
 import frc.robot.commands.auto.common.DriveToPickupCube2Yoshi;
 import frc.robot.commands.auto.common.DriveToScoreCube2HighYoshi;
 import frc.robot.commands.auto.common.DriveToScoreMid1CubeYoshi;
+import frc.robot.commands.auto.common.ScoreConeMid;
 import frc.robot.commands.auto.drive.AutoEngagePP2PFront;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.subsystems.AutoDrive;
@@ -22,11 +25,11 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi extends SequentialCommandGroup{
-    public blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class blueStartLeftyLeftScoreO1GToppyScoreO2GTopBalanceYoshi extends SequentialCommandGroup{
+    public blueStartLeftyLeftScoreO1GToppyScoreO2GTopBalanceYoshi(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new IntakeReverseCube(intake).withTimeout(0.4),
-            new DriveToPickupCube1Yoshi(
+            new ScoreConeMid(elbow, intake, intakespinner, robotContainer, shoulder),
+            new DriveToPickupCube1FastArmYoshi(
                 Constants.Auto.blueToppyTopStagingMarkYoshi, 
                 autoDrive, 
                 drivetrain, 
@@ -49,9 +52,9 @@ public class blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi exten
                 shoulder
             ),
             new IntakeReverseCube(intake).withTimeout(0.4),
-            new DriveToPickupCube2Yoshi(
-                Constants.Auto.blueLeftIntermediaryFarYoshi, 
-                Constants.Auto.blueTopStagingMarkYoshi, 
+            new DriveToPickupCube2Fast(
+                Constants.Auto.blueLeftIntermediaryFar, 
+                Constants.Auto.blueTopStagingMarkAdjustment, 
                 autoDrive, 
                 drivetrain, 
                 elbow, 
@@ -61,26 +64,13 @@ public class blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi exten
                 robotContainer, 
                 shoulder
             ),
-            new DriveToScoreCube2HighYoshi(
-                Constants.Auto.blueLeftIntermediaryFar, 
-                Constants.Auto.blueGridLeftRobotCenterYoshi, 
-                Constants.Arm.ArmPosition.SCOREHIGH,
-                autoDrive, 
-                drivetrain, 
-                elbow, 
-                heading, 
-                intake, 
-                intakespinner, 
-                shoulder
-            ),
-            new IntakeReverseCube(intake).withTimeout(0.5),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
                     new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
                     new ArmAutoSetpointConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
                 ),
                 new AutoEngagePP2PFront(
-                    Constants.Auto.blueRightCenterOfChargeStation, 
+                    Constants.Auto.blueRightBackCenterOfChargeStation, 
                     drivetrain::getTranslation, 
                     drivetrain::getRotation, 
                     3, 
