@@ -25,7 +25,7 @@ public class OuttakeCommand extends CommandBase{
     @Override
     public void execute() {
         if (robotContainer.getGamepiece() == GamePiece.Cone) {
-            speed = -0.66;
+            speed = -1.0;
         } else {
             speed = 1.0;
         } 
