@@ -8,6 +8,10 @@ import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
@@ -54,6 +59,9 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
+import frc.robot.commands.auto.test.AvoidChargeStation;
+import frc.robot.commands.auto.test.Test;
+import frc.robot.commands.auto.test.Test3M;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
@@ -71,6 +79,9 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
+  public JoystickButton driverRightBumper;
+  public JoystickButton operatorLeftBumper;
+  public JoystickButton yellowSwitch;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -97,15 +108,23 @@ public class RobotContainer {
     THREE
   }
 
+  public PathPlannerTrajectory Test3MPath;
+  public PathPlannerTrajectory AvoidChargeStation;
+
   public RobotContainer() {
-    JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
-    JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    yellowSwitch = new JoystickButton(operatorStation, 4);
+
+
+    Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
+    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(4, 3));
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
-    heading.setDefaultCommand(
-        new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
-            driverRightBumper::getAsBoolean, drivetrain, heading, vision));
-                   // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
+    // heading.setDefaultCommand(
+    //     new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
+    //         driverRightBumper::getAsBoolean, drivetrain, heading, vision));
+    // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
@@ -131,6 +150,9 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Balance Yoshi", new blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
+    autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -145,6 +167,7 @@ public class RobotContainer {
     startingPosChooser.addOption("Left Right", "Left Right");
     startingPosChooser.addOption("Left Middle", "Left Middle");
     startingPosChooser.addOption("Left Left", "Left Left");
+
 
     SmartDashboard.putData("StartingPositionChooser", startingPosChooser);
 
@@ -350,7 +373,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    // SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
     // SwerveDriveCommand to turn on/off field orientation
@@ -363,7 +386,7 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-    JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
     driverRightBumper.onTrue(new MaintainHeadingCommand(0, heading));
@@ -402,7 +425,7 @@ public class RobotContainer {
     JoystickButton operatorRightStick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
     JoystickButton operatorLeftStick = new JoystickButton(operatorController, XboxController.Button.kLeftStick.value);
     JoystickButton operatorRightBumper = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-    JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
@@ -448,15 +471,15 @@ public class RobotContainer {
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
-    JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
     JoystickButton yellowButton = new JoystickButton(operatorStation, 10);
     JoystickButton purpleButton = new JoystickButton(operatorStation, 11);
 
   }
 
-
-
   public void instantiateSubsystemsTeleop() {
+    heading.setDefaultCommand(
+         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, yellowSwitch::getAsBoolean,
+             driverRightBumper::getAsBoolean, drivetrain, heading, vision));
   }
   public void setGamePiece(GamePiece gamePiece){
     this.gamePiece = gamePiece;
