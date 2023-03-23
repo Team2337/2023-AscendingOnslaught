@@ -87,7 +87,8 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
           coordinate.getTheta()
         );
     } else if (DriverStation.isAutonomousEnabled()) {
-        heading.setMaintainHeading(Rotation2d.fromDegrees(0));
+      heading.changePValue(firstTime);
+    //     heading.setMaintainHeading(Rotation2d.fromDegrees(0));
     } else {
       if (!firstTime) {
         firstTime = true;

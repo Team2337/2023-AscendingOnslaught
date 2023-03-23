@@ -98,6 +98,12 @@ public class SwerveDriveCommand extends CommandBase {
       rotation = heading.calculateRotation();
     }
 
+    if (DriverStation.isAutonomousEnabled()) {
+      if (rotation > 0.05) {
+        rotation = 0.05;
+      }
+    }
+
     double vxMetersPerSecond = forward * Constants.MAX_VELOCITY_METERS_PER_SECOND;
     double vyMetersPerSecond = strafe * Constants.MAX_VELOCITY_METERS_PER_SECOND;
     double omegaRadiansPerSecond = rotation * Constants.Swerve.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;

@@ -54,6 +54,7 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
+import frc.robot.commands.auto.test.Test;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
@@ -119,6 +120,7 @@ public class RobotContainer {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingCommand());
 
     autonChooser.addOption("Arm Test", new armTest(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
 
     autonChooser.addOption("Red Middle Right Score 1 Grab 1 Balance", new redStartMiddleRightScoreO6Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Righty Right Score 1 Grab 1 Balance", new redStartRightyRightScoreO9GBotBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
