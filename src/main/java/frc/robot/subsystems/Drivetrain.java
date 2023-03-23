@@ -19,7 +19,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -429,30 +428,27 @@ public class Drivetrain extends SubsystemBase {
   
       module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
   }
-
-
 }
-//  For Path Planner
-public void setModuleStates(SwerveModuleState[] desiredStates) {
-   SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_VELOCITY_METERS_PER_SECOND);
-   setModuleState(desiredStates,Constants.MAX_VELOCITY_METERS_PER_SECOND);
-  // for (int i = 0; i < desiredStates.length; i++) {
-  //   FXSwerveModule module = modules[i];
-  //   SwerveModuleState moduleState = desiredStates[i];
-  //   module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
-  }
-
 
   @Override
   public void periodic() {
     log();
     pigeon.getYawPitchRoll(ypr_deg);
-    
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+
     modulePositions[0] = modules[0].getPosition();
     modulePositions[1] = modules[1].getPosition();
     modulePositions[2] = modules[2].getPosition();
     modulePositions[3] = modules[3].getPosition();
-    //Disabled because of path planner - should move to drive()
+
+    for (int i = 0; i < states.length; i++) {
+      FXSwerveModule module = modules[i];
+      SwerveModuleState moduleState = states[i];
+
+      module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+      module.logDebug();
+    }
 
     SwerveModuleState[] realStates = {
       modules[0].getState(),
@@ -501,6 +497,13 @@ public void setModuleStates(SwerveModuleState[] desiredStates) {
     SmartDashboard.putNumber("Startup/Teleop Auto Position", getTeleopAutoPosition());
   }
 
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 5.16);
+    modules[0].set(desiredStates[0], 5.16);
+    modules[1].set(desiredStates[1], 5.16);
+    modules[2].set(desiredStates[2], 5.16);
+    modules[3].set(desiredStates[3], 5.16);
+  }
 
 
   public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
