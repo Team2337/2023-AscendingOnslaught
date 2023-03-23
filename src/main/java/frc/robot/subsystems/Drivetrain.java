@@ -243,6 +243,15 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(ChassisSpeeds chassisSpeeds) {
     this.chassisSpeeds = chassisSpeeds;
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+        for (int i = 0; i < states.length; i++) {
+          FXSwerveModule module = modules[i];
+          SwerveModuleState moduleState = states[i];
+
+          module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
+          module.logDebug();
+        }
   }
 
   /**
@@ -444,17 +453,6 @@ public void setModuleStates(SwerveModuleState[] desiredStates) {
     modulePositions[2] = modules[2].getPosition();
     modulePositions[3] = modules[3].getPosition();
     //Disabled because of path planner - should move to drive()
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
-    if (DriverStation.isTeleopEnabled()) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_VELOCITY_METERS_PER_SECOND);
-        for (int i = 0; i < states.length; i++) {
-          FXSwerveModule module = modules[i];
-          SwerveModuleState moduleState = states[i];
-
-          module.set(moduleState, Constants.MAX_VELOCITY_METERS_PER_SECOND);
-          module.logDebug();
-        }
-   }
 
     SwerveModuleState[] realStates = {
       modules[0].getState(),

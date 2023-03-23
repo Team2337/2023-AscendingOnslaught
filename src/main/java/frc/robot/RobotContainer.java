@@ -59,6 +59,8 @@ import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
 import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
 import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
+import frc.robot.commands.auto.test.AvoidChargeStation;
+import frc.robot.commands.auto.test.Test;
 import frc.robot.commands.auto.test.Test3M;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.swerve.Lockdown;
@@ -79,6 +81,7 @@ public class RobotContainer {
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
   public JoystickButton driverRightBumper;
   public JoystickButton operatorLeftBumper;
+  public JoystickButton yellowSwitch;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -105,12 +108,17 @@ public class RobotContainer {
     THREE
   }
 
+  public PathPlannerTrajectory Test3MPath;
+  public PathPlannerTrajectory AvoidChargeStation;
+
   public RobotContainer() {
-    JoystickButton operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
-    JoystickButton driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
+    yellowSwitch = new JoystickButton(operatorStation, 4);
 
 
-    PathPlannerTrajectory Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
+    Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
+    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(4, 3));
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     // heading.setDefaultCommand(
@@ -142,6 +150,8 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -460,17 +470,14 @@ public class RobotContainer {
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
-    JoystickButton yellowSwitch = new JoystickButton(operatorStation, 4);
     JoystickButton yellowButton = new JoystickButton(operatorStation, 10);
     JoystickButton purpleButton = new JoystickButton(operatorStation, 11);
 
   }
 
-
-
   public void instantiateSubsystemsTeleop() {
     heading.setDefaultCommand(
-         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, operatorLeftBumper::getAsBoolean,
+         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, yellowSwitch::getAsBoolean,
              driverRightBumper::getAsBoolean, drivetrain, heading, vision));
   }
   public void setGamePiece(GamePiece gamePiece){

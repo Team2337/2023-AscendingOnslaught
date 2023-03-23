@@ -75,17 +75,17 @@ public class CartesianHeadingToTargetCommand extends CommandBase {
       Rotation2d desiredRotation =  drivetrain.getGyroscopeRotation()
         .plus(Rotation2d.fromDegrees(towardsCenterDegrees));
       heading.setMaintainHeading(desiredRotation);
-    } else if (driverRightBumperSupplier.get()) {
-      if (firstTime) {
-        heading.enableMaintainHeading();
-        firstTime = false;
-        heading.changePValue(false);
-      }
-      PolarCoordinate coordinate = getRobotCoordinate();
+    // } else if (driverRightBumperSupplier.get()) {
+    //   if (firstTime) {
+    //     heading.enableMaintainHeading();
+    //     firstTime = false;
+    //     heading.changePValue(false);
+    //   }
+    //   PolarCoordinate coordinate = getRobotCoordinate();
 
-      heading.setMaintainHeading(
-          coordinate.getTheta()
-        );
+    //   heading.setMaintainHeading(
+    //       coordinate.getTheta()
+    //     );
     } else if (DriverStation.isAutonomousEnabled()) {
         heading.setMaintainHeading(Rotation2d.fromDegrees(0));
     } else {
