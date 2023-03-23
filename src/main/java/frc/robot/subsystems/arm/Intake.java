@@ -29,6 +29,7 @@ public class Intake extends SubsystemBase {
         intakeMotor.setInverted(false);
         intakeMotor.setOpenLoopRampRate(peakOutput);
         intakeMotor.setSmartCurrentLimit(40, 40, 40); // TODO CHANGE LATER
+        intakeMotor.setOpenLoopRampRate(0);
         intakeEncoder = intakeMotor.getEncoder();
         controller = intakeMotor.getPIDController();
         controller.setP(Constants.Arm.intakeP);
@@ -73,10 +74,10 @@ public class Intake extends SubsystemBase {
             SmartDashboard.putNumber("Arm/Intake motorTemp", getIntakeMotorTemperature());
             SmartDashboard.putNumber("Arm/Intake Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
             SmartDashboard.putNumber("Arm/Intake Position", intakeEncoder.getPosition());
-            SmartDashboard.putNumber("Arm/Intake Motor Speed", intakeMotor.getAppliedOutput());
-
+            
         }
         SmartDashboard.putBoolean("Arm/Intake Beam Break", beamBreak.isPressed());
+        SmartDashboard.putNumber("Arm/Intake Motor Speed", intakeMotor.getAppliedOutput());
     }
 
 }
