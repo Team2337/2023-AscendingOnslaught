@@ -438,13 +438,13 @@ public void setModuleStates(SwerveModuleState[] desiredStates) {
   public void periodic() {
     log();
     pigeon.getYawPitchRoll(ypr_deg);
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
     
     modulePositions[0] = modules[0].getPosition();
     modulePositions[1] = modules[1].getPosition();
     modulePositions[2] = modules[2].getPosition();
     modulePositions[3] = modules[3].getPosition();
-    //Disabled because of path planner
+    //Disabled because of path planner - should move to drive()
+    SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
     if (DriverStation.isTeleopEnabled()) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_VELOCITY_METERS_PER_SECOND);
         for (int i = 0; i < states.length; i++) {
