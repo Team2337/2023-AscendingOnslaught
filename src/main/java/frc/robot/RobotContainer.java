@@ -149,6 +149,9 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Balance", new blueStartLeftyLeftScoreO1GToppyScoreO3Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1", new blueStartLeftyLeftScoreO1GToppyScoreO2GTop(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Balance Yoshi", new blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2BalanceYoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 2 Grab 1 Balance Yoshi", new blueStartLeftyLeftScoreO1GToppyScoreO2GTopBalanceYoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Yoshi", new blueStartLeftyLeftScoreO1GToppyScoreO2GTopScoreC2Yoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Cube Yoshi", new blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2Yoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));

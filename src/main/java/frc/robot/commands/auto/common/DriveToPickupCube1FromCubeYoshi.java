@@ -20,8 +20,8 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class DriveToPickupCube1Yoshi extends ParallelCommandGroup{
-    public DriveToPickupCube1Yoshi(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder){
+public class DriveToPickupCube1FromCubeYoshi extends ParallelCommandGroup{
+    public DriveToPickupCube1FromCubeYoshi(Translation2d target, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder){
         addCommands(
             new AutoCartesianVectorNoCutoff(
                 target, 
@@ -30,14 +30,14 @@ public class DriveToPickupCube1Yoshi extends ParallelCommandGroup{
                 Constants.Auto.trajectoryTolerance,
                 3, 
                 Units.inchesToMeters(200),
-                Units.inchesToMeters(100), 
+                Units.inchesToMeters(80), 
                 autoDrive, 
                 drivetrain,
                 heading
                 ),
             new InstantCommand(() -> robotContainer.setGamePiece(GamePiece.Cube)),
-            new WaitCommand(0.0).andThen(new ArmAutoSetpointCubeWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI)).withTimeout(2.75),
-            new WaitCommand(0.5).andThen(new IntakeReverseAuto(intake)).withTimeout(2.25)
+            new WaitCommand(0.0).andThen(new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI)).withTimeout(3.25),
+            new WaitCommand(0.5).andThen(new IntakeReverseAuto(intake)).withTimeout(2.75)
         );
     }
 }

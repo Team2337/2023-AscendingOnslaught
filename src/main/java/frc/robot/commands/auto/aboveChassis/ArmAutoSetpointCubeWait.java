@@ -14,8 +14,14 @@ public class ArmAutoSetpointCubeWait extends CommandBase {
     ArmPosition armPosition;
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
+    double speed = 0.7;
     
     public ArmAutoSetpointCubeWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+        this(0.7, elbow, shoulder, intakespinner, armPosition);
+    }
+
+    public ArmAutoSetpointCubeWait(double speed, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+        this.speed = speed;
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.intakespinner = intakespinner;
@@ -27,6 +33,8 @@ public class ArmAutoSetpointCubeWait extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
+        shoulder.setShoulderSpeed(speed);
+        elbow.setElbowSpeed(speed);
         shoulder.setSetpoint(armPosition.shoulderCube);
         elbow.setSetpoint(armPosition.elbowCube);
         intakespinner.setSetpoint(armPosition.wristCube);

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
 import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
+import frc.robot.commands.auto.drive.AutoCartesianVectorNoCutoff;
 import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -18,7 +19,7 @@ import frc.robot.subsystems.arm.Shoulder;
 public class DriveToScoreMid1CubeYoshi extends ParallelCommandGroup{
     public DriveToScoreMid1CubeYoshi(Translation2d target, ArmPosition armPosition, AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, Shoulder shoulder) {
         addCommands(
-            new AutoCartesianVectorProfileToPointTargetCommand(
+            new AutoCartesianVectorNoCutoff(
                 target, 
                 drivetrain::getTranslation, 
                 drivetrain::velocity,
