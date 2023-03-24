@@ -49,6 +49,7 @@ import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
+import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftGToppy;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
@@ -110,6 +111,10 @@ public class RobotContainer {
 
   public PathPlannerTrajectory Test3MPath;
   public PathPlannerTrajectory AvoidChargeStation;
+  public PathPlannerTrajectory blueLeftyLeftGToppyTop;
+  public PathPlannerTrajectory blueLeftyLeftGToppy;
+  public PathPlannerTrajectory blueScoreC2;
+  public PathPlannerTrajectory blueScoreO2;
 
   public RobotContainer() {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
@@ -118,7 +123,11 @@ public class RobotContainer {
 
 
     Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
-    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(4, 3));
+    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(3.0, 4.0));
+    blueLeftyLeftGToppyTop = PathPlanner.loadPath("blueLeftyLeftGToppyTop", new PathConstraints(3.0, 4.0));
+    blueLeftyLeftGToppy = PathPlanner.loadPath("blueLeftyLeftGToppy", new PathConstraints(3.0, 4.0));
+    blueScoreC2 = PathPlanner.loadPath("blueScoreC2", new PathConstraints(3.0, 4.0));
+    blueScoreO2 = PathPlanner.loadPath("blueScoreO2", new PathConstraints(3.0, 4.0));
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     // heading.setDefaultCommand(
@@ -152,6 +161,8 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 2 Grab 1 Balance Yoshi", new blueStartLeftyLeftScoreO1GToppyScoreO2GTopBalanceYoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Yoshi", new blueStartLeftyLeftScoreO1GToppyScoreO2GTopScoreC2Yoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Cube Yoshi", new blueStartLeftyLeftScoreW1GToppyScoreO2GTopScoreC2Yoshi(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
+    autonChooser.addOption("Blue Lefty Left Grab Toppy", new blueStartLeftyLeftGToppy(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));

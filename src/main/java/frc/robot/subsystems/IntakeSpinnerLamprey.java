@@ -23,7 +23,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private Supplier<Double> voltage;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.8;
+    private double peakOutput = 1.0;
     private double tolerance = 0.5;
     private static double kP = 0.01;
     private static double kI = 0;
