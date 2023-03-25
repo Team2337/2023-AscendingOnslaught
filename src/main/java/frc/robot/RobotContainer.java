@@ -50,6 +50,10 @@ import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftGToppy;
+import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2;
+import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt;
+import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8;
+import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
@@ -116,6 +120,25 @@ public class RobotContainer {
   public PathPlannerTrajectory blueScoreC2;
   public PathPlannerTrajectory blueScoreO2;
 
+  public PathPlannerTrajectory redRightyRightGBottom;
+  public PathPlannerTrajectory redScoreC8;
+  public PathPlannerTrajectory redAvoidChargeStation;
+  public PathPlannerTrajectory redScoreO8;
+  public PathPlannerTrajectory redChargeStation;
+  public PathPlannerTrajectory redLockdown;
+  public PathPlannerTrajectory redSendIt;
+
+  public PathPlannerTrajectory redLeftyLeftGToppy;
+  public PathPlannerTrajectory redScoreC2;
+  public PathPlannerTrajectory redGTop;
+  public PathPlannerTrajectory redScoreO2;
+
+  public PathPlannerTrajectory redLeftyLeftGToppyFast;
+  public PathPlannerTrajectory redScoreC2Fast;
+  public PathPlannerTrajectory redGTopFast;
+  public PathPlannerTrajectory redScoreO2Fast;
+  public PathPlannerTrajectory redLeftSendIt;
+
   public RobotContainer() {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
@@ -128,6 +151,25 @@ public class RobotContainer {
     blueLeftyLeftGToppy = PathPlanner.loadPath("blueLeftyLeftGToppy", new PathConstraints(3.0, 4.0));
     blueScoreC2 = PathPlanner.loadPath("blueScoreC2", new PathConstraints(3.0, 4.0));
     blueScoreO2 = PathPlanner.loadPath("blueScoreO2", new PathConstraints(3.0, 4.0));
+
+    redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(3.0, 4.0));
+    redScoreC8 = PathPlanner.loadPath("redScoreC8", new PathConstraints(3.0, 3.0));
+    redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(2.25, 3.0));
+    redScoreO8 = PathPlanner.loadPath("redScoreO8", new PathConstraints(3.0, 4.0));
+    redChargeStation = PathPlanner.loadPath("redChargeStation", new PathConstraints(2.0, 1.5));
+    redLockdown = PathPlanner.loadPath("redLockdown", new PathConstraints(2.0, 1.5));
+    redSendIt = PathPlanner.loadPath("redSendIt", new PathConstraints(3.0, 4.0));
+
+    redLeftyLeftGToppy = PathPlanner.loadPath("redLeftyLeftGToppy", new PathConstraints(2.0, 2.0));
+    redScoreC2 = PathPlanner.loadPath("redScoreC2", new PathConstraints(2.0, 2.0));
+    redGTop = PathPlanner.loadPath("redGTop", new PathConstraints(2.0, 2.0));
+    redScoreO2 = PathPlanner.loadPath("redScoreO2", new PathConstraints(2.0, 2.0));
+
+    redLeftyLeftGToppyFast = PathPlanner.loadPath("redLeftyLeftGToppy", new PathConstraints(3.0, 2.0));
+    redScoreC2Fast = PathPlanner.loadPath("redScoreC2", new PathConstraints(3.0, 2.0));
+    redGTopFast = PathPlanner.loadPath("redGTop", new PathConstraints(3.0, 2.0));
+    redScoreO2Fast = PathPlanner.loadPath("redScoreO2", new PathConstraints(3.0, 2.0));
+    redLeftSendIt = PathPlanner.loadPath("redLeftSendIt", new PathConstraints(3.0, 4.0));
 
     drivetrain.setDefaultCommand(new SwerveDriveCommand(driverController, autoDrive, heading, drivetrain));
     // heading.setDefaultCommand(
@@ -167,6 +209,11 @@ public class RobotContainer {
     autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
     autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
     autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
+
+    autonChooser.addOption("Red Righty Right Score 3 Balance", new redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 3", new redRightyRightScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 

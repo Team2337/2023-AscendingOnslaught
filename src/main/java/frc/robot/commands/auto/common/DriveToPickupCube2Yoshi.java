@@ -36,7 +36,7 @@ public class DriveToPickupCube2Yoshi extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 ), 
-                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI)
+                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI)
             ),   
             new ParallelCommandGroup(
                 new AutoCartesianVectorNoCutoff(
@@ -51,7 +51,7 @@ public class DriveToPickupCube2Yoshi extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 ),
-                new ArmAutoSetpointCubeWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI).withTimeout(1.5),
+                new ArmAutoSetpointCubeWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI).withTimeout(1.5),
                 new IntakeReverseAuto(intake).withTimeout(1.5)
                 // new InstantCommand(() -> robotContainer.setPastArmPositionFallenCone())
             )     

@@ -36,7 +36,7 @@ public class DriveToPickupCube1FastArmYoshi extends ParallelCommandGroup{
                 heading
                 ),
             new InstantCommand(() -> robotContainer.setGamePiece(GamePiece.Cube)),
-            new WaitCommand(0.0).andThen(new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI)).withTimeout(3.25),
+            new WaitCommand(0.0).andThen(new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI)).withTimeout(3.25),
             new WaitCommand(0.5).andThen(new IntakeReverseAuto(intake)).withTimeout(2.75)
         );
     }
