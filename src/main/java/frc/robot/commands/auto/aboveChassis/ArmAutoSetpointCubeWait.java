@@ -33,8 +33,8 @@ public class ArmAutoSetpointCubeWait extends CommandBase {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.setShoulderSpeed(speed);
-        elbow.setElbowSpeed(speed);
+        shoulder.changePeakOutput(speed);
+        elbow.changePeakOutput(speed);
         shoulder.setSetpoint(armPosition.shoulderCube);
         elbow.setSetpoint(armPosition.elbowCube);
         intakespinner.setSetpoint(armPosition.wristCube);

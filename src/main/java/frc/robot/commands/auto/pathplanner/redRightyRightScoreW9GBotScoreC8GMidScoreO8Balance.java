@@ -10,6 +10,7 @@ import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
+import frc.robot.commands.auto.aboveChassis.ArmAutoShoulderConeNoWait;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.ScoreConeMid;
@@ -30,33 +31,34 @@ public class redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance extends Sequenti
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.redRightyRightGBottom, true, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
+                new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
                 new IntakeReverseAuto(intake).withTimeout(2.25)
             ),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.redScoreC8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
+                new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
             ),
-            new IntakeReverseCube(intake).withTimeout(0.2),
-            new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.redAvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI),
-                new IntakeReverseAuto(intake).withTimeout(2.8)
-            ),
-            new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.redScoreO8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)
-            ),
-            new IntakeReverseCube(intake).withTimeout(0.2),
-            new SequentialCommandGroup(
-                new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
-            ),
-            new ParallelRaceGroup(
-                new FollowTrajectoryCommand(robotContainer.redChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new AutoBalanceIndicatorFront(drivetrain::getGyroscopePitch)
-            ),
-            new FollowTrajectoryCommand(robotContainer.redLockdown, true, drivetrain::getPose, autoDrive, drivetrain, heading).withTimeout(0.15)
-        );
+        new IntakeReverseCube(intake).withTimeout(0.2),
+        new ParallelCommandGroup(
+            new FollowTrajectoryCommand(robotContainer.redAvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+            new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI),//3
+            new IntakeReverseAuto(intake).withTimeout(2.8)
+        ),
+        new ParallelCommandGroup(
+            new FollowTrajectoryCommand(robotContainer.redScoreO8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+            new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
+        ),
+        new IntakeReverseCube(intake).withTimeout(0.2),
+    //     new SequentialCommandGroup(
+    //         new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+    //         new ArmAutoSetpointCubeNoWait(0.8, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+    //     ),
+        new ArmAutoShoulderConeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.AUTOCARRYINTERMEDIATE),
+        new ParallelRaceGroup(
+            new FollowTrajectoryCommand(robotContainer.redChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+            new AutoBalanceIndicatorFront(drivetrain::getGyroscopePitch)
+        )
+        //new FollowTrajectoryCommand(robotContainer.redLockdown, true, drivetrain::getPose, autoDrive, drivetrain, heading).withTimeout(0.15)
+     );
     }
 }

@@ -45,6 +45,7 @@ import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.IntakeHoldPosition;
+import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.auto.*;
@@ -154,7 +155,7 @@ public class RobotContainer {
 
     redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(3.0, 4.0));
     redScoreC8 = PathPlanner.loadPath("redScoreC8", new PathConstraints(3.0, 3.0));
-    redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(2.25, 3.0));
+    redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(3, 3.0));//2.25,4
     redScoreO8 = PathPlanner.loadPath("redScoreO8", new PathConstraints(3.0, 4.0));
     redChargeStation = PathPlanner.loadPath("redChargeStation", new PathConstraints(2.0, 1.5));
     redLockdown = PathPlanner.loadPath("redLockdown", new PathConstraints(2.0, 1.5));
@@ -207,7 +208,7 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Grab Toppy", new blueStartLeftyLeftGToppy(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Test3M", new Test3M(Test3MPath, autoDrive, drivetrain, heading));
-    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading));
+    autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading, elbow, intake, intakespinner, shoulder, this));
     autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
 
     autonChooser.addOption("Red Righty Right Score 3 Balance", new redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
@@ -457,6 +458,7 @@ public class RobotContainer {
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
+    triggerDriverLeft.whileTrue(new IntakeUnjam(intake));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -503,7 +505,7 @@ public class RobotContainer {
       () -> wasPastPositionSubstation()));
     
     triggerOperatorLeft.whileTrue(new OuttakeCommand(intake, this));
-    operatorRightBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this));
+    operatorRightBumper.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SUBSTATION, 95, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATION, elbow, shoulder, intakespinner, this)));
     operatorLeftBumper.whileTrue(new ConditionalCommand(
       new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointShoulder(Constants.Arm.ArmPosition.ALTERNATECARRY, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)),
         new ConditionalCommand(
@@ -542,6 +544,11 @@ public class RobotContainer {
          new CartesianHeadingToTargetCommand(drivetrain::getTranslation, yellowSwitch::getAsBoolean,
              driverRightBumper::getAsBoolean, drivetrain, heading, vision));
   }
+  public void setArmPeakOutput(double peak) {
+    elbow.changePeakOutput(peak);
+    shoulder.changePeakOutput(peak);
+  }
+
   public void setGamePiece(GamePiece gamePiece){
     this.gamePiece = gamePiece;
   }

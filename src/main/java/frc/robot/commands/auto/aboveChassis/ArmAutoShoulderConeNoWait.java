@@ -6,7 +6,7 @@ import frc.robot.subsystems.IntakeSpinnerLamprey;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class ArmAutoSetpointCubeNoWait extends InstantCommand {
+public class ArmAutoShoulderConeNoWait extends InstantCommand {
 
     Elbow elbow;
     Shoulder shoulder;
@@ -14,18 +14,12 @@ public class ArmAutoSetpointCubeNoWait extends InstantCommand {
     ArmPosition armPosition;
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
-    double speed = 0.7;
-
-    public ArmAutoSetpointCubeNoWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
-        this(0.7, elbow, shoulder, intakespinner, armPosition);
-    }
     
-    public ArmAutoSetpointCubeNoWait(double speed, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
+    public ArmAutoShoulderConeNoWait(Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, ArmPosition armPosition) {
         this.elbow = elbow;
         this.shoulder = shoulder;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
-        this.speed = speed;
         addRequirements(elbow, shoulder);
     }
 
@@ -33,11 +27,9 @@ public class ArmAutoSetpointCubeNoWait extends InstantCommand {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.changePeakOutput(speed);
-        elbow.changePeakOutput(speed);
-        shoulder.setSetpoint(armPosition.shoulderCube);
-        elbow.setSetpoint(armPosition.elbowCube);
-        intakespinner.setSetpoint(armPosition.wristCube);
+        shoulder.setSetpoint(armPosition.shoulderCone);
+        elbow.setSetpoint(armPosition.elbowCone);
+        intakespinner.setSetpoint(armPosition.wristCone);
     }
     
 }

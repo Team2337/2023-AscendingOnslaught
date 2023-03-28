@@ -32,7 +32,7 @@ public class ArmSetpointShoulder extends CommandBase {
     double ticksPerDegree = 426.6667;
 
 
-
+    double tolerance;
     double elbowSetpoint = 0;
     double shoulderSetpoint = 0;
     double wristSetpoint = 0;
@@ -43,7 +43,19 @@ public class ArmSetpointShoulder extends CommandBase {
 
     public ArmSetpointShoulder(ArmPosition armPosition, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
         this.elbow = elbow;
+        this.tolerance = 15.0;
         this.shoulder = shoulder;
+        this.robotContainer = robotContainer;
+        this.intakespinner = intakespinner;
+        this.armPosition = armPosition;
+        addRequirements(elbow, shoulder);
+
+    }
+
+    public ArmSetpointShoulder(ArmPosition armPosition, double tolerance, Elbow elbow, Shoulder shoulder, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer) {
+        this.elbow = elbow;
+        this.shoulder = shoulder;
+        this.tolerance = tolerance;
         this.robotContainer = robotContainer;
         this.intakespinner = intakespinner;
         this.armPosition = armPosition;
@@ -104,7 +116,7 @@ public class ArmSetpointShoulder extends CommandBase {
 
     @Override
     public boolean isFinished() {
-       return Utilities.withinTolerance(shoulder.getSetpoint(), shoulder.getShoulderLampreyDegrees(), 15.0);
+       return Utilities.withinTolerance(shoulder.getSetpoint(), shoulder.getShoulderLampreyDegrees(), tolerance);
         
 
     }

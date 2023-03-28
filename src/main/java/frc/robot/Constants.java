@@ -507,10 +507,10 @@ public final class Constants {
     public static final double WRIST_LOWER_LIMIT = 23.0;
     public static final double WRIST_UPPER_LIMIT = 310.0;
     public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
-    public static final double SHOULDER_MAX_SPEED = 0.7;
+    public static final double SHOULDER_MAX_SPEED = .9;
     public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
     public static final double ELBOW_CLOSED_LOOP_SPEED = 0.7;
-    public static final double ELBOW_MAX_SPEED = 0.7;
+    public static final double ELBOW_MAX_SPEED = .9;
     public static final double ELBOW_JOYSTICK_SPEED = 0.4;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
@@ -539,9 +539,10 @@ public final class Constants {
       AUTOCARRY(-21.0,145.0,-21.0,145.0,67.0,85.0),
       SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,254.0,25.0),
       CARRYINTERMEDIATE(-21,42,-21,42,35.0,25.0),
+      AUTOCARRYINTERMEDIATE(-21,75,-21,75,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
-      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
+      AUTOSCOREHIGH(114.0,36.0,114.0,40.0,111.0,23.0),
       ALTERNATECARRY(90,-115,90,-115,253,59),
       ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
@@ -550,9 +551,9 @@ public final class Constants {
       FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85),
       FLOORPICKUP2YOSHI(-10,-12, -12, -12, 85, 85),
       FLOORPICKUP3YOSHI(-10,-12, -12, -14, 85, 85),
-      FLOORPICKUPWRISTYOSHI(-10,-12, -10, -12, 85, 100),
+      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -15, 85, 120),//(-10,-12)cube
       FLOORPICKUPWRIST2YOSHI(-10,-12, -12, -14, 85, 100),
-      FLOORPICKUPWRIST3YOSHI(-10,-12, -13, -16, 85, 120),
+      FLOORPICKUPWRIST3YOSHI(-10,-12, -10, -13, 85, 120),//(-13,-16)cube
       FLOORPICKUPYOSHIBUMP(-10,-12, -9, -9, 85, 120),
       FLOORPICKUP2YOSHIBUMP(-10,-12, -10, -12, 85, 120),
       FLOORPICKUP3YOSHIBUMP(-10,-12, -12, -14, 85, 120);
