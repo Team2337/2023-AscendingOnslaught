@@ -11,7 +11,6 @@ import frc.robot.Constants.GamePiece;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
 import frc.robot.commands.auto.drive.AutoCartesianVectorNoCutoff;
-import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;

@@ -1,6 +1,5 @@
 package frc.robot.commands.auto.test;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -8,7 +7,6 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AutoDrive;

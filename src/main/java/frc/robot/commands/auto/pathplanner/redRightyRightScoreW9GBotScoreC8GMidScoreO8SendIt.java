@@ -1,10 +1,14 @@
 package frc.robot.commands.auto.pathplanner;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.auto.common.RedBalanceFront;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
+import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
+import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.RedGBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.common.ScoreConeHigh;
+import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
@@ -13,12 +17,11 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class redRightyRightScoreC9GBotScoreC8GMidScoreO8Balance extends SequentialCommandGroup{
-    public redRightyRightScoreC9GBotScoreC8GMidScoreO8Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt extends SequentialCommandGroup{
+    public redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new ScoreConeHigh(elbow, intake, intakespinner, robotContainer, shoulder),
+            new IntakeReverseCube(intake).withTimeout(0.2),
             new RedGBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder),
-
 
             // new ParallelCommandGroup(
             //     new FollowTrajectoryCommand(robotContainer.redRightyRightGBottom, true, drivetrain::getPose, autoDrive, drivetrain, heading),
@@ -40,22 +43,13 @@ public class redRightyRightScoreC9GBotScoreC8GMidScoreO8Balance extends Sequenti
             //     new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)
             // ),
             // new IntakeReverseCube(intake).withTimeout(0.2),
-
-
-            new RedBalanceFront(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder)
-
-
-
-
-            // new SequentialCommandGroup(
-            //     new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-            //     new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
-            // ),
-            // new ParallelRaceGroup(
-            //     new FollowTrajectoryCommand(robotContainer.redChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-            //     new AutoBalanceIndicatorFront(drivetrain::getGyroscopePitch)
-            // ),
-            // new FollowTrajectoryCommand(robotContainer.redLockdown, true, drivetrain::getPose, autoDrive, drivetrain, heading).withTimeout(0.15)
+            new ParallelCommandGroup(
+                new SequentialCommandGroup(
+                    new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+                    new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+                    ),
+                new FollowTrajectoryCommand(robotContainer.redSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
+            )
         );
     }
 }

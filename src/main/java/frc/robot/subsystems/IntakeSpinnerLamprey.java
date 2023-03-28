@@ -96,9 +96,9 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
             SmartDashboard.putNumber("Arm/ Wrist Setpoint", getSetpoint());
             SmartDashboard.putNumber("Arm/Wrist Output", intakeSpinnerMotor.getMotorOutputPercent());
             SmartDashboard.putString("Arm/Wrist Game Piece", gamePiece.get().toString());
+            SmartDashboard.putNumber("Arm/Intake Spinner Current", intakeSpinnerMotor.getStatorCurrent());
         }
         SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
-        SmartDashboard.putNumber("Arm/Intake Spinner Current", intakeSpinnerMotor.getStatorCurrent());
         
     }
   

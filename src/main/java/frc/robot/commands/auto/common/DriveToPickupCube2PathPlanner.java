@@ -1,21 +1,11 @@
 package frc.robot.commands.auto.common;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeNoWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointConeWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCube;
-import frc.robot.commands.auto.aboveChassis.IntakeForwardAuto;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
-import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;

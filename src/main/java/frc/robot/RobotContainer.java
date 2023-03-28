@@ -53,7 +53,7 @@ import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftGToppy;
 import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2;
 import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8;
+import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt;
 import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
 import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
@@ -212,7 +212,7 @@ public class RobotContainer {
     autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
 
     autonChooser.addOption("Red Righty Right Score 3 Balance", new redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Righty Right Score 3", new redRightyRightScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 3", new redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
