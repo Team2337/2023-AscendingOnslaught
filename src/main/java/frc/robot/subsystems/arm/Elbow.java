@@ -172,9 +172,9 @@ public class Elbow extends PIDSubsystem {
       //SmartDashboard.putNumber("Arm/Elbow Position Error", elbowMotor.getClosedLoopError());
       SmartDashboard.putNumber("Elbow Setpoint and Actual Angle Difference", m_controller.getSetpoint() - getElbowLampreyDegrees());
       SmartDashboard.putNumber("Elbow Velocity Error", m_controller.getVelocityError());
+      SmartDashboard.putNumber("Arm/Elbow P", m_controller.getP());
     }
     SmartDashboard.putNumber("Arm/Elbow Encoder Degrees", getElbowLampreyDegrees());
-    SmartDashboard.putNumber("Arm/Elbow P", m_controller.getP());
   }
 
   

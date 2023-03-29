@@ -376,7 +376,7 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    SmartDashboard.putData(CommandScheduler.getInstance());
+    //SmartDashboard.putData(CommandScheduler.getInstance());
     /** Driver Controller */
     // Note: Left X + Y axis, Right X axis, and Left Bumper are used by
     // SwerveDriveCommand to turn on/off field orientation

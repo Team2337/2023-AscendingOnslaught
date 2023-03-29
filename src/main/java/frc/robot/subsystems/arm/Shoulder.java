@@ -69,7 +69,7 @@ public class Shoulder extends PIDSubsystem {
   @Override
   protected void useOutput(double output, double setpoint) {
     setShoulderSpeed(output);
-    SmartDashboard.putNumber("Arm K/ Shoulder Output", output);
+    //SmartDashboard.putNumber("Arm K/ Shoulder Output", output);
   }
 
   @Override
@@ -170,8 +170,8 @@ public void periodic() {
       SmartDashboard.putNumber("Arm/Shoulder Motor Power (V)", lampreyVoltage);
       //SmartDashboard.putNumber("Arm/Shoulder Position Error", shoulderMotor.getClosedLoopError());
       SmartDashboard.putString("Arm/Past Arm Position", pastPosition.toString());
+      SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
     }
-    SmartDashboard.putNumber("Arm/Shoulder Motor Encoder Ticks", getShoulderPositionTicks());
     SmartDashboard.putNumber("Arm/Shoulder Encoder Degrees", getShoulderLampreyDegrees());
   }
 
