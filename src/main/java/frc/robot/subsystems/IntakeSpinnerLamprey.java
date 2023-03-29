@@ -21,9 +21,10 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private double fullRange = 360.0 / lampreyVoltage;
     private double offset = 0;
     private Supplier<Double> voltage;
+    private double pastCurrent;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 0.8;
+    private double peakOutput = 1.0;
     private double tolerance = 0.5;
     private static double kP = 0.01;
     private static double kI = 0;
@@ -95,6 +96,7 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
             SmartDashboard.putNumber("Arm/ Wrist Setpoint", getSetpoint());
             SmartDashboard.putNumber("Arm/Wrist Output", intakeSpinnerMotor.getMotorOutputPercent());
             SmartDashboard.putString("Arm/Wrist Game Piece", gamePiece.get().toString());
+            SmartDashboard.putNumber("Arm/Intake Spinner Current", intakeSpinnerMotor.getStatorCurrent());
         }
         SmartDashboard.putNumber("Arm/Wrist Degrees", getEncoderDegrees());
         

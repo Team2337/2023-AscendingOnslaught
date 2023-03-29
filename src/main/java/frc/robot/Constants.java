@@ -507,10 +507,10 @@ public final class Constants {
     public static final double WRIST_LOWER_LIMIT = 23.0;
     public static final double WRIST_UPPER_LIMIT = 310.0;
     public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
-    public static final double SHOULDER_MAX_SPEED = 0.7;
+    public static final double SHOULDER_MAX_SPEED = .9;
     public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
     public static final double ELBOW_CLOSED_LOOP_SPEED = 0.7;
-    public static final double ELBOW_MAX_SPEED = 0.7;
+    public static final double ELBOW_MAX_SPEED = .9;
     public static final double ELBOW_JOYSTICK_SPEED = 0.4;
     public static final double elbowP = 0.2;
     public static final double elbowI = 0.0;
@@ -526,9 +526,9 @@ public final class Constants {
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(109.0,30.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
-      SCOREMID(82.0,99.0,91.0,100.0,150.0,23.0), //Elbow Cone: 105, Wrist Cone: 165
-      SCORELOW(-21.0,145.0,-21.0,145.0,83.0,25.0),
+      SCOREHIGH(112.0,36.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
+      SCOREMID(82.0,103.0,91.0,100.0,150.0,23.0), //Elbow Cone: 105, Wrist Cone: 165
+      SCORELOW(-21.0,145.0,-21.0,145.0,97.0,25.0),
       SUBSTATION(86.0,-69.0,86.0,-76.0,253.0,140.0),
       SUBSTATIONPICKUP(86.0,-84.0,86.0,-91.0,253.0,138.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
@@ -536,11 +536,13 @@ public final class Constants {
       AUTOTELEFALLINGCONE(24.0,-102.0,33.0,-102.5,132.0,59.0),
       AUTOPICKUP(-5.0,9.0,-5.0,9.0,35.0,25.0),
       CARRY(-21.0,145.0,-21.0,145.0,67.0,243.0),
+      AUTOCARRY(-21.0,145.0,-21.0,145.0,67.0,85.0),
       SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,254.0,25.0),
       CARRYINTERMEDIATE(-21,42,-21,42,35.0,25.0),
+      AUTOCARRYINTERMEDIATE(-21,120,-21,120,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
-      AUTOSCOREHIGH(94.0,40.0,109.0,54.0,161.0,23.0),
+      AUTOSCOREHIGH(114.0,36.0,114.0,40.0,111.0,23.0),
       ALTERNATECARRY(90,-115,90,-115,253,59),
       ALTERNATEINTERMEDIATE(90,-90,90,-90,253,59),
       ALTERNATECARRYEND(90,-148,90,-148,253,59),
@@ -549,8 +551,15 @@ public final class Constants {
       FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85),
       FLOORPICKUP2YOSHI(-10,-12, -12, -12, 85, 85),
       FLOORPICKUP3YOSHI(-10,-12, -12, -14, 85, 85),
-      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -14, 85, 100),
-      FLOORPICKUPWRIST2YOSHI(-10,-12, -13, -15, 85, 100);
+      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -15, 85, 120),//(-10,-12)cube
+      FLOORPICKUPWRIST2YOSHI(-10,-12, -12, -14, 85, 100),
+      FLOORPICKUPWRIST3YOSHI(-10,-12, -10, -13, 85, 120),//(-13,-16)cube
+      FLOORPICKUPWRIST3YOSHIBLUE(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
+      FLOORPICKUPWRIST3YOSHIRED(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
+      FLOORPICKUPYOSHIBUMP(-10,-12, -12, -13, 85, 120), //(-9, -9)cube
+      FLOORPICKUP2YOSHIBUMP(-10,-12, -10, -12, 85, 120),
+      FLOORPICKUP3YOSHIBUMP(-10,-12, -15, -13, 85, 120),//(-12,-14)cube
+      FLOORPICKUP4YOSHIBUMP(-10,-12, -9, -9, 85, 85);
       //67, -137
       
              

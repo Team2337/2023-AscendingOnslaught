@@ -99,6 +99,11 @@ public class Elbow extends PIDSubsystem {
     return getController().atSetpoint();
   }
 
+  public void changePeakOutput(double peak) {
+    elbowMotor.configPeakOutputForward(peak, 10);
+    elbowMotor.configPeakOutputReverse(-peak, 10);
+  }
+
  // This is all encoder stuff
   
 

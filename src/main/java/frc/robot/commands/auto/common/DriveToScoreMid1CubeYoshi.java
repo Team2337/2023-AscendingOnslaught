@@ -7,7 +7,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.drive.AutoCartesianVectorNoCutoff;
-import frc.robot.commands.auto.drive.AutoCartesianVectorProfileToPointTargetCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;

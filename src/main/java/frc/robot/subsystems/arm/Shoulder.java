@@ -94,6 +94,11 @@ public class Shoulder extends PIDSubsystem {
     return getController().atSetpoint();
   }
 
+  public void changePeakOutput(double peak) {
+    shoulderMotor.configPeakOutputForward(peak, 10);
+    shoulderMotor.configPeakOutputReverse(-peak, 10);
+  }
+
  // This is all encoder stuff
   
 

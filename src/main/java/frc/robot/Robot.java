@@ -151,6 +151,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.instantiateSubsystemsTeleop();
+    m_robotContainer.setArmPeakOutput(0.9);
     // m_robotContainer.configureButtonBindingsTeleop();
   }
 

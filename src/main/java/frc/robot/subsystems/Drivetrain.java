@@ -474,7 +474,6 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Pose Y", Units.metersToInches(pose.getY()));
       SmartDashboard.putNumber("Pose Rotation", pose.getRotation().getDegrees());
       SmartDashboard.putNumber("Roll", getGyroscopeRoll().getDegrees());
-      SmartDashboard.putNumber("Pitch", getGyroscopePitch().getDegrees());
       SmartDashboard.putNumber("Accelerometer X", accelerometer.getX());
       SmartDashboard.putNumber("Accelerometer Y", accelerometer.getY());
       SmartDashboard.putNumber("Accelerometer Z", accelerometer.getZ());
@@ -484,6 +483,7 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Module 3", Units.metersToInches(modules[3].getPosition().distanceMeters));
     }
     SmartDashboard.putNumber("Startup/Gyro", getGyroscopeRotation().getDegrees());
+    SmartDashboard.putNumber("Pitch", getGyroscopePitch().getDegrees());
     SmartDashboard.putNumber("Startup/Teleop Auto Position", getTeleopAutoPosition());
   }
 

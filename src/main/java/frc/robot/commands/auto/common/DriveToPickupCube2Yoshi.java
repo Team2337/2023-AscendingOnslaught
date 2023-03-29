@@ -2,7 +2,6 @@ package frc.robot.commands.auto.common;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -36,7 +35,7 @@ public class DriveToPickupCube2Yoshi extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 ), 
-                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI)
+                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI)
             ),   
             new ParallelCommandGroup(
                 new AutoCartesianVectorNoCutoff(
@@ -51,7 +50,7 @@ public class DriveToPickupCube2Yoshi extends SequentialCommandGroup{
                     drivetrain,
                     heading
                 ),
-                new ArmAutoSetpointCubeWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHI).withTimeout(1.5),
+                new ArmAutoSetpointCubeWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHI).withTimeout(1.5),
                 new IntakeReverseAuto(intake).withTimeout(1.5)
                 // new InstantCommand(() -> robotContainer.setPastArmPositionFallenCone())
             )     
