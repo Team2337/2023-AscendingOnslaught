@@ -37,8 +37,8 @@ public class PowerDistributionHub extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Channel Current 6", getChannelCurrent(6));
-    SmartDashboard.putNumber("Channel Current 4", getChannelCurrent(4));
+    //SmartDashboard.putNumber("Channel Current 6", getChannelCurrent(6));
+    //SmartDashboard.putNumber("Channel Current 4", getChannelCurrent(4));
   }
 
   /**

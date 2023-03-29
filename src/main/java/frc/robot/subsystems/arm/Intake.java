@@ -74,10 +74,9 @@ public class Intake extends SubsystemBase {
             SmartDashboard.putNumber("Arm/Intake motorTemp", getIntakeMotorTemperature());
             SmartDashboard.putNumber("Arm/Intake Lamprey Voltage", getIntakeSpinnerLampreyVoltage());
             SmartDashboard.putNumber("Arm/Intake Position", intakeEncoder.getPosition());
-            
+            SmartDashboard.putNumber("Arm/Intake Motor Speed", intakeMotor.getAppliedOutput());
         }
         SmartDashboard.putBoolean("Arm/Intake Beam Break", beamBreak.isPressed());
-        SmartDashboard.putNumber("Arm/Intake Motor Speed", intakeMotor.getAppliedOutput());
     }
 
 }

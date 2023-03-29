@@ -102,8 +102,8 @@ public class SwerveDriveCommand extends CommandBase {
     double vyMetersPerSecond = strafe * Constants.MAX_VELOCITY_METERS_PER_SECOND;
     double omegaRadiansPerSecond = rotation * Constants.Swerve.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
 
-    SmartDashboard.putNumber("Drive/Strafe Output", strafe);
-    SmartDashboard.putNumber("Drive/Vy m/s", vyMetersPerSecond);
+    //SmartDashboard.putNumber("Drive/Strafe Output", strafe);
+    //SmartDashboard.putNumber("Drive/Vy m/s", vyMetersPerSecond);
 
     if (isFieldOriented && DriverStation.isAutonomousEnabled()) {
       drivetrain.drive(

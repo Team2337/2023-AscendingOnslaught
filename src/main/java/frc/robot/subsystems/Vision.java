@@ -127,8 +127,8 @@ public class Vision extends SubsystemBase {
       allianceColor = "red";
     }
     botPoseColor = botPoseColor + allianceColor;
-    SmartDashboard.putString("Bot Pose Color", botPoseColor);
-    SmartDashboard.putString("Pipeline Alliance Color", pipelineAllianceColor);
+    //SmartDashboard.putString("Bot Pose Color", botPoseColor);
+    //SmartDashboard.putString("Pipeline Alliance Color", pipelineAllianceColor);
 
     tposeB = NetworkTableInstance.getDefault().getTable("limelight-blue").getEntry(botPoseColor).getDoubleArray(defaultPose);
     currentPipelineB = Pipeline.withNumber(getIntValue(LimelightKey.Pipeline, LimelightColor.BLUE));
