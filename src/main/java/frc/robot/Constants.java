@@ -526,7 +526,7 @@ public final class Constants {
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(109.0,36.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
+      SCOREHIGH(112.0,36.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
       SCOREMID(82.0,103.0,91.0,100.0,150.0,23.0), //Elbow Cone: 105, Wrist Cone: 165
       SCORELOW(-21.0,145.0,-21.0,145.0,97.0,25.0),
       SUBSTATION(86.0,-69.0,86.0,-76.0,253.0,140.0),
@@ -539,7 +539,7 @@ public final class Constants {
       AUTOCARRY(-21.0,145.0,-21.0,145.0,67.0,85.0),
       SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,254.0,25.0),
       CARRYINTERMEDIATE(-21,42,-21,42,35.0,25.0),
-      AUTOCARRYINTERMEDIATE(-21,75,-21,75,35.0,25.0),
+      AUTOCARRYINTERMEDIATE(-21,120,-21,120,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
       AUTOSCOREHIGH(114.0,36.0,114.0,40.0,111.0,23.0),
@@ -554,9 +554,12 @@ public final class Constants {
       FLOORPICKUPWRISTYOSHI(-10,-12, -12, -15, 85, 120),//(-10,-12)cube
       FLOORPICKUPWRIST2YOSHI(-10,-12, -12, -14, 85, 100),
       FLOORPICKUPWRIST3YOSHI(-10,-12, -10, -13, 85, 120),//(-13,-16)cube
-      FLOORPICKUPYOSHIBUMP(-10,-12, -9, -9, 85, 120),
+      FLOORPICKUPWRIST3YOSHIBLUE(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
+      FLOORPICKUPWRIST3YOSHIRED(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
+      FLOORPICKUPYOSHIBUMP(-10,-12, -12, -13, 85, 120), //(-9, -9)cube
       FLOORPICKUP2YOSHIBUMP(-10,-12, -10, -12, 85, 120),
-      FLOORPICKUP3YOSHIBUMP(-10,-12, -12, -14, 85, 120);
+      FLOORPICKUP3YOSHIBUMP(-10,-12, -15, -13, 85, 120),//(-12,-14)cube
+      FLOORPICKUP4YOSHIBUMP(-10,-12, -9, -9, 85, 85);
       //67, -137
       
              
