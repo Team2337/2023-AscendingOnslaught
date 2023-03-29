@@ -11,6 +11,7 @@ public class wakaWakaSpinRollers extends CommandBase {
     public wakaWakaSpinRollers(wakaWakaIntake intake, double speed) {
         this.intake = intake;
         this.speed = speed;
+        addRequirements(intake);
     }
 
     @Override
