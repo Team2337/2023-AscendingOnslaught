@@ -89,6 +89,7 @@ public class RobotContainer {
   public JoystickButton driverRightBumper;
   public JoystickButton operatorLeftBumper;
   public JoystickButton yellowSwitch;
+  public JoystickButton silverSwitch;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -148,6 +149,7 @@ public class RobotContainer {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     yellowSwitch = new JoystickButton(operatorStation, 4);
+    silverSwitch = new JoystickButton(operatorStation, 10);
 
 
     // Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
@@ -506,8 +508,7 @@ public class RobotContainer {
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     
-
-    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, (LEDState x) -> setLEDState(x), intake));
+    triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, this::getSilverSwitchStatus, (LEDState x) -> setLEDState(x), intake));
     triggerOperatorRight.whileTrue(new ConditionalCommand( 
       new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner), 
       new WaitCommand(0), 
@@ -543,9 +544,10 @@ public class RobotContainer {
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
-    JoystickButton yellowButton = new JoystickButton(operatorStation, 10);
-    JoystickButton purpleButton = new JoystickButton(operatorStation, 11);
-
+    JoystickButton yellowButton = new JoystickButton(operatorStation, 3);
+    JoystickButton whiteButton = new JoystickButton(operatorStation, 4);
+    JoystickButton blueSwitch = new JoystickButton(operatorStation, 12);
+    JoystickButton blackSwitch = new JoystickButton(operatorStation, 13);
   }
 
   public void instantiateSubsystemsTeleop() {
@@ -609,8 +611,8 @@ public class RobotContainer {
     return operatorStation.yellowSwitch.getAsBoolean();
   }
 
-  public boolean getClearSwitchStatus() {
-    return operatorStation.clearSwitch.getAsBoolean();
+  public boolean getSilverSwitchStatus() {
+    return silverSwitch.getAsBoolean();
   }
 
   public boolean getDriverInput() {
