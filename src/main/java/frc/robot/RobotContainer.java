@@ -48,6 +48,8 @@ import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
+import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
+import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2Balance;
@@ -79,6 +81,8 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
+import frc.robot.subsystems.wakaWaka.wakaWakaArm;
+import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class RobotContainer {
   private  GamePiece gamePiece = GamePiece.Nothing;
@@ -100,6 +104,8 @@ public class RobotContainer {
   private final Elbow elbow = new Elbow(this);
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
+  private final wakaWakaArm wakaArm = new wakaWakaArm();
+  private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
   // private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
@@ -469,7 +475,10 @@ public class RobotContainer {
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
-    triggerDriverLeft.whileTrue(new IntakeUnjam(intake));
+    triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
+    driverA.whileTrue(new IntakeUnjam(intake));
+    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 1600).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
+    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 100));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
