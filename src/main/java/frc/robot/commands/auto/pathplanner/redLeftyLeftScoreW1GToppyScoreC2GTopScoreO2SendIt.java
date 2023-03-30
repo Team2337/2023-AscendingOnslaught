@@ -21,7 +21,7 @@ public class redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt extends Sequentia
     public redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new IntakeReverseCube(intake).withTimeout(0.2),
-            new RedGToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder),
+            new RedGToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder)
 
             // new ParallelCommandGroup(
             //     new FollowTrajectoryCommand(robotContainer.redLeftyLeftGToppyFast, true, drivetrain::getPose, autoDrive, drivetrain, heading),
@@ -43,13 +43,13 @@ public class redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt extends Sequentia
             //     new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID).withTimeout(1.5).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID))
             // ),
             // new IntakeReverseCube(intake).withTimeout(0.2),
-            new ParallelCommandGroup(
-                new SequentialCommandGroup(
-                    new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-                    new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
-                ),
-                new FollowTrajectoryCommand(robotContainer.redLeftSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
-            )
+            // new ParallelCommandGroup(
+            //     new SequentialCommandGroup(
+            //         new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
+            //         new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
+            //     ),
+            //     new FollowTrajectoryCommand(robotContainer.redLeftSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
+            // )
         );
     }
 }

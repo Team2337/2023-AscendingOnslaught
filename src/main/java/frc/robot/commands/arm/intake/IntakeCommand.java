@@ -15,11 +15,13 @@ public class IntakeCommand extends CommandBase{
     private boolean firstTimeThru;
     Supplier<GamePiece> gamePiece;
     Consumer<LEDState> ledState;
+    Supplier<Boolean> intakeOverride;
 
-    public IntakeCommand(Supplier<GamePiece> gamePiece, Consumer<LEDState> ledState, Intake intake) {
+    public IntakeCommand(Supplier<GamePiece> gamePiece, Supplier<Boolean> intakeOverride, Consumer<LEDState> ledState, Intake intake) {
         this.gamePiece = gamePiece;
         this.ledState = ledState;
         this.intake = intake;
+        this.intakeOverride = intakeOverride;
         addRequirements(intake);
     }
 
@@ -32,7 +34,7 @@ public class IntakeCommand extends CommandBase{
     public void execute() {
         if (gamePiece.get() == GamePiece.Cone) {
             speed = 1.0;
-            if (intake.hasCone() == true) {
+            if (intake.hasCone() == true && !intakeOverride.get()) {
                 ledState.accept(LEDState.HasGamePiece);
                 speed = 0.0;
                 //TODO: Fix this eventually, make the setpoint the intermediary.

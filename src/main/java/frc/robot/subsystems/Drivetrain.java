@@ -85,7 +85,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Update Drivetrain state only once per cycle
   private Pose2d pose = new Pose2d();
-  private Field2d field = new Field2d();
+  // private Field2d field = new Field2d();
 
   // Array for Yaw Pitch and Roll values in degrees
   private double[] ypr_deg = { 0, 0, 0 };
@@ -158,7 +158,7 @@ public class Drivetrain extends SubsystemBase {
       VecBuilder.fill(0.1, 0.1, 0.1), //VecBuilder.fill(0.1, 0.1, 0.1)
       VecBuilder.fill(0.9, 0.9, 0.9)); //VecBuilder.fill(0.9, 0.9, 0.9))
     setupShuffleboard(Constants.DashboardLogging.DRIVETRAIN);
-    SmartDashboard.putData("field", field);
+    // SmartDashboard.putData("field", field);
   }
 
   private void setupShuffleboard(Boolean logEnable) {
@@ -456,7 +456,7 @@ public class Drivetrain extends SubsystemBase {
       modulePositions
     );
 
-    field.setRobotPose(pose);
+    // field.setRobotPose(pose);
     /*
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
