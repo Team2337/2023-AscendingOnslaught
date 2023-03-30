@@ -13,4 +13,8 @@ public class CTREUtils {
     return new StatorCurrentLimitConfiguration(true, 50.0, 40.0, 3.0);
   }
 
+  public static StatorCurrentLimitConfiguration lowCurrentLimit() {
+    return new StatorCurrentLimitConfiguration(true, 30.0, 30.0, 1.0);
+  }
+
 }

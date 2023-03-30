@@ -474,9 +474,9 @@ public class RobotContainer {
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
     triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
-    triggerDriverLeft.whileTrue(new IntakeUnjam(intake));
-    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 18432).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
-    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 0));
+    driverA.whileTrue(new IntakeUnjam(intake));
+    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 1600).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
+    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 100));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
