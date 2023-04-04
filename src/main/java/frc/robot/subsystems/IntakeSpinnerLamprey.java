@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -13,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
+import frc.robot.nerdyfiles.utilities.CTREUtils;
 
 public class IntakeSpinnerLamprey extends PIDSubsystem {
     
@@ -24,9 +24,11 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     private double pastCurrent;
     private Supplier<GamePiece> gamePiece;
 
-    private double peakOutput = 1.0;
+    private double counter = 0;
+    public boolean jammed = false;
+    private double peakOutput = 0.2;
     private double tolerance = 0.5;
-    private static double kP = 0.01;
+    private static double kP = 0.005;
     private static double kI = 0;
     private static double kD = 0;
 
@@ -41,10 +43,12 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
         intakeSpinnerMotor.configReverseSoftLimitThreshold(150000);
         intakeSpinnerMotor.configReverseSoftLimitEnable(false);
         intakeSpinnerMotor.setNeutralMode(NeutralMode.Brake);
-        intakeSpinnerMotor.configStatorCurrentLimit(defaultCurrentLimit());
+        intakeSpinnerMotor.configStatorCurrentLimit(CTREUtils.wristCurrentLimit());
         intakeSpinnerMotor.configPeakOutputForward(peakOutput, 10);
         intakeSpinnerMotor.configPeakOutputReverse(-peakOutput, 10);
         intakeSpinnerMotor.setInverted(TalonFXInvertType.Clockwise);
+        intakeSpinnerMotor.configOpenloopRamp(0);
+        intakeSpinnerMotor.configClosedloopRamp(0);
 
         getController().setTolerance(tolerance);
         enable();
@@ -72,10 +76,6 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public void setIntakeSpinnerMotorSpeed(double speed) {       
         intakeSpinnerMotor.set(ControlMode.PercentOutput, speed);
     }   
-
-    public static StatorCurrentLimitConfiguration defaultCurrentLimit() {
-        return new StatorCurrentLimitConfiguration(true, 10.0, 10.0, 1.0);
-      }
    
     public double getTemperature() {
         return intakeSpinnerMotor.getTemperature();
@@ -89,6 +89,16 @@ public class IntakeSpinnerLamprey extends PIDSubsystem {
     public void periodic() {
         super.periodic();
         log();
+        if (Math.abs(getSetpoint()-getEncoderDegrees()) > 15 && (getEncoderDegrees() > 200 && getEncoderDegrees() < 230)) {
+            if (counter > 40) {
+                jammed = true;
+            }
+            counter++;
+        }
+        else {
+            jammed = false;
+            counter = 0;
+        }
     }
 
     public void log() {

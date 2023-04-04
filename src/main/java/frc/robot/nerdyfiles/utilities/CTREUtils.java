@@ -17,4 +17,8 @@ public class CTREUtils {
     return new StatorCurrentLimitConfiguration(true, 30.0, 30.0, 1.0);
   }
 
+  public static StatorCurrentLimitConfiguration wristCurrentLimit() {
+    return new StatorCurrentLimitConfiguration(true, 35.0, 35.0, 1.0);
+  }
+
 }

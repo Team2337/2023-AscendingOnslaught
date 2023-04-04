@@ -14,7 +14,7 @@ import frc.robot.nerdyfiles.utilities.CTREUtils;
 
 public class wakaWakaArm extends PIDSubsystem {
     private TalonFX armMotor = new TalonFX(60);
-    private static double kP = 0.0003;
+    private static double kP = 0.00015;
     private static double kI = 0;
     private static double kD = 0;
     private double peakOutput = 1.0;

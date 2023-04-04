@@ -3,9 +3,11 @@ package frc.robot.commands.arm;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.nerdyfiles.utilities.Utilities;
 import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Shoulder;
@@ -17,6 +19,7 @@ public class ArmBasicJoystickCommand extends CommandBase {
     Supplier<XboxController> joystick;
     boolean firstTimeThru = true;
     double maxSpeed= 0.2;
+    double currentX;
 
 
     public ArmBasicJoystickCommand(Elbow elbow, Shoulder shoulder, Supplier<XboxController> joystick) {
@@ -30,12 +33,15 @@ public class ArmBasicJoystickCommand extends CommandBase {
     @Override
     public void initialize() {
         firstTimeThru = true;
+        double mathShoulderAngle = shoulder.getShoulderLampreyDegrees();
+        double mathElbowAngle = elbow.getElbowLampreyDegrees();
+        currentX = Constants.Arm.SHOULDER_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle)) + Constants.Arm.ELBOW_ARM_LENGTH * Math.cos(Units.degreesToRadians(mathShoulderAngle) + Units.degreesToRadians(mathElbowAngle));
     }
 
     @Override
     public void execute() {
         double outputElbow, outputShoulder;
-        if (shoulder.getShoulderLampreyDegrees() > 90) {
+        if (currentX < 0) {
             outputShoulder = Utilities.deadbandAndSquare(-joystick.get().getLeftY(), 0.15);
             outputElbow = Utilities.deadbandAndSquare(joystick.get().getRightY(), 0.15);
         }

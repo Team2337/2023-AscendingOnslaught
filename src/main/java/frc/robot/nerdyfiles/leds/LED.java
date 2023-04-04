@@ -20,7 +20,7 @@ public class LED extends SubsystemBase {
 
 	private static AddressableLED led;
 	private static AddressableLEDBuffer ledBuffer;
-	private static int LED_LENGTH = 130;
+	private static int LED_LENGTH = 126;
 
 	/**
 	 * Controls the LEDs on the Robot 

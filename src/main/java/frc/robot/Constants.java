@@ -61,7 +61,7 @@ public final class Constants {
 
   public static final class DashboardLogging {
     public static final boolean ARM = false;
-    public static final boolean AUTO = true;
+    public static final boolean AUTO = false;
     public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
@@ -141,7 +141,7 @@ public final class Constants {
 
   public Constants() {
     RobotType.Type robotType = RobotType.getRobotType();
-    SmartDashboard.putString("Startup/Mac-Address", RobotType.getMACAddress());
+    // SmartDashboard.putString("Startup/Mac-Address", RobotType.getMACAddress());
     SmartDashboard.putString("Startup/Robot Type", robotType.description);
     switch (robotType) {
       case SKILLSBOT:
@@ -269,7 +269,7 @@ public final class Constants {
         MODULE3_DRIVE_MOTOR_ID = 10;
         MODULE3_ANGLE_MOTOR_ID = 11;
         MODULE3_ANGLE_CANCODER_ID = 4;
-        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(103.7109375);
+        MODULE3_ANGLE_OFFSET = Rotation2d.fromDegrees(-151.084); //103.7109375
 
         DRIVETRAIN_TRACK_WIDTH_INCHES = 19.75;
         DRIVETRAIN_WHEEL_BASE_INCHES = 24.75;
@@ -504,8 +504,8 @@ public final class Constants {
     public static final double shoulderP = 0.005;
     public static final double shoulderI = 0.0;
     public static final double shoulderD = 0.0;
-    public static final double WRIST_LOWER_LIMIT = 23.0;
-    public static final double WRIST_UPPER_LIMIT = 310.0;
+    public static final double WRIST_LOWER_LIMIT = -180.0;
+    public static final double WRIST_UPPER_LIMIT = 540.0;
     public static final double SHOULDER_CLOSED_LOOP_SPEED = 0.7;
     public static final double SHOULDER_MAX_SPEED = .9;
     public static final double SHOULDER_JOYSTICK_SPEED = 0.4;
@@ -526,11 +526,14 @@ public final class Constants {
     // Comp Arm
     public enum ArmPosition {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
-      SCOREHIGH(112.0,36.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
-      SCOREMID(82.0,103.0,91.0,100.0,150.0,23.0), //Elbow Cone: 105, Wrist Cone: 165
+      SCOREHIGH(121.0,10.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
+      SCOREHIGHDROP(121.0,15.0,114.0,40.0,111.0,23.0), //Elbow Cone: 39.5, Wrist Cone: 145
+      SCOREMID(82.0,101.0,91.0,100.0,150.0,23.0), //Elbow Cone: 105, Wrist Cone: 165
+      SCOREMIDINTAKESIDE(62.0,-70.0,42.0,-62.0,210.0,125.0), //Elbow Cone: 105, Wrist Cone: 165
+      SCOREHIGHINTAKESIDE(26.0,-23.0,18.0,-17.0,156.0,52.0), //Elbow Cone: 39.5, Wrist Cone: 145
       SCORELOW(-21.0,145.0,-21.0,145.0,97.0,25.0),
-      SUBSTATION(86.0,-69.0,86.0,-76.0,253.0,140.0),
-      SUBSTATIONPICKUP(86.0,-84.0,86.0,-91.0,253.0,138.0),
+      SUBSTATION(86.0,-69.0,86.0,-76.0,253.0,154.0),
+      SUBSTATIONPICKUP(86.0,-84.0,86.0,-92.0,253.0,154.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,35.0,-102.5,162.0,59.0),
       AUTOTELEFALLINGCONE(24.0,-102.0,33.0,-102.5,132.0,59.0),
@@ -538,7 +541,7 @@ public final class Constants {
       CARRY(-21.0,145.0,-21.0,145.0,67.0,243.0),
       AUTOCARRY(-21.0,145.0,-21.0,145.0,67.0,85.0),
       SUBSTATIONCARRY(-21.0,145.0,-21.0,145.0,254.0,25.0),
-      CARRYINTERMEDIATE(-21,42,-21,42,35.0,25.0),
+      CARRYINTERMEDIATE(-21, 32,-21,32,35.0,25.0),
       AUTOCARRYINTERMEDIATE(-21,120,-21,120,35.0,25.0),
       FEEDSTATION(70, -134, 70, -130, 67, 184),
       FEEDSTATIONFRONT(79, 140, 79, 140, 280, 178),
@@ -551,11 +554,11 @@ public final class Constants {
       FLOORPICKUPYOSHI(-10,-12, -10, -12, 85, 85),
       FLOORPICKUP2YOSHI(-10,-12, -12, -12, 85, 85),
       FLOORPICKUP3YOSHI(-10,-12, -12, -14, 85, 85),
-      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -15, 85, 120),//(-10,-12)cube
+      FLOORPICKUPWRISTYOSHI(-10,-12, -12, -15, 85, 122),//(-10,-12)cube
       FLOORPICKUPWRIST2YOSHI(-10,-12, -12, -14, 85, 100),
       FLOORPICKUPWRIST3YOSHI(-10,-12, -10, -13, 85, 120),//(-13,-16)cube
-      FLOORPICKUPWRIST3YOSHIBLUE(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
-      FLOORPICKUPWRIST3YOSHIRED(-10,-12, -13, -16, 85, 120),//(-13,-16)cube
+      FLOORPICKUPWRIST3YOSHIBLUE(-10,-12, -14, -16, 85, 110),//(-13,-16)cube
+      FLOORPICKUPWRIST3YOSHIRED(-10,-12, -14, -16, 85, 110),//(-13,-16)cube
       FLOORPICKUPYOSHIBUMP(-10,-12, -12, -13, 85, 120), //(-9, -9)cube
       FLOORPICKUP2YOSHIBUMP(-10,-12, -10, -12, 85, 120),
       FLOORPICKUP3YOSHIBUMP(-10,-12, -15, -13, 85, 120),//(-12,-14)cube

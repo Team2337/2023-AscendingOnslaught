@@ -45,7 +45,7 @@ public class RobotType {
       }
 
       // Remove once validated.
-      //SmartDashboard.putString("Mac-Address", sb.toString());
+      SmartDashboard.putString("Mac-Address", sb.toString());
       return sb.toString();
     } catch (UnknownHostException | SocketException | NullPointerException e) {
       e.printStackTrace();
