@@ -50,6 +50,7 @@ import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.pathplanner.blue.balance.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance;
+import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreW9GBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt;
 import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt;
 import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt;
@@ -136,6 +137,11 @@ public class RobotContainer {
   public PathPlannerTrajectory redGTop;
   public PathPlannerTrajectory redScoreO2;
 
+  public PathPlannerTrajectory blueRightyMidGBottom;
+  public PathPlannerTrajectory blueScoreC8;
+  public PathPlannerTrajectory blueGMid;
+  public PathPlannerTrajectory blueScoreO8;
+
   // public PathPlannerTrajectory redLeftyLeftGToppyFast;
   // public PathPlannerTrajectory redScoreC2Fast;
   // public PathPlannerTrajectory redGTopFast;
@@ -173,6 +179,11 @@ public class RobotContainer {
     redScoreC2 = PathPlanner.loadPath("redScoreC2", new PathConstraints(2.0, 2.0));
     redGTop = PathPlanner.loadPath("redGTop", new PathConstraints(2.0, 2.0));
     redScoreO2 = PathPlanner.loadPath("redScoreO2", new PathConstraints(2.0, 2.0));
+
+    blueRightyMidGBottom = PathPlanner.loadPath("blueRightyMidGBottom", new PathConstraints(2.0, 2.0));
+    blueScoreC8 = PathPlanner.loadPath("blueScoreC8", new PathConstraints(2.0, 2.0));
+    blueGMid = PathPlanner.loadPath("blueGMid", new PathConstraints(2.0, 2.0));
+    blueScoreO8 = PathPlanner.loadPath("blueScoreO8", new PathConstraints(2.0, 2.0));
 
     // redLeftyLeftGToppyFast = PathPlanner.loadPath("redLeftyLeftGToppy", new PathConstraints(3.0, 2.0));
     // redScoreC2Fast = PathPlanner.loadPath("redScoreC2", new PathConstraints(3.0, 2.0));
@@ -225,14 +236,15 @@ public class RobotContainer {
     autonChooser.addOption("Red Right Middle Score 3 Mid Yeet", new redRightyRightScore09GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Right Middle Score 3 High Yeet", new redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3 Bump", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     // autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     
-    autonChooser.addOption("Blue Lefty Mid Score 3 Balance", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Blue Lefty Mid Score 3 Low Yeet", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Middle Score 3 Balance", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Middle Score 3 Low Yeet", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Mid Yeet", new blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 High Yeet", new blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
+    autonChooser.addOption("Blue Righty Middle Score 3 Bump", new blueRightyMidScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.addOption("Zero", "Zero");

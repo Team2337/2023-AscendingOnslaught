@@ -560,8 +560,10 @@ public final class Constants {
       FLOORPICKUPWRIST3YOSHIBLUE(-10,-12, -14, -16, 85, 110),//(-13,-16)cube
       FLOORPICKUPWRIST3YOSHIRED(-10,-12, -14, -16, 85, 110),//(-13,-16)cube
       FLOORPICKUPYOSHIBUMP(-10,-12, -12, -13, 85, 120), //(-9, -9)cube
+      FLOORPICKUPYOSHIBUMPBLUE(-10,-12, -12, -13, 85, 120), //(-9, -9)cube
       FLOORPICKUP2YOSHIBUMP(-10,-12, -10, -12, 85, 120),
       FLOORPICKUP3YOSHIBUMP(-10,-12, -15, -13, 85, 120),//(-12,-14)cube
+      FLOORPICKUP3YOSHIBUMPBLUE(-10,-12, -15, -13, 85, 120),//(-12,-14)cube
       FLOORPICKUP4YOSHIBUMP(-10,-12, -9, -9, 85, 85);
       //67, -137
       
