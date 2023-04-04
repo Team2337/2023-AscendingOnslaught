@@ -16,12 +16,11 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class RedGBotScoreC8GMidScoreO8 extends SequentialCommandGroup {
-
-    public RedGBotScoreC8GMidScoreO8(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class RedRightyMidGBotScoreC8GMidScoreO8 extends SequentialCommandGroup {
+    public RedRightyMidGBotScoreC8GMidScoreO8(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(robotContainer.redRightyRightGBottom, true, drivetrain::getPose, autoDrive, drivetrain, heading),
+                        new FollowTrajectoryCommand(robotContainer.redRightyMidGBottom, true, drivetrain::getPose, autoDrive, drivetrain, heading),
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
                         new IntakeReverseAuto(intake).withTimeout(2.45)),
                 new ParallelCommandGroup(
@@ -35,6 +34,7 @@ public class RedGBotScoreC8GMidScoreO8 extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new FollowTrajectoryCommand(robotContainer.redScoreO8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)),
-                new IntakeReverseCube(intake).withTimeout(0.2));
+                new IntakeReverseCube(intake).withTimeout(0.2)
+        );
     }
 }

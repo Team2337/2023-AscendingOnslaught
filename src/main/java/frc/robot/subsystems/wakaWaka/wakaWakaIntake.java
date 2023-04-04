@@ -13,7 +13,7 @@ public class wakaWakaIntake extends SubsystemBase {
     
     private TalonFX intakeMotor = new TalonFX(61);
     private SparkMaxPIDController controller;
-    private double peakOutput = 1.0;
+    private double peakOutput = 0.5;
     
     
 
@@ -27,7 +27,7 @@ public class wakaWakaIntake extends SubsystemBase {
         intakeMotor.configStatorCurrentLimit(CTREUtils.defaultCurrentLimit());
         intakeMotor.configPeakOutputForward(peakOutput, 10);
         intakeMotor.configPeakOutputReverse(-peakOutput, 10);
-        intakeMotor.setInverted(TalonFXInvertType.Clockwise);
+        intakeMotor.setInverted(TalonFXInvertType.CounterClockwise);
         intakeMotor.setSelectedSensorPosition(0);
         
     }

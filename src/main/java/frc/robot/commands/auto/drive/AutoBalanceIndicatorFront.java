@@ -34,7 +34,7 @@ public class AutoBalanceIndicatorFront extends CommandBase {
   
     @Override
     public boolean isFinished() {
-      return (isElevated && pitchSupplier.get().getDegrees() > -9.8);
+      return (isElevated && pitchSupplier.get().getDegrees() > -8.5);
     }
     
 }

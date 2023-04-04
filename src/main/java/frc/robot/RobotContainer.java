@@ -22,12 +22,9 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AllianceColor;
@@ -43,35 +40,24 @@ import frc.robot.commands.arm.ArmSetpointElbow;
 import frc.robot.commands.arm.ArmSetpointShoulder;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
+import frc.robot.commands.arm.UnjamWrist;
 import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
-import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
+import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
 import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
-import frc.robot.commands.auto.*;
 import frc.robot.commands.auto.common.DoNothingCommand;
-import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2Balance;
-import frc.robot.commands.auto.pathplanner.blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.pathplanner.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt;
-import frc.robot.commands.auto.pathplanner.redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance;
-import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand1;
-import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand2;
-import frc.robot.commands.auto.teleop.BlueConstructTeleopAutoCommand3;
-import frc.robot.commands.auto.teleop.BlueTeleopAutoLeftSubstation;
-import frc.robot.commands.auto.teleop.BlueTeleopAutoRightSubstation;
-import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand1;
-import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand2;
-import frc.robot.commands.auto.teleop.RedConstructTeleopAutoCommand3;
-import frc.robot.commands.auto.teleop.RedTeleopAutoLeftSubstation;
-import frc.robot.commands.auto.teleop.RedTeleopAutoRightSubstation;
-import frc.robot.commands.auto.test.AvoidChargeStation;
-import frc.robot.commands.auto.test.Test;
-import frc.robot.commands.auto.test.Test3M;
-import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
+import frc.robot.commands.auto.pathplanner.blue.balance.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance;
+import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt;
+import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt;
+import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt;
+import frc.robot.commands.auto.pathplanner.red.balance.redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance;
+import frc.robot.commands.auto.pathplanner.red.bump.redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2;
+import frc.robot.commands.auto.pathplanner.red.yeet.redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt;
+import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScore09GBotScoreC8GMidScoreO8SendIt;
+import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -89,11 +75,14 @@ public class RobotContainer {
   private LEDState ledState = LEDState.Nothing;
   private final XboxController driverController = new XboxController(0);
   private final XboxController operatorController = new XboxController(1);
+  private Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
+  private Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
   private final NerdyOperatorStation operatorStation = new NerdyOperatorStation(2);
   public JoystickButton driverRightBumper;
   public JoystickButton operatorLeftBumper;
   public JoystickButton yellowSwitch;
   public JoystickButton silverSwitch;
+  public JoystickButton blueSwitch;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -104,9 +93,9 @@ public class RobotContainer {
   private final Elbow elbow = new Elbow(this);
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
-  private final wakaWakaArm wakaArm = new wakaWakaArm();
-  private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
-  // private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
+  // private final wakaWakaArm wakaArm = new wakaWakaArm();
+  // private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
+  private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
   private final Vision vision = new Vision(this);
@@ -124,13 +113,14 @@ public class RobotContainer {
 
   // public PathPlannerTrajectory Test3MPath;
   // public PathPlannerTrajectory blueLeftyLeftGToppyTop;
-  public PathPlannerTrajectory AvoidChargeStation;
   public PathPlannerTrajectory blueLeftyLeftGToppy;
+  public PathPlannerTrajectory AvoidChargeStation;
   public PathPlannerTrajectory blueScoreC2;
   public PathPlannerTrajectory blueScoreO2;
   public PathPlannerTrajectory blueChargeStation2;
   public PathPlannerTrajectory blueLockdown;
   public PathPlannerTrajectory blueSendIt;
+  public PathPlannerTrajectory blueLeftyMidGToppy;
 
   public PathPlannerTrajectory redRightyRightGBottom;
   public PathPlannerTrajectory redScoreC8;
@@ -139,6 +129,7 @@ public class RobotContainer {
   public PathPlannerTrajectory redChargeStation;
   public PathPlannerTrajectory redLockdown;
   public PathPlannerTrajectory redSendIt;
+  public PathPlannerTrajectory redRightyMidGBottom;
 
   public PathPlannerTrajectory redLeftyLeftGToppy;
   public PathPlannerTrajectory redScoreC2;
@@ -154,14 +145,15 @@ public class RobotContainer {
   public RobotContainer() {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
-    yellowSwitch = new JoystickButton(operatorStation, 4);
+    yellowSwitch = new JoystickButton(operatorStation, 11);
     silverSwitch = new JoystickButton(operatorStation, 10);
-
+    blueSwitch = new JoystickButton(operatorStation, 12);
 
     // Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
-    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(2.75, 2.5));
     // blueLeftyLeftGToppyTop = PathPlanner.loadPath("blueLeftyLeftGToppyTop", new PathConstraints(3.0, 4.0));
     blueLeftyLeftGToppy = PathPlanner.loadPath("blueLeftyLeftGToppy", new PathConstraints(3.0, 4.0));
+    AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(2.75, 2.5));
+    blueLeftyMidGToppy = PathPlanner.loadPath("blueLeftyMidGToppy", new PathConstraints(3.0, 4.0));
     blueScoreC2 = PathPlanner.loadPath("blueScoreC2", new PathConstraints(3.0, 4.0));
     blueScoreO2 = PathPlanner.loadPath("blueScoreO2", new PathConstraints(3.0, 4.0));
     blueChargeStation2 = PathPlanner.loadPath("blueChargeStation2", new PathConstraints(3.0, 2.0));
@@ -169,6 +161,7 @@ public class RobotContainer {
     blueSendIt = PathPlanner.loadPath("blueSendIt", new PathConstraints(3.0, 4.0));
 
     redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(3.0, 4.0));
+    redRightyMidGBottom = PathPlanner.loadPath("redRightyMidGBottom", new PathConstraints(3.0, 4.0));
     redScoreC8 = PathPlanner.loadPath("redScoreC8", new PathConstraints(3.0, 3.0));
     redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(3, 3.0));//2.25,4
     redScoreO8 = PathPlanner.loadPath("redScoreO8", new PathConstraints(3.0, 4.0));
@@ -193,7 +186,9 @@ public class RobotContainer {
     //         driverRightBumper::getAsBoolean, drivetrain, heading, vision));
     // shoulder.setDefaultCommand(new ArmJoystickCommand(elbow, shoulder, operatorController, ()-> true)); //TODO: This is the override switch for the lamprey failing, please dont let that happen
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
+    intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
+    // intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
@@ -225,13 +220,18 @@ public class RobotContainer {
     // autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading, elbow, intake, intakespinner, shoulder, this));
     // autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
     
-    autonChooser.addOption("Red Righty Right Score 3 Balance", new redRightyRightScoreW9GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Righty Right Score 3 Yeet", new redRightyRightScoreW9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Middle Score 3 Balance", new redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Middle Score 3 Low Yeet", new redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Right Middle Score 3 Mid Yeet", new redRightyRightScore09GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Right Middle Score 3 High Yeet", new redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
     autonChooser.addOption("Red Lefty Left Score 3", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     // autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     
-    autonChooser.addOption("Blue Lefty Left Score 3 Balance", new blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Blue Lefty Left Score 3 Yeet", new blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Mid Score 3 Balance", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Mid Score 3 Low Yeet", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Mid Yeet", new blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 High Yeet", new blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -475,10 +475,12 @@ public class RobotContainer {
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
-    triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
+    triggerDriverLeft.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGHDROP, elbow, shoulder, intakespinner, this));
+    // triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
     driverA.whileTrue(new IntakeUnjam(intake));
-    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 1600).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
-    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 100));
+    driverStart.whileTrue(new IntakeUnjam(intake));
+    // triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 1300).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
+    // triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 100));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -516,7 +518,9 @@ public class RobotContainer {
     Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
-    
+    Trigger unjamTrigger = new Trigger(() -> intakespinner.jammed);
+
+    unjamTrigger.onTrue(new UnjamWrist(intake, intakespinner, this));
     triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, this::getSilverSwitchStatus, (LEDState x) -> setLEDState(x), intake));
     triggerOperatorRight.whileTrue(new ConditionalCommand( 
       new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner), 
@@ -529,23 +533,30 @@ public class RobotContainer {
       new ArmSetpointElbow(Constants.Arm.ArmPosition.ALTERNATEINTERMEDIATE, 5, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointShoulder(Constants.Arm.ArmPosition.ALTERNATECARRY, elbow, shoulder, intakespinner, this)).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.ALTERNATECARRYEND, elbow, shoulder, intakespinner, this)),
         new ConditionalCommand(
         new ArmSetpointElbow(Constants.Arm.ArmPosition.SUBSTATIONCARRY, 230, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SUBSTATIONCARRY, elbow, shoulder, intakespinner, this)),
-        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
+        new ArmSetpointWithEnding(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 55, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.CARRY, elbow, shoulder, intakespinner, this)),
         ()-> wasPastPositionSubstation()),
       ()-> wasPastPositionFloorPickup())
       );
 
-    operatorY.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this)));
-    operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
+    operatorY.whileTrue(new ConditionalCommand(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREHIGHINTAKESIDE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGHINTAKESIDE, elbow, shoulder, intakespinner, this)),
+      new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGH, elbow, shoulder, intakespinner, this)),
+      ()-> getYellowSwitchStatus()
+    ));
+    // operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
+    operatorB.whileTrue(new ConditionalCommand(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this)),
+      new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)),
+      ()-> getYellowSwitchStatus()
+    ));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
-    operatorX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.FEEDSTATIONFRONT, elbow, shoulder, intakespinner, this));
+    operatorX.onTrue(new UnjamWrist(intake, intakespinner, this));
     operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
  
     operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
 
     operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
-    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
-    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    //operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    //operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
     
     operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cone))));
     operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cube))));
@@ -561,7 +572,7 @@ public class RobotContainer {
 
   public void instantiateSubsystemsTeleop() {
     heading.setDefaultCommand(
-         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, yellowSwitch::getAsBoolean,
+         new CartesianHeadingToTargetCommand(drivetrain::getTranslation, blueSwitch::getAsBoolean,
              driverRightBumper::getAsBoolean, drivetrain, heading, vision));
   }
   public void setArmPeakOutput(double peak) {
@@ -612,12 +623,9 @@ public class RobotContainer {
   public boolean getBlackSwitchStatus() {
     return operatorStation.blackSwitch.getAsBoolean();
   }
-  /**
-   * This is the switch for the arm lamprey's failing
-   * @return
-   */
+
   public boolean getYellowSwitchStatus() {
-    return operatorStation.yellowSwitch.getAsBoolean();
+    return yellowSwitch.getAsBoolean();
   }
 
   public boolean getSilverSwitchStatus() {
@@ -659,5 +667,9 @@ public class RobotContainer {
 
   public ArmPosition setPastArmPositionFallenCone() {
     return shoulder.pastPosition = ArmPosition.TELEFALLINGCONE;
+  }
+
+  public double getWristAmps() {
+    return powerDistributionHub.getChannelCurrent(17);
   }
 }

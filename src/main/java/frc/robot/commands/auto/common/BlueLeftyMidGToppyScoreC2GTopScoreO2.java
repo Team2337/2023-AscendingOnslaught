@@ -1,18 +1,12 @@
-package frc.robot.commands.auto.pathplanner;
+package frc.robot.commands.auto.common;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.aboveChassis.ArmAutoShoulderConeNoWait;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
-import frc.robot.commands.auto.common.BlueBalanceFront;
-import frc.robot.commands.auto.drive.AutoBalanceIndicatorFront;
 import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -22,12 +16,11 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt extends SequentialCommandGroup{
-    public blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class BlueLeftyMidGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup {
+    public BlueLeftyMidGToppyScoreC2GTopScoreO2(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
-            new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueLeftyLeftGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new FollowTrajectoryCommand(robotContainer.blueLeftyMidGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
                 new IntakeReverseAuto(intake).withTimeout(2.25)
             ),
@@ -39,20 +32,13 @@ public class blueStartLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt extends Seq
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.AvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHIBLUE),
-                new IntakeReverseAuto(intake).withTimeout(2.5)
+                new IntakeReverseAuto(intake).withTimeout(2.8)
             ),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueScoreO2, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)
             ),
-            new IntakeReverseCube(intake).withTimeout(0.2),
-            new ParallelCommandGroup(
-                new SequentialCommandGroup(
-                    new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
-                    new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
-                    ),
-            new FollowTrajectoryCommand(robotContainer.blueSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
-            )
-        );    
+            new IntakeReverseCube(intake).withTimeout(0.2)
+        );
     }
 }
