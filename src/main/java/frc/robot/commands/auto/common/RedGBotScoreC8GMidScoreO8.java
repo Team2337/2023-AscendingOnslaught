@@ -25,15 +25,15 @@ public class RedGBotScoreC8GMidScoreO8 extends SequentialCommandGroup {
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
                         new IntakeReverseAuto(intake).withTimeout(2.45)),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(robotContainer.redScoreC8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                        new FollowTrajectoryCommand(robotContainer.redScoreC8Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)),
                 new IntakeReverseCube(intake).withTimeout(0.2),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(robotContainer.redAvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                        new FollowTrajectoryCommand(robotContainer.redGMidYeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHIRED), // 3
                         new IntakeReverseAuto(intake).withTimeout(2.8)),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(robotContainer.redScoreO8, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                        new FollowTrajectoryCommand(robotContainer.redScoreO8Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                         new ArmAutoSetpointCubeNoWait(0.9, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)),
                 new IntakeReverseCube(intake).withTimeout(0.2));
     }

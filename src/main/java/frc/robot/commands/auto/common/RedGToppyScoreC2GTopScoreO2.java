@@ -24,8 +24,8 @@ public class RedGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup {
 
         addCommands(
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.redLeftyLeftGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI).withTimeout(1.5).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHIBUMP)),
+                new FollowTrajectoryCommand(robotContainer.redLeftyMidGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI).withTimeout(1.5).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHIBUMP1)),
                 new WaitCommand(0.25).andThen(new IntakeReverseAuto(intake).withTimeout(3))
             ),
             new ParallelCommandGroup(
