@@ -33,8 +33,8 @@ public class ArmAutoSetpointCubeNoWait extends InstantCommand {
     public void initialize() {
         shoulder.enable();
         elbow.enable();
-        shoulder.changePeakOutput(speed);
-        elbow.changePeakOutput(speed);
+        // shoulder.changePeakOutput(speed);
+        // elbow.changePeakOutput(speed);
         shoulder.setSetpoint(armPosition.shoulderCube);
         elbow.setSetpoint(armPosition.elbowCube);
         intakespinner.setSetpoint(armPosition.wristCube);

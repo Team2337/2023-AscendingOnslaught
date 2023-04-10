@@ -15,8 +15,8 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2 extends SequentialCommandGroup{
-    public redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class redLeftyMidScoreW1GToppyScoreC2GTopScoreO2 extends SequentialCommandGroup{
+    public redLeftyMidScoreW1GToppyScoreC2GTopScoreO2(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new IntakeReverseCube(intake).withTimeout(0.2),
             new RedGToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder),

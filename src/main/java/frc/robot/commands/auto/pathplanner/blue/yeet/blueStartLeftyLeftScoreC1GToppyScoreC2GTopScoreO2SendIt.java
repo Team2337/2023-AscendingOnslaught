@@ -27,7 +27,7 @@ public class blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt extends Seq
                     new ArmAutoSetpointWithEndingCone(Constants.Arm.ArmPosition.CARRYINTERMEDIATE, 45, elbow, shoulder, intakespinner, robotContainer),
                     new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.CARRY)   
                 ),
-                new FollowTrajectoryCommand(robotContainer.blueSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
+            new FollowTrajectoryCommand(robotContainer.blueSendIt, false, drivetrain::getPose, autoDrive, drivetrain, heading)
             )
         );    
     }

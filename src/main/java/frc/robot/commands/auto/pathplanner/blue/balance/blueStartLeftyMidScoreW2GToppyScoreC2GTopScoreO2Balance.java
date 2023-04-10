@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.BlueBalanceFront;
+import frc.robot.commands.auto.common.BlueLeftyLeftGToppyScoreC2GTopScoreO2;
 import frc.robot.commands.auto.common.BlueLeftyMidGToppyScoreC2GTopScoreO2;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -17,7 +18,7 @@ public class blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance extends Seq
     public blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new IntakeReverseCube(intake).withTimeout(0.2),
-            new BlueLeftyMidGToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer, shoulder),
+            new BlueLeftyLeftGToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer, shoulder),
             new BlueBalanceFront(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder)  
         );    
     }
