@@ -20,8 +20,8 @@ public class BlueLeftyMidGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup
     public BlueLeftyMidGToppyScoreC2GTopScoreO2(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueLeftyMidGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHI),
+                new FollowTrajectoryCommand(robotContainer.blueLeftyLeftGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHIYEET),
                 new IntakeReverseAuto(intake).withTimeout(2.25)
             ),
             new ParallelCommandGroup(
@@ -31,7 +31,7 @@ public class BlueLeftyMidGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.AvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHIBLUE),
+                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHIBLUEYEET),
                 new IntakeReverseAuto(intake).withTimeout(2.8)
             ),
             new ParallelCommandGroup(

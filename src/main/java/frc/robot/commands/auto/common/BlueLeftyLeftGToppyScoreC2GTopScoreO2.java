@@ -2,6 +2,7 @@ package frc.robot.commands.auto.common;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
@@ -21,18 +22,23 @@ public class BlueLeftyLeftGToppyScoreC2GTopScoreO2 extends SequentialCommandGrou
         addCommands(
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueLeftyLeftGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHIYEET),
+                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHIYEET).withTimeout(2.0).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST2YOSHIYEET)),
                 new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
+                new ArmAutoSetpointCubeNoWait(elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRISTYOSHIYEET),
+                new IntakeReverseAuto(intake).withTimeout(0.5)
+            ),
+            new ParallelCommandGroup(
+                new IntakeReverseAuto(intake).withTimeout(0.3),
                 new FollowTrajectoryCommand(robotContainer.blueScoreC2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
+                new WaitCommand(0.3).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH))
             ),
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueGTopYeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPWRIST3YOSHIBLUEYEET),
-                new IntakeReverseAuto(intake).withTimeout(2.5)
+                new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueScoreO2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),

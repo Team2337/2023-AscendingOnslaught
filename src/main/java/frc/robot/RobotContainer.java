@@ -178,10 +178,10 @@ public class RobotContainer {
     blueScoreO2Yeet = PathPlanner.loadPath("blueScoreO2Yeet", new PathConstraints(3.0, 4.0));
     blueSendIt = PathPlanner.loadPath("blueSendIt", new PathConstraints(3.0, 4.0));
 
-    redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(3.0, 4.0));
-    redScoreC8Yeet = PathPlanner.loadPath("redScoreC8Yeet", new PathConstraints(2.75, 4.0));
+    redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(2.5, 4.0));
+    redScoreC8Yeet = PathPlanner.loadPath("redScoreC8Yeet", new PathConstraints(2.25, 3.0));
     redGMidYeet = PathPlanner.loadPath("redGMidYeet", new PathConstraints(2.75, 2.5));
-    redScoreO8Yeet = PathPlanner.loadPath("redScoreO8Yeet", new PathConstraints(3.0, 4.0));
+    redScoreO8Yeet = PathPlanner.loadPath("redScoreO8Yeet", new PathConstraints(2.25, 3.0));
     redSendIt = PathPlanner.loadPath("redSendIt", new PathConstraints(3.0, 4.0));
 
     redRightyMidGBottom = PathPlanner.loadPath("redRightyMidGBottom", new PathConstraints(3.0, 4.0));
@@ -248,9 +248,9 @@ public class RobotContainer {
     // autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
     
     autonChooser.addOption("Red Righty Middle Score 3 Balance", new redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Righty Middle Score 3 Low Yeet", new redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Right Middle Score 3 Mid Yeet", new redRightyRightScore09GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Red Right Middle Score 3 High Yeet", new redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 3 Low Yeet", new redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Right Right Score 3 Mid Yeet", new redRightyRightScore09GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Right Right Score 3 High Yeet", new redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Red Lefty Middle Score 3 Bump", new redLeftyMidScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     // autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));

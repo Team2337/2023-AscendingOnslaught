@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.RedBalanceFront;
+import frc.robot.commands.auto.common.RedGBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.common.RedRightyMidGBotScoreC8GMidScoreO8;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -17,7 +18,7 @@ public class redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance extends Sequential
     public redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new IntakeReverseCube(intake).withTimeout(0.2),
-            new RedRightyMidGBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder),
+            new RedGBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder),
             new RedBalanceFront(autoDrive, drivetrain, elbow, heading, intake, intakespinner, robotContainer,shoulder)
         );
     }
