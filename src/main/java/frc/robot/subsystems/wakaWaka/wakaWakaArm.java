@@ -23,12 +23,12 @@ public class wakaWakaArm extends PIDSubsystem {
     public wakaWakaArm() {
         super(new PIDController(kP, kI, kD));
         armMotor.configFactoryDefault();
-        armMotor.configForwardSoftLimitThreshold(1600);
+        armMotor.configForwardSoftLimitThreshold(30000);
         armMotor.configForwardSoftLimitEnable(true);
         armMotor.configReverseSoftLimitThreshold(0);
         armMotor.configReverseSoftLimitEnable(true);
-        armMotor.setNeutralMode(NeutralMode.Brake);
-        armMotor.configStatorCurrentLimit(CTREUtils.lowCurrentLimit());
+        armMotor.setNeutralMode(NeutralMode.Coast);
+        armMotor.configStatorCurrentLimit(CTREUtils.wakaCurrentLimit());
         armMotor.configPeakOutputForward(peakOutput, 10);
         armMotor.configPeakOutputReverse(-peakOutput, 10);
         armMotor.setInverted(TalonFXInvertType.Clockwise);
@@ -55,5 +55,6 @@ public class wakaWakaArm extends PIDSubsystem {
     public void periodic() {
         super.periodic();
         SmartDashboard.putNumber("Waka Waka Arm Ticks", armMotor.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Waka Waka Arm Setpoint", getSetpoint());
     }
 }

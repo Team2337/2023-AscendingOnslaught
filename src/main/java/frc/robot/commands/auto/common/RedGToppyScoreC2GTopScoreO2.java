@@ -25,7 +25,7 @@ public class RedGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup {
         addCommands(
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.redLeftyMidGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHI).withTimeout(1.5).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUPYOSHIBUMP1)),
+                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUPREDBUMP2).withTimeout(1.5).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUPREDBUMP)),
                 new WaitCommand(0.25).andThen(new IntakeReverseAuto(intake).withTimeout(3))
             ),
             new ParallelCommandGroup(
@@ -35,7 +35,7 @@ public class RedGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup {
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.redGTop, false, drivetrain::getPose, autoDrive, drivetrain, heading),
-                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUP4YOSHIBUMP).withTimeout(1.0).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.FLOORPICKUP3YOSHIBUMP)),
+                new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUPBLUEBUMP).withTimeout(1.25).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUPREDBUMP3)),
                 new IntakeReverseAuto(intake).withTimeout(3.5)
             ),
             new ParallelCommandGroup(

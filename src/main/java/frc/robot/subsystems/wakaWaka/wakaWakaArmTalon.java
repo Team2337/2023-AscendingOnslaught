@@ -2,6 +2,7 @@ package frc.robot.subsystems.wakaWaka;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -36,13 +37,17 @@ public class wakaWakaArmTalon extends SubsystemBase {
         armMotor.setSelectedSensorPosition(0);
     }
     
-    public void setSetpoint(double setpoint) {
-        this.setpoint = setpoint;
+    // public void setSetpoint(double setpoint) {
+    //     this.setpoint = setpoint;
+    // }
+
+    public void setSpeed(double speed) {
+        armMotor.set(TalonFXControlMode.PercentOutput, speed);
     }
     
     @Override
     public void periodic() {
-        armMotor.set(ControlMode.Position, setpoint);
+        // armMotor.set(ControlMode.Position, setpoint);
         SmartDashboard.putNumber("Waka Waka Arm Ticks", armMotor.getSelectedSensorPosition());
     }
 }
