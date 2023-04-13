@@ -17,8 +17,8 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 
-public class BlueLeftyLeftGToppyScoreC2GTopScoreO2 extends SequentialCommandGroup{
-    public BlueLeftyLeftGToppyScoreC2GTopScoreO2(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
+public class BlueLeftyLeftGToppyScoreC2GTopScoreO2Yeet extends SequentialCommandGroup{
+    public BlueLeftyLeftGToppyScoreC2GTopScoreO2Yeet(AutoDrive autoDrive, Drivetrain drivetrain, Elbow elbow, Heading heading, Intake intake, IntakeSpinnerLamprey intakespinner, RobotContainer robotContainer, Shoulder shoulder) {
         addCommands(
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueLeftyLeftGToppy, true, drivetrain::getPose, autoDrive, drivetrain, heading),
@@ -26,17 +26,17 @@ public class BlueLeftyLeftGToppyScoreC2GTopScoreO2 extends SequentialCommandGrou
                 new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueScoreC2, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new FollowTrajectoryCommand(robotContainer.blueScoreC2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
             ),
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.AvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new FollowTrajectoryCommand(robotContainer.blueGTopYeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUP),
                 new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueScoreO2, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new FollowTrajectoryCommand(robotContainer.blueScoreO2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)
             ),
             new IntakeReverseCube(intake).withTimeout(0.2)

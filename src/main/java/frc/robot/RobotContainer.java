@@ -38,6 +38,7 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.ArmSetpointElbow;
 import frc.robot.commands.arm.ArmSetpointShoulder;
+import frc.robot.commands.arm.ArmSetpointWithElbowEnd;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.UnjamWrist;
@@ -46,10 +47,12 @@ import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
+import frc.robot.commands.arm.wakaWaka.wakaWakaArmDrive;
 import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.common.DoNothingCommand;
 import frc.robot.commands.auto.pathplanner.blue.balance.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance;
+import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreC9GBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreW9GBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt;
 import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt;
@@ -69,6 +72,7 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 import frc.robot.subsystems.wakaWaka.wakaWakaArm;
+import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
 import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class RobotContainer {
@@ -94,8 +98,9 @@ public class RobotContainer {
   private final Elbow elbow = new Elbow(this);
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
-  // private final wakaWakaArm wakaArm = new wakaWakaArm();
-  // private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
+  private final wakaWakaArm wakaArm = new wakaWakaArm();
+  // private final wakaWakaArmTalon wakaWakaArmTalon = new wakaWakaArmTalon();
+  private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
   private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
@@ -260,7 +265,9 @@ public class RobotContainer {
     autonChooser.addOption("Blue Lefty Left Score 3 Mid Yeet", new blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 High Yeet", new blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Blue Righty Middle Score 3 Bump", new blueRightyMidScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Righty Right Score 3 Low Bump", new blueRightyMidScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Righty Right Score 3 High Bump", new blueRightyMidScoreC9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+
     SmartDashboard.putData("AutonChooser", autonChooser);
 
     startingPosChooser.addOption("Zero", "Zero");
@@ -493,6 +500,8 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
+    Trigger driverPOVUp = new Trigger(() -> driverController.getPOV() == 0);
+    Trigger driverPOVDown = new Trigger(() -> driverController.getPOV() == 180);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
@@ -503,12 +512,16 @@ public class RobotContainer {
     () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
-    triggerDriverLeft.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGHDROP, elbow, shoulder, intakespinner, this));
-    // triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
+    driverLeftBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGHDROP, elbow, shoulder, intakespinner, this));
+    triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
     driverA.whileTrue(new IntakeUnjam(intake));
     driverStart.whileTrue(new IntakeUnjam(intake));
-    // triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 1300).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
-    // triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 100));
+    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 28000).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
+    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 0));
+    // driverPOVUp.whileTrue(new wakaWakaArmDrive(wakaWakaArmTalon, 0.1));
+    // driverPOVDown.whileTrue(new wakaWakaArmDrive(wakaWakaArmTalon, -0.1));
+    
+    // driverX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.NEWAUTOPICKUP, elbow, shoulder, intakespinner, this));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -572,7 +585,7 @@ public class RobotContainer {
     ));
     // operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
     operatorB.whileTrue(new ConditionalCommand(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this)),
-      new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)),
+      new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, 60, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)),
       ()-> getYellowSwitchStatus()
     ));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));

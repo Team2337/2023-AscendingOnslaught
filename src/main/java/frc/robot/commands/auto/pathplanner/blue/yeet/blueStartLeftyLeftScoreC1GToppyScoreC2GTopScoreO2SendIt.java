@@ -7,6 +7,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.common.BlueLeftyLeftGToppyScoreC2GTopScoreO2;
+import frc.robot.commands.auto.common.BlueLeftyLeftGToppyScoreC2GTopScoreO2Yeet;
 import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
