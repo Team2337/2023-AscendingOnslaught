@@ -528,12 +528,12 @@ public final class Constants {
       SCOREHIGHINTERMEDIATE(109.0,32.0,109.0,54.0,161.0,23.0),
       SCOREHIGH(117.0,10.0,114.0,40.0,111.0,23.0), //Shoulder Cone: 121.0 Elbow Cone: 10.0, Wrist Cone: 145
       SCOREHIGHDROP(117.0,18.0,114.0,40.0,111.0,23.0), //Shoulder Cone: 121, Elbow Cone: 15, Wrist Cone: 145
-      SCOREMID(75.0,104.0,91.0,100.0,150.0,23.0), //Shoulder Cone: 82, Elbow Cone: 101, Wrist Cone: 165
+      SCOREMID(81.0,94.0,91.0,100.0,150.0,23.0), //Shoulder Cone: 82, Elbow Cone: 101, Wrist Cone: 165
       SCOREMIDINTAKESIDE(62.0,-70.0,42.0,-62.0,210.0,125.0), //Elbow Cone: 105, Wrist Cone: 165
       SCOREHIGHINTAKESIDE(26.0,-23.0,18.0,-17.0,156.0,52.0), //Elbow Cone: 39.5, Wrist Cone: 145
       SCORELOW(-21.0,145.0,-21.0,145.0,97.0,25.0),
-      SUBSTATION(86.0,-69.0,86.0,-76.0,253.0,154.0),
-      SUBSTATIONPICKUP(86.0,-85.0,86.0,-92.0,253.0,154.0),
+      SUBSTATION(86.0,-75.0,86.0,-81.0,253.0,154.0),
+      SUBSTATIONPICKUP(86.0,-92.0,86.0,-100.0,253.0,154.0),
       TELESTANDINGCONE(51.0,-111.0,35.0,-72.0,184.0,75.0),
       TELEFALLINGCONE(24.0,-102.0,35.0,-102.5,162.0,59.0),
       AUTOTELEFALLINGCONE(24.0,-102.0,33.0,-102.5,132.0,59.0),

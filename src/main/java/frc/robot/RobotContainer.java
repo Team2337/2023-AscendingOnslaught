@@ -38,7 +38,6 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.ArmSetpointElbow;
 import frc.robot.commands.arm.ArmSetpointShoulder;
-import frc.robot.commands.arm.ArmSetpointWithElbowEnd;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.UnjamWrist;
@@ -47,21 +46,17 @@ import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
-import frc.robot.commands.arm.wakaWaka.wakaWakaArmDrive;
+import frc.robot.commands.arm.wakaWaka.wakaWakaDefaultDrive;
+import frc.robot.commands.arm.wakaWaka.wakaWakaHoldRollers;
 import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.common.DoNothingCommand;
-import frc.robot.commands.auto.pathplanner.blue.balance.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance;
-import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreC9GBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreW9GBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.red.balance.redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance;
-import frc.robot.commands.auto.pathplanner.red.bump.redLeftyMidScoreW1GToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScore09GBotScoreC8GMidScoreO8SendIt;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt;
+import frc.robot.commands.auto.pathplanner.blue.balance.*;
+import frc.robot.commands.auto.pathplanner.blue.bump.*;
+import frc.robot.commands.auto.pathplanner.blue.yeet.*;
+import frc.robot.commands.auto.pathplanner.red.balance.*;
+import frc.robot.commands.auto.pathplanner.red.bump.*;
+import frc.robot.commands.auto.pathplanner.red.yeet.*;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -72,7 +67,6 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 import frc.robot.subsystems.wakaWaka.wakaWakaArm;
-import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
 import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class RobotContainer {
@@ -99,10 +93,8 @@ public class RobotContainer {
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
   private final wakaWakaArm wakaArm = new wakaWakaArm();
-  // private final wakaWakaArmTalon wakaWakaArmTalon = new wakaWakaArmTalon();
   private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
-  private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
   private final Vision vision = new Vision(this);
  
@@ -119,41 +111,48 @@ public class RobotContainer {
 
   // public PathPlannerTrajectory Test3MPath;
   // public PathPlannerTrajectory blueLeftyLeftGToppyTop;
-  public PathPlannerTrajectory blueLeftyMidGToppy;
+  // public PathPlannerTrajectory blueLeftyMidGToppy;
+
+  public PathPlannerTrajectory blueLeftyLeftGToppy;
   public PathPlannerTrajectory AvoidChargeStation;
   public PathPlannerTrajectory blueScoreC2;
   public PathPlannerTrajectory blueScoreO2;
   public PathPlannerTrajectory blueChargeStation2;
   public PathPlannerTrajectory blueLockdown;
-  
-  public PathPlannerTrajectory blueLeftyLeftGToppy;
-  public PathPlannerTrajectory blueScoreC2Yeet;
-  public PathPlannerTrajectory blueGTopYeet;
-  public PathPlannerTrajectory blueScoreO2Yeet;
   public PathPlannerTrajectory blueSendIt;
+  public PathPlannerTrajectory blueMidBalance;
 
-  public PathPlannerTrajectory redRightyMidGBottom;
-  public PathPlannerTrajectory redScoreC8;
-  public PathPlannerTrajectory redAvoidChargeStation;
-  public PathPlannerTrajectory redScoreO8;
-  public PathPlannerTrajectory redChargeStation;
-  public PathPlannerTrajectory redLockdown;
+  public PathPlannerTrajectory blueRightyMidGBottom;
+  public PathPlannerTrajectory blueScoreC8;
+  // public PathPlannerTrajectory blueGMid;
+  public PathPlannerTrajectory blueGMid2;
+  public PathPlannerTrajectory blueScoreO8;
+  
+  // public PathPlannerTrajectory blueScoreC2Yeet;
+  // public PathPlannerTrajectory blueGTopYeet;
+  // public PathPlannerTrajectory blueScoreO2Yeet;
+
+  // public PathPlannerTrajectory redRightyMidGBottom;
+  // public PathPlannerTrajectory redScoreC8;
+  // public PathPlannerTrajectory redAvoidChargeStation;
+  // public PathPlannerTrajectory redScoreO8;
   
   public PathPlannerTrajectory redRightyRightGBottom;
   public PathPlannerTrajectory redScoreC8Yeet;
   public PathPlannerTrajectory redGMidYeet;
   public PathPlannerTrajectory redScoreO8Yeet;
   public PathPlannerTrajectory redSendIt;
+  public PathPlannerTrajectory redChargeStation;
+  public PathPlannerTrajectory redLockdown;
 
   public PathPlannerTrajectory redLeftyMidGToppy;
   public PathPlannerTrajectory redScoreC2;
   public PathPlannerTrajectory redGTop;
   public PathPlannerTrajectory redScoreO2;
 
-  public PathPlannerTrajectory blueRightyMidGBottom;
-  public PathPlannerTrajectory blueScoreC8;
-  public PathPlannerTrajectory blueGMid;
-  public PathPlannerTrajectory blueScoreO8;
+  public PathPlannerTrajectory redMiddleBalance;
+
+
 
   // public PathPlannerTrajectory redLeftyLeftGToppyFast;
   // public PathPlannerTrajectory redScoreC2Fast;
@@ -170,31 +169,32 @@ public class RobotContainer {
 
     // Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
     // blueLeftyLeftGToppyTop = PathPlanner.loadPath("blueLeftyLeftGToppyTop", new PathConstraints(3.0, 4.0));
+    // blueLeftyMidGToppy = PathPlanner.loadPath("blueLeftyMidGToppy", new PathConstraints(3.0, 4.0));
+    blueLeftyLeftGToppy = PathPlanner.loadPath("blueLeftyLeftGToppy", new PathConstraints(2.25, 3.0));
     AvoidChargeStation = PathPlanner.loadPath("Avoid Charge Station", new PathConstraints(2.75, 2.5));
-    blueLeftyMidGToppy = PathPlanner.loadPath("blueLeftyMidGToppy", new PathConstraints(3.0, 4.0));
     blueScoreC2 = PathPlanner.loadPath("blueScoreC2", new PathConstraints(2.75, 4.0));
     blueScoreO2 = PathPlanner.loadPath("blueScoreO2", new PathConstraints(3.0, 4.0));
     blueChargeStation2 = PathPlanner.loadPath("blueChargeStation2", new PathConstraints(3.0, 2.0));
     blueLockdown = PathPlanner.loadPath("blueLockdown", new PathConstraints(2.0, 1.5));
-    
-    blueLeftyLeftGToppy = PathPlanner.loadPath("blueLeftyLeftGToppy", new PathConstraints(2.25, 3.0));
-    blueScoreC2Yeet = PathPlanner.loadPath("blueScoreC2Yeet", new PathConstraints(2.75, 4.0));
-    blueGTopYeet = PathPlanner.loadPath("blueGTopYeet", new PathConstraints(2.75, 2.5));
-    blueScoreO2Yeet = PathPlanner.loadPath("blueScoreO2Yeet", new PathConstraints(3.0, 4.0));
     blueSendIt = PathPlanner.loadPath("blueSendIt", new PathConstraints(3.0, 4.0));
+    
+    // blueScoreC2Yeet = PathPlanner.loadPath("blueScoreC2Yeet", new PathConstraints(2.75, 4.0));
+    // blueGTopYeet = PathPlanner.loadPath("blueGTopYeet", new PathConstraints(2.75, 2.5));
+    // blueScoreO2Yeet = PathPlanner.loadPath("blueScoreO2Yeet", new PathConstraints(3.0, 4.0));
 
     redRightyRightGBottom = PathPlanner.loadPath("redRightyRightGBottom", new PathConstraints(2.5, 4.0));
     redScoreC8Yeet = PathPlanner.loadPath("redScoreC8Yeet", new PathConstraints(2.25, 3.0));
     redGMidYeet = PathPlanner.loadPath("redGMidYeet", new PathConstraints(2.75, 2.5));
     redScoreO8Yeet = PathPlanner.loadPath("redScoreO8Yeet", new PathConstraints(2.25, 3.0));
     redSendIt = PathPlanner.loadPath("redSendIt", new PathConstraints(3.0, 4.0));
-
-    redRightyMidGBottom = PathPlanner.loadPath("redRightyMidGBottom", new PathConstraints(3.0, 4.0));
-    redScoreC8 = PathPlanner.loadPath("redScoreC8", new PathConstraints(3.0, 3.0));
-    redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(3, 3.0));//2.25,4
-    redScoreO8 = PathPlanner.loadPath("redScoreO8", new PathConstraints(3.0, 4.0));
     redChargeStation = PathPlanner.loadPath("redChargeStation", new PathConstraints(2.0, 1.5));
     redLockdown = PathPlanner.loadPath("redLockdown", new PathConstraints(2.0, 1.5));
+
+    redMiddleBalance = PathPlanner.loadPath("redMiddleBalance", new PathConstraints(2.0, 1.5));
+    // redRightyMidGBottom = PathPlanner.loadPath("redRightyMidGBottom", new PathConstraints(3.0, 4.0));
+    // redScoreC8 = PathPlanner.loadPath("redScoreC8", new PathConstraints(3.0, 3.0));
+    // redAvoidChargeStation = PathPlanner.loadPath("redAvoidChargeStation", new PathConstraints(3, 3.0));//2.25,4
+    // redScoreO8 = PathPlanner.loadPath("redScoreO8", new PathConstraints(3.0, 4.0));
 
     redLeftyMidGToppy = PathPlanner.loadPath("redLeftyMidGToppy", new PathConstraints(2.0, 2.0));
     redScoreC2 = PathPlanner.loadPath("redScoreC2", new PathConstraints(2.0, 2.0));
@@ -203,8 +203,9 @@ public class RobotContainer {
 
     blueRightyMidGBottom = PathPlanner.loadPath("blueRightyMidGBottom", new PathConstraints(2.0, 2.0));
     blueScoreC8 = PathPlanner.loadPath("blueScoreC8", new PathConstraints(2.0, 2.0));
-    blueGMid = PathPlanner.loadPath("blueGMid", new PathConstraints(2.0, 2.0));
+    blueGMid2 = PathPlanner.loadPath("blueGMid2", new PathConstraints(2.0, 2.0));
     blueScoreO8 = PathPlanner.loadPath("blueScoreO8", new PathConstraints(2.0, 2.0));
+    blueMidBalance = PathPlanner.loadPath("blueMidBalance", new PathConstraints(2.0, 1.5));
 
     // redLeftyLeftGToppyFast = PathPlanner.loadPath("redLeftyLeftGToppy", new PathConstraints(3.0, 2.0));
     // redScoreC2Fast = PathPlanner.loadPath("redScoreC2", new PathConstraints(3.0, 2.0));
@@ -220,6 +221,8 @@ public class RobotContainer {
     shoulder.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, ()-> operatorController));
     intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
+    wakaIntake.setDefaultCommand(new wakaWakaHoldRollers(wakaIntake));
+    wakaArm.setDefaultCommand(new wakaWakaDefaultDrive(wakaArm, -.5));
     // intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
     // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
@@ -252,21 +255,25 @@ public class RobotContainer {
     // autonChooser.addOption("Test", new Test(autoDrive, drivetrain, heading, elbow, intake, intakespinner, shoulder, this));
     // autonChooser.addOption("Avoid Charge Station", new AvoidChargeStation(AvoidChargeStation, autoDrive, drivetrain, heading));
     
-    autonChooser.addOption("Red Righty Middle Score 3 Balance", new redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Righty Right Score 3 Balance", new redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Righty Right Score 3 Low Yeet", new redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Right Right Score 3 Mid Yeet", new redRightyRightScore09GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Red Right Right Score 3 High Yeet", new redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
-    autonChooser.addOption("Red Lefty Middle Score 3 Bump", new redLeftyMidScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3 Low Bump", new redLeftyMidScoreW1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Lefty Left Score 3 High Bump", new redLeftyMidScoreC1GToppyScoreC2GTopScoreO2(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Score 1", new redScoreLow(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Red Score 1 Balance", new redMiddleBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     // autonChooser.addOption("Red Lefty Left Score 3 Yeet", new redLeftyLeftScoreW1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     
-    autonChooser.addOption("Blue Lefty Middle Score 3 Balance", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
-    autonChooser.addOption("Blue Lefty Middle Score 3 Low Yeet", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Balance", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Lefty Left Score 3 Low Yeet", new blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 Mid Yeet", new blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Lefty Left Score 3 High Yeet", new blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     autonChooser.addOption("Blue Righty Right Score 3 Low Bump", new blueRightyMidScoreW9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
     autonChooser.addOption("Blue Righty Right Score 3 High Bump", new blueRightyMidScoreC9GBotScoreC8GMidScoreO8(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
+    autonChooser.addOption("Blue Middle Balance", new blueMiddleBalance(autoDrive, drivetrain, elbow, heading, intake, intakespinner, this, shoulder));
 
     SmartDashboard.putData("AutonChooser", autonChooser);
 
@@ -496,32 +503,31 @@ public class RobotContainer {
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
     JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
     JoystickButton driverY = new JoystickButton(driverController, XboxController.Button.kY.value);
-    JoystickButton driverBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-    Trigger driverPOVUp = new Trigger(() -> driverController.getPOV() == 0);
-    Trigger driverPOVDown = new Trigger(() -> driverController.getPOV() == 180);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
     driverRightBumper.onTrue(new MaintainHeadingCommand(0, heading));
     //If blue 90, if red -90
-    driverLeftBumper.onTrue(new ConditionalCommand(new MaintainHeadingCommand(90, heading), 
-    new MaintainHeadingCommand(-90, heading), 
-    () -> Constants.AllianceColor.getAllianceColor() == AllianceColor.Blue));
+    driverA.onTrue(new MaintainHeadingCommand(-90, heading));
+
+    driverY.onTrue(new InstantCommand(() -> pigeon.setYaw(0, 250)));
 
     triggerDriverRight.whileTrue(new OuttakeCommand(intake, this));
     driverLeftBumper.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREHIGHDROP, elbow, shoulder, intakespinner, this));
     triggerDriverRight.whileTrue(new wakaWakaSpinRollers(wakaIntake, -1));
-    driverA.whileTrue(new IntakeUnjam(intake));
+   // triggerDriverRight.onFalse(new wakaWakaArmDrive(wakaArm, -1).withTimeout(.25));
+    // driverA.whileTrue(new IntakeUnjam(intake));
     driverStart.whileTrue(new IntakeUnjam(intake));
-    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, 28000).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
-    triggerDriverLeft.onFalse(new wakaWakaMoveArm(wakaArm, 0));
+    triggerDriverLeft.whileTrue(new wakaWakaMoveArm(wakaArm, (8000)).alongWith(new wakaWakaSpinRollers(wakaIntake, 1)));
+    //triggerDriverLeft.onFalse(new wakaWakaArmDrive(wakaArm, -1).withTimeout(.55).andThen(new wakaWakaMoveArm(wakaArm,0)));
+      //new wakaWakaMoveArm(wakaArm, 0));
     // driverPOVUp.whileTrue(new wakaWakaArmDrive(wakaWakaArmTalon, 0.1));
     // driverPOVDown.whileTrue(new wakaWakaArmDrive(wakaWakaArmTalon, -0.1));
     
-    // driverX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.NEWAUTOPICKUP, elbow, shoulder, intakespinner, this));
+    driverX.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.NEWAUTOPICKUP, elbow, shoulder, intakespinner, this));
 
     // driverA.whileTrue(new SelectCommand(
     //       // Maps selector values to commands
@@ -554,8 +560,6 @@ public class RobotContainer {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
-    Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
-    Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
     Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
@@ -605,10 +609,12 @@ public class RobotContainer {
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
+    /*
     JoystickButton yellowButton = new JoystickButton(operatorStation, 3);
     JoystickButton whiteButton = new JoystickButton(operatorStation, 4);
     JoystickButton blueSwitch = new JoystickButton(operatorStation, 12);
     JoystickButton blackSwitch = new JoystickButton(operatorStation, 13);
+    */
   }
 
   public void instantiateSubsystemsTeleop() {

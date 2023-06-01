@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Arm.ArmPosition;
 import frc.robot.subsystems.IntakeSpinnerLamprey;

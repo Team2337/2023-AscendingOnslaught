@@ -20,6 +20,9 @@ public class CTREUtils {
   public static StatorCurrentLimitConfiguration wakaCurrentLimit() {
     return new StatorCurrentLimitConfiguration(true, 20.0, 20.0, 1.0);
   }
+  public static StatorCurrentLimitConfiguration wakaUpCurrentLimit() {
+    return new StatorCurrentLimitConfiguration(true, 23.0, 23.0, 1.0);
+  }
 
   public static StatorCurrentLimitConfiguration wristCurrentLimit() {
     return new StatorCurrentLimitConfiguration(true, 35.0, 35.0, 1.0);

@@ -2,7 +2,6 @@ package frc.robot.commands.auto.common;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
@@ -33,7 +32,7 @@ public class BlueLeftyLeftGToppyScoreC2GTopScoreO2 extends SequentialCommandGrou
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.AvoidChargeStation, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUP),
-                new IntakeReverseAuto(intake).withTimeout(2.7)
+                new IntakeReverseAuto(intake).withTimeout(2.8)
             ),
             new ParallelCommandGroup(
                 new FollowTrajectoryCommand(robotContainer.blueScoreO2, false, drivetrain::getPose, autoDrive, drivetrain, heading),

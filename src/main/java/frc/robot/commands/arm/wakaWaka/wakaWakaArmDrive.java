@@ -1,13 +1,13 @@
 package frc.robot.commands.arm.wakaWaka;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
+import frc.robot.subsystems.wakaWaka.wakaWakaArm;
 
 public class wakaWakaArmDrive extends CommandBase{
-    wakaWakaArmTalon arm;
+    wakaWakaArm arm;
     double speed;
 
-    public wakaWakaArmDrive(wakaWakaArmTalon arm, double speed) {
+    public wakaWakaArmDrive(wakaWakaArm arm, double speed) {
         this.arm = arm;
         this.speed = speed;
 
@@ -16,6 +16,7 @@ public class wakaWakaArmDrive extends CommandBase{
 
     @Override
     public void initialize() {
+        arm.disable();
     }
     @Override
     public void execute() {
@@ -24,10 +25,11 @@ public class wakaWakaArmDrive extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
+        arm.changeEncoderPosition(0);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return arm.getArmLimit();
     }
 }

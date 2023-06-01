@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoShoulderConeNoWait;
 import frc.robot.commands.auto.drive.AutoBalanceIndicatorFront;

@@ -4,7 +4,6 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.nerdyfiles.utilities.Utilities;
@@ -56,7 +55,8 @@ public class SwerveDriveCommand extends CommandBase {
       rotation = -Utilities.deadbandAndSquare(controller.getRightX(), 0.15);
     } 
   
-    boolean isFieldOriented = !controller.getLeftBumper();
+    // boolean isFieldOriented = !controller.getLeftBumper();
+    boolean isFieldOriented = true;
 
     AutoDrive.State autoDriveState = autoDrive.calculate(forward, strafe, isFieldOriented);
     if (autoDriveState != null) {
@@ -126,19 +126,19 @@ public class SwerveDriveCommand extends CommandBase {
         )
       );
     } else {
-      if (controller.getLeftBumper()) {
-        drivetrain.drive(new ChassisSpeeds(
-          -vxMetersPerSecond,
-          -vyMetersPerSecond,
-          omegaRadiansPerSecond
-        ));
-        } else {
+      // if (controller.getLeftBumper()) {
+      //   drivetrain.drive(new ChassisSpeeds(
+      //     -vxMetersPerSecond,
+      //     -vyMetersPerSecond,
+      //     omegaRadiansPerSecond
+      //   ));
+      //   } else {
           drivetrain.drive(new ChassisSpeeds(
           vxMetersPerSecond,
           vyMetersPerSecond,
           omegaRadiansPerSecond
         ));
-        }
+        // }
     }
   }
 

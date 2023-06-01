@@ -24,7 +24,7 @@ import frc.robot.RobotContainer;
 
 public class Elbow extends PIDSubsystem {
 
-  double offset = -188;
+  double offset = -198;
   // double lampreyVoltage = RobotController.getVoltage3V3();
   double lampreyVoltage = 3.306;
   double fullRange = 360 * (RobotController.getVoltage5V()/lampreyVoltage);
@@ -131,7 +131,6 @@ public class Elbow extends PIDSubsystem {
    * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
    */
   public double convertDegreestoTicks(double angle){
-    angle = angle;
     return angle * (2048.0) * (Constants.Arm.ARM_GEAR_RATIO) * (1.0/360.0);
   }
 
