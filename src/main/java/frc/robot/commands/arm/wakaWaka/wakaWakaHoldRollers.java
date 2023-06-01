@@ -1,7 +1,6 @@
 package frc.robot.commands.arm.wakaWaka;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.wakaWaka.wakaWakaArm;
 import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class wakaWakaHoldRollers extends CommandBase {

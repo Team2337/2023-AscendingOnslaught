@@ -3,7 +3,6 @@ package frc.robot.commands.arm.wakaWaka;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.nerdyfiles.utilities.CTREUtils;
 import frc.robot.subsystems.wakaWaka.wakaWakaArm;
-import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
 
 public class wakaWakaDefaultDrive extends CommandBase{
     wakaWakaArm arm;

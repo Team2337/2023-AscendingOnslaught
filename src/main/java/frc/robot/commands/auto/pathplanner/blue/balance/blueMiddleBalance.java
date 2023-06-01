@@ -1,15 +1,10 @@
 package frc.robot.commands.auto.pathplanner.blue.balance;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
-import frc.robot.commands.auto.common.RedBalanceFront;
-import frc.robot.commands.auto.common.RedGBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.common.RedRightyMidGBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;

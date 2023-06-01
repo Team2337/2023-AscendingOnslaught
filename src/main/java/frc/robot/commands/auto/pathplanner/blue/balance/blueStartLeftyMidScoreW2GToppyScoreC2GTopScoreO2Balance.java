@@ -5,7 +5,6 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.BlueBalanceFront;
 import frc.robot.commands.auto.common.BlueLeftyLeftGToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.common.BlueLeftyMidGToppyScoreC2GTopScoreO2;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;

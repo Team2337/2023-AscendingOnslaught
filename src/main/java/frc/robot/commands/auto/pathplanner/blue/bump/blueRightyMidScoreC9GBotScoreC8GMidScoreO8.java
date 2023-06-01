@@ -5,7 +5,6 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
-import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.BlueGBotScoreC8GMidScoreO8;
 import frc.robot.commands.auto.common.ScoreConeHigh;
 import frc.robot.subsystems.AutoDrive;

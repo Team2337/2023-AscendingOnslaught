@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -106,8 +105,6 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain(PigeonIMU pigeon, Consumer<GamePiece> gamePiece) {
     this.pigeon = pigeon;
     this.gamePiece = gamePiece;
-    this.swerveModuleStates = swerveModuleStates;
-
 
     modules = new FXSwerveModule[] {
       new FXSwerveModule(

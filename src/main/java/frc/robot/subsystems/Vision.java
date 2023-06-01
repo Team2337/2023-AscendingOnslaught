@@ -5,13 +5,11 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.DriverDashboardPositions;
 import frc.robot.nerdyfiles.vision.LimelightUtilities;
 
 public class Vision extends SubsystemBase {
@@ -93,7 +91,6 @@ public class Vision extends SubsystemBase {
   private double distanceToTargetMetersB = 0.0;
   private double distanceToTargetMetersO = 0.0;
   private double distanceToTargetMetersP = 0.0;
-  private LimelightColor color;
   private String allianceColor;
   private String botPoseColor = "botpose_wpi";
   RobotContainer robotContainer;
@@ -109,13 +106,6 @@ public class Vision extends SubsystemBase {
     //TODO: Fix this  
     pipelineAllianceColor = "red";
     // Systems check
-    if (Constants.DO_SYSTEMS_CHECK) {
-      ShuffleboardTab systemsCheck = Constants.SYSTEMS_CHECK_TAB;
-
-      // systemsCheck.addBoolean("Limelight Connected", () -> (latency > 0))
-      //   .withPosition(SystemsCheckPositions.LIMELIGHT.x, SystemsCheckPositions.LIMELIGHT.y)
-      //   .withSize(3, 3);
-    }
     }
 
   @Override

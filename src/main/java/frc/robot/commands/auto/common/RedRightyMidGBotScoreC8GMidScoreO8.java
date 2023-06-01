@@ -7,7 +7,6 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseAuto;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
-import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;

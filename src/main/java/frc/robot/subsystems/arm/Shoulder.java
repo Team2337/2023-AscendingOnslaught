@@ -124,7 +124,6 @@ public class Shoulder extends PIDSubsystem {
    * @return - ticks,  (angle) * (2048 ticks/rev) * (75.0 gear-ratio) / (360 degrees/rev)
    */
   public double convertDegreestoTicks(double angle){
-    angle = angle;
     return angle * (2048.0) * (Constants.Arm.ARM_GEAR_RATIO) * (1.0/360.0);
   }
 

@@ -8,7 +8,6 @@ import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeNoWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.common.BlueLeftyLeftGToppyScoreC2GTopScoreO2;
 import frc.robot.commands.auto.common.ScoreConeMid;
-import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;

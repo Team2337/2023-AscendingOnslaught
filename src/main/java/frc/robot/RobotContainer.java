@@ -38,7 +38,6 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.ArmSetpointElbow;
 import frc.robot.commands.arm.ArmSetpointShoulder;
-import frc.robot.commands.arm.ArmSetpointWithElbowEnd;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.UnjamWrist;
@@ -47,27 +46,17 @@ import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
-import frc.robot.commands.arm.wakaWaka.wakaWakaArmDrive;
 import frc.robot.commands.arm.wakaWaka.wakaWakaDefaultDrive;
 import frc.robot.commands.arm.wakaWaka.wakaWakaHoldRollers;
 import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.common.DoNothingCommand;
-import frc.robot.commands.auto.pathplanner.blue.balance.blueMiddleBalance;
-import frc.robot.commands.auto.pathplanner.blue.balance.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2Balance;
-import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreC9GBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.pathplanner.blue.bump.blueRightyMidScoreW9GBotScoreC8GMidScoreO8;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreC1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyLeftScoreO1GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.blue.yeet.blueStartLeftyMidScoreW2GToppyScoreC2GTopScoreO2SendIt;
-import frc.robot.commands.auto.pathplanner.red.balance.redMiddleBalance;
-import frc.robot.commands.auto.pathplanner.red.balance.redRightyMidScoreW8GBotScoreC8GMidScoreO8Balance;
-import frc.robot.commands.auto.pathplanner.red.balance.redScoreLow;
-import frc.robot.commands.auto.pathplanner.red.bump.redLeftyMidScoreC1GToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.pathplanner.red.bump.redLeftyMidScoreW1GToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyMidScoreW8GBotScoreC8GMidScoreO8SendIt;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScore09GBotScoreC8GMidScoreO8SendIt;
-import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScoreC9GBotScoreC8GMidScoreO8SendIt;
+import frc.robot.commands.auto.pathplanner.blue.balance.*;
+import frc.robot.commands.auto.pathplanner.blue.bump.*;
+import frc.robot.commands.auto.pathplanner.blue.yeet.*;
+import frc.robot.commands.auto.pathplanner.red.balance.*;
+import frc.robot.commands.auto.pathplanner.red.bump.*;
+import frc.robot.commands.auto.pathplanner.red.yeet.*;
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
@@ -78,7 +67,6 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 import frc.robot.subsystems.wakaWaka.wakaWakaArm;
-import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
 import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class RobotContainer {
@@ -105,10 +93,8 @@ public class RobotContainer {
   private final Heading heading = new Heading(drivetrain::getGyroscopeRotation, drivetrain::isMoving);
   private final LED led = new LED();
   private final wakaWakaArm wakaArm = new wakaWakaArm();
-  // private final wakaWakaArmTalon wakaWakaArmTalon = new wakaWakaArmTalon();
   private final wakaWakaIntake wakaIntake = new wakaWakaIntake();
   private final PowerDistributionHub powerDistributionHub = new PowerDistributionHub();
-  private final RobotType robotType = new RobotType();
   private final Shoulder shoulder = new Shoulder();
   private final Vision vision = new Vision(this);
  
@@ -517,12 +503,9 @@ public class RobotContainer {
     JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
     JoystickButton driverB = new JoystickButton(driverController, XboxController.Button.kB.value);
     JoystickButton driverY = new JoystickButton(driverController, XboxController.Button.kY.value);
-    JoystickButton driverBack = new JoystickButton(driverController, XboxController.Button.kBack.value);
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-    Trigger driverPOVUp = new Trigger(() -> driverController.getPOV() == 0);
-    Trigger driverPOVDown = new Trigger(() -> driverController.getPOV() == 180);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
@@ -577,8 +560,6 @@ public class RobotContainer {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
-    Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
-    Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
     Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
@@ -628,10 +609,12 @@ public class RobotContainer {
     // operatorX.whileTrue(new ArmJoystickCommand(elbow, shoulder, operatorController, ()->getYellowSwitchStatus()));
 
     // TODO: Create switch to flip between orange and blue
+    /*
     JoystickButton yellowButton = new JoystickButton(operatorStation, 3);
     JoystickButton whiteButton = new JoystickButton(operatorStation, 4);
     JoystickButton blueSwitch = new JoystickButton(operatorStation, 12);
     JoystickButton blackSwitch = new JoystickButton(operatorStation, 13);
+    */
   }
 
   public void instantiateSubsystemsTeleop() {

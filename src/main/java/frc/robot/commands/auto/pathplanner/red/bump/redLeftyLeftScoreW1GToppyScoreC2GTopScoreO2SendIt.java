@@ -1,6 +1,5 @@
 package frc.robot.commands.auto.pathplanner.red.bump;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -8,7 +7,6 @@ import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointCubeWait;
 import frc.robot.commands.auto.aboveChassis.ArmAutoSetpointWithEndingCone;
 import frc.robot.commands.auto.aboveChassis.IntakeReverseCube;
 import frc.robot.commands.auto.common.RedGToppyScoreC2GTopScoreO2;
-import frc.robot.commands.auto.test.FollowTrajectoryCommand;
 import frc.robot.subsystems.AutoDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Heading;
