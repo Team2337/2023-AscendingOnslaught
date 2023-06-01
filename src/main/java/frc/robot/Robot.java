@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    m_robotContainer.setNeutralModeCoast();
     LiveWindow.disableAllTelemetry();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -118,6 +119,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_robotContainer.setNeutralModeBrake();
+
     m_robotContainer.resetRobotChooser(startingPos, startingAngle);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -135,6 +138,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.setNeutralModeBrake();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

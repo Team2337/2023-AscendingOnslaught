@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -347,7 +348,7 @@ public class Drivetrain extends SubsystemBase {
           break;
       } 
     } else {
-      SmartDashboard.putString("Vision/We are...", "red!");
+      //SmartDashboard.putString("Vision/We are...", "red!");
       switch (teleopAutoPosition) {
         case 9:
           waypoint1_outer = Constants.Auto.redRightIntermediaryFar;
@@ -461,8 +462,6 @@ public class Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Odometry/Robot",
       new double[] { pose.getX(), pose.getY(), pose.getRotation().getRadians() });
     */
-
-
   }
 
 
@@ -518,6 +517,12 @@ public class Drivetrain extends SubsystemBase {
      );
  }
 
+public void setNeutralCoast() {
+  modules[0].setNeutralMode(NeutralMode.Coast);
+}
 
+public void setNeutralBrake() {
+  modules[0].setNeutralMode(NeutralMode.Brake);
+}
 
 }

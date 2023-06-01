@@ -713,4 +713,13 @@ public class RobotContainer {
   public double getWristAmps() {
     return powerDistributionHub.getChannelCurrent(17);
   }
+
+  public void setNeutralModeCoast () {
+    drivetrain.setNeutralCoast();
+  }
+
+  public void setNeutralModeBrake () {
+    drivetrain.setNeutralBrake();
+  }
+
 }
