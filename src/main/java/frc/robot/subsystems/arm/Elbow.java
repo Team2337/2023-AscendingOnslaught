@@ -24,7 +24,7 @@ import frc.robot.RobotContainer;
 
 public class Elbow extends PIDSubsystem {
 
-  double offset = -188;
+  double offset = -198;
   // double lampreyVoltage = RobotController.getVoltage3V3();
   double lampreyVoltage = 3.306;
   double fullRange = 360 * (RobotController.getVoltage5V()/lampreyVoltage);

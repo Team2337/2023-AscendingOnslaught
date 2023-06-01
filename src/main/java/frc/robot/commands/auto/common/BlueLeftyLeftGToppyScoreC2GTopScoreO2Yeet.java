@@ -26,17 +26,17 @@ public class BlueLeftyLeftGToppyScoreC2GTopScoreO2Yeet extends SequentialCommand
                 new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueScoreC2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                // new FollowTrajectoryCommand(robotContainer.blueScoreC2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREHIGH)
             ),
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueGTopYeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                // new FollowTrajectoryCommand(robotContainer.blueGTopYeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUP),
                 new IntakeReverseAuto(intake).withTimeout(2.7)
             ),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueScoreO2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                // new FollowTrajectoryCommand(robotContainer.blueScoreO2Yeet, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.SCOREMID)
             ),
             new IntakeReverseCube(intake).withTimeout(0.2)

@@ -56,7 +56,8 @@ public class SwerveDriveCommand extends CommandBase {
       rotation = -Utilities.deadbandAndSquare(controller.getRightX(), 0.15);
     } 
   
-    boolean isFieldOriented = !controller.getLeftBumper();
+    // boolean isFieldOriented = !controller.getLeftBumper();
+    boolean isFieldOriented = true;
 
     AutoDrive.State autoDriveState = autoDrive.calculate(forward, strafe, isFieldOriented);
     if (autoDriveState != null) {
@@ -126,19 +127,19 @@ public class SwerveDriveCommand extends CommandBase {
         )
       );
     } else {
-      if (controller.getLeftBumper()) {
-        drivetrain.drive(new ChassisSpeeds(
-          -vxMetersPerSecond,
-          -vyMetersPerSecond,
-          omegaRadiansPerSecond
-        ));
-        } else {
+      // if (controller.getLeftBumper()) {
+      //   drivetrain.drive(new ChassisSpeeds(
+      //     -vxMetersPerSecond,
+      //     -vyMetersPerSecond,
+      //     omegaRadiansPerSecond
+      //   ));
+      //   } else {
           drivetrain.drive(new ChassisSpeeds(
           vxMetersPerSecond,
           vyMetersPerSecond,
           omegaRadiansPerSecond
         ));
-        }
+        // }
     }
   }
 

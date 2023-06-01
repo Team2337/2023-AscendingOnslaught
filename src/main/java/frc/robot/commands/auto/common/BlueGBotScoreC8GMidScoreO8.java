@@ -34,7 +34,7 @@ public class BlueGBotScoreC8GMidScoreO8 extends SequentialCommandGroup {
             ),
             new IntakeReverseCube(intake).withTimeout(0.2),
             new ParallelCommandGroup(
-                new FollowTrajectoryCommand(robotContainer.blueGMid, false, drivetrain::getPose, autoDrive, drivetrain, heading),
+                new FollowTrajectoryCommand(robotContainer.blueGMid2, false, drivetrain::getPose, autoDrive, drivetrain, heading),
                 new ArmAutoSetpointCubeWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUPBLUEBUMP).withTimeout(1.0).andThen(new ArmAutoSetpointCubeNoWait(1.0, elbow, shoulder, intakespinner, Constants.Arm.ArmPosition.NEWAUTOPICKUP)),
                 new IntakeReverseAuto(intake).withTimeout(3.5)
             ),

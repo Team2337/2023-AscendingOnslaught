@@ -12,13 +12,15 @@ import frc.robot.nerdyfiles.utilities.CTREUtils;
 public class wakaWakaIntake extends SubsystemBase {
     
     private TalonFX intakeMotor = new TalonFX(61);
-    private SparkMaxPIDController controller;
     private double peakOutput = 0.5;
     
     
 
     public wakaWakaIntake() {
         intakeMotor.configFactoryDefault();
+        intakeMotor.config_kP(0, 0.2);
+        intakeMotor.config_kI(0, 0);
+        intakeMotor.config_kD(0, 0);
         intakeMotor.configForwardSoftLimitThreshold(0);
         intakeMotor.configForwardSoftLimitEnable(false);
         intakeMotor.configReverseSoftLimitThreshold(150000);
@@ -44,8 +46,8 @@ public class wakaWakaIntake extends SubsystemBase {
        return intakeMotor.getSelectedSensorPosition();
     }
     
-    public void holdPosition(double setpoint) {
-        controller.setReference(setpoint, CANSparkMax.ControlType.kPosition);
+    public void holdPosition() {
+        intakeMotor.set(ControlMode.Position, intakeMotor.getSelectedSensorPosition());
     }
 
     @Override
