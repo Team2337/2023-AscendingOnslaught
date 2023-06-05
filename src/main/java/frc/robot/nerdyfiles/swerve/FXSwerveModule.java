@@ -49,7 +49,7 @@ public class FXSwerveModule {
 
     angleMotor.setSensorPhase(true);
     angleMotor.setInverted(moduleConfiguration.isSteerInverted() ? TalonFXInvertType.CounterClockwise : TalonFXInvertType.Clockwise);
-    angleMotor.setNeutralMode(NeutralMode.Brake);
+    //angleMotor.setNeutralMode(NeutralMode.Brake);
 
     // Drive Motor
     driveMotor = new TalonFX(driveMotorPort);
@@ -167,7 +167,7 @@ public class FXSwerveModule {
   }
 
   public void setNeutralMode(NeutralMode neutralMode) {
-    driveMotor.setNeutralMode(neutralMode);
+    angleMotor.setNeutralMode(neutralMode);
   }
 
   public void logDebug() {
