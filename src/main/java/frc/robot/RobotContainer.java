@@ -38,7 +38,6 @@ import frc.robot.commands.arm.ArmBasicJoystickCommand;
 import frc.robot.commands.arm.ArmSetpointCommand;
 import frc.robot.commands.arm.ArmSetpointElbow;
 import frc.robot.commands.arm.ArmSetpointShoulder;
-import frc.robot.commands.arm.ArmSetpointWithElbowEnd;
 import frc.robot.commands.arm.ArmSetpointWithEnding;
 import frc.robot.commands.arm.ArmSetpointWithIntake;
 import frc.robot.commands.arm.UnjamWrist;
@@ -47,7 +46,6 @@ import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
-import frc.robot.commands.arm.wakaWaka.wakaWakaArmDrive;
 import frc.robot.commands.arm.wakaWaka.wakaWakaMoveArm;
 import frc.robot.commands.arm.wakaWaka.wakaWakaSpinRollers;
 import frc.robot.commands.auto.common.DoNothingCommand;
@@ -72,7 +70,6 @@ import frc.robot.subsystems.arm.Elbow;
 import frc.robot.subsystems.arm.Intake;
 import frc.robot.subsystems.arm.Shoulder;
 import frc.robot.subsystems.wakaWaka.wakaWakaArm;
-import frc.robot.subsystems.wakaWaka.wakaWakaArmTalon;
 import frc.robot.subsystems.wakaWaka.wakaWakaIntake;
 
 public class RobotContainer {
@@ -500,8 +497,6 @@ public class RobotContainer {
     JoystickButton driverStart = new JoystickButton(driverController, XboxController.Button.kStart.value);
     Trigger triggerDriverRight = new Trigger(() -> driverController.getRightTriggerAxis() > 0.5);
     Trigger triggerDriverLeft = new Trigger(() -> driverController.getLeftTriggerAxis() > 0.5);
-    Trigger driverPOVUp = new Trigger(() -> driverController.getPOV() == 0);
-    Trigger driverPOVDown = new Trigger(() -> driverController.getPOV() == 180);
     driverRightBumper = new JoystickButton(driverController, XboxController.Button.kRightBumper.value);
     JoystickButton driverLeftBumper = new JoystickButton(driverController, XboxController.Button.kLeftBumper.value);
     
@@ -554,8 +549,6 @@ public class RobotContainer {
     operatorLeftBumper = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
     Trigger triggerOperatorRight = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     Trigger triggerOperatorLeft = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
-    Trigger operatorPOVUp = new Trigger(() -> operatorController.getPOV() == 0);
-    Trigger operatorPOVDown = new Trigger(() -> operatorController.getPOV() == 180);
     Trigger operatorPOVRight = new Trigger(() -> operatorController.getPOV() == 90);
     JoystickButton operatorBack = new JoystickButton(operatorController, XboxController.Button.kBack.value);
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
