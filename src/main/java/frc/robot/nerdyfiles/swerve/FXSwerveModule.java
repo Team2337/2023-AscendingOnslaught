@@ -168,6 +168,7 @@ public class FXSwerveModule {
 
   public void setNeutralMode(NeutralMode neutralMode) {
     angleMotor.setNeutralMode(neutralMode);
+    driveMotor.setNeutralMode(neutralMode);
   }
 
   public void logDebug() {

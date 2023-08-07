@@ -106,7 +106,7 @@ public class Vision extends SubsystemBase {
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.ORANGE);
     switchPipeLine(Pipeline.DEFAULT, LimelightColor.PINK);
     //TODO: Fix this  
-    pipelineAllianceColor = "red";
+    pipelineAllianceColor = "blue";
     // Systems check
     if (Constants.DO_SYSTEMS_CHECK) {
       ShuffleboardTab systemsCheck = Constants.SYSTEMS_CHECK_TAB;
@@ -115,16 +115,20 @@ public class Vision extends SubsystemBase {
       //   .withPosition(SystemsCheckPositions.LIMELIGHT.x, SystemsCheckPositions.LIMELIGHT.y)
       //   .withSize(3, 3);
     }
+    this.robotContainer = robotContainer;
     }
 
   @Override
   public void periodic() {
     botPoseColor = "botpose_wpi";
-    if (Robot.allianceColor.equals("Blue")) {
+    //if (Robot.allianceColor.equals("Blue")) {
+    if (robotContainer.getBlackSwitchStatus()) {
       allianceColor = "blue";
     } else {
       allianceColor = "red";
     }
+    SmartDashboard.putBoolean("vision-switch", robotContainer.getBlackSwitchStatus());
+    SmartDashboard.putString("vision-color", allianceColor);
     botPoseColor = botPoseColor + allianceColor;
     //SmartDashboard.putString("Bot Pose Color", botPoseColor);
     //SmartDashboard.putString("Pipeline Alliance Color", pipelineAllianceColor);

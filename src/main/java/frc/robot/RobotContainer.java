@@ -63,6 +63,7 @@ import frc.robot.commands.auto.pathplanner.red.yeet.redRightyRightScoreC9GBotSco
 import frc.robot.commands.swerve.Lockdown;
 import frc.robot.commands.swerve.MaintainHeadingCommand;
 import frc.robot.commands.swerve.SwerveDriveCommand;
+import frc.robot.commands.vision.PeriodicRelocalizeCartesian;
 import frc.robot.nerdyfiles.leds.LED;
 import frc.robot.nerdyfiles.oi.NerdyOperatorStation;
 import frc.robot.subsystems.*;
@@ -84,7 +85,7 @@ public class RobotContainer {
   public JoystickButton operatorLeftBumper;
   public JoystickButton yellowSwitch;
   public JoystickButton silverSwitch;
-  public JoystickButton blueSwitch;
+  public JoystickButton blueSwitch, blackSwitch;
 
   private final PigeonIMU pigeon = new PigeonIMU(0);
 
@@ -164,6 +165,7 @@ public class RobotContainer {
     yellowSwitch = new JoystickButton(operatorStation, 11);
     silverSwitch = new JoystickButton(operatorStation, 10);
     blueSwitch = new JoystickButton(operatorStation, 12);
+    blackSwitch = new JoystickButton(operatorStation, 13);
 
     // Test3MPath = PathPlanner.loadPath("Test3M", new PathConstraints(4, 3));
     // blueLeftyLeftGToppyTop = PathPlanner.loadPath("blueLeftyLeftGToppyTop", new PathConstraints(3.0, 4.0));
@@ -218,7 +220,7 @@ public class RobotContainer {
     intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
     intake.setDefaultCommand(new IntakeHoldPosition(intake));
     // intakespinner.setDefaultCommand(new IntakeSpinnerUnwind(intakespinner, ()-> operatorPOVUp.getAsBoolean(), ()-> operatorPOVDown.getAsBoolean()));
-    // vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision));
+    vision.setDefaultCommand(new PeriodicRelocalizeCartesian(drivetrain, vision).ignoringDisable(true));
     // elbow.setDefaultCommand(new ArmBasicJoystickCommand(elbow, shoulder, () ->
     // operatorController));
     led.setDefaultCommand(new LEDRunnable(led, this, ()->intake.hasCone()).ignoringDisable(true));

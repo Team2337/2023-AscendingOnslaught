@@ -40,10 +40,18 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
         color = LimelightColor.BLUE;
       }
       readLimelight = true;
+      //Override logic above to only look at the pink limelight. 
+      color = LimelightColor.PINK;
+
       //SmartDashboard.putString("We are...", "blue!");
     } else {
       readLimelight = false;
     }
+
+    // bypass which limelight logic for testing
+    //TODO:  OMG remove this!
+    color = LimelightColor.ORANGE;
+      readLimelight = true;
     
     if (relocalizationCounter == relocalizationCounterLimit){
       //TODO: When do we turn this off?
@@ -60,8 +68,9 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
             new Translation2d(visionPoseX, visionPoseY),
             Rotation2d.fromDegrees(visionRotation)
           );
-  
+          //TODO: Check units here.  I think we are mixing ms and sec.
           drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency(color) + 2) / 1000));
+        System.out.println("counting " + relocalizationCounter + " " + visionPoseX + " " + visionPoseY + " " + visionRotation);
         }
       }
       relocalizationCounter = -1;
