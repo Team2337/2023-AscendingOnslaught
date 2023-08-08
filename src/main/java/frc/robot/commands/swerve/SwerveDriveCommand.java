@@ -46,13 +46,18 @@ public class SwerveDriveCommand extends CommandBase {
     
     if (controller.getBackButton()) {
        // scales inputs for fine control   
-       forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 6);
-       strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 6);
-       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 6);
+       forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 4);
+       strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 4);
+       rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 4);
     } else {
-      forward = Utilities.deadbandAndSquare(controller.getLeftY());
-      strafe = Utilities.deadbandAndSquare(controller.getLeftX());
-      rotation = -Utilities.deadbandAndSquare(controller.getRightX(), 0.15);
+      /* 
+      forward = Utilities.deadbandAndSquare(controller.getLeftY() *.3);
+      strafe = Utilities.deadbandAndSquare(controller.getLeftX() *.3);
+      rotation = -Utilities.deadbandAndSquare(controller.getRightX() *.3 , 0.15);
+      */
+      forward = Utilities.deadbandAndScale(controller.getLeftY(), 0.1, 6);
+      strafe = Utilities.deadbandAndScale(controller.getLeftX(), 0.1, 6);
+      rotation = -Utilities.deadbandAndScale(controller.getRightX(), 0.15, 6);
     } 
   
     // boolean isFieldOriented = !controller.getLeftBumper();
@@ -77,6 +82,8 @@ public class SwerveDriveCommand extends CommandBase {
         strafe = strafe;
         rotation = rotation;
       }
+
+
     
     // If a driver-initiated rotation is provided, disable our rotation
     // controller to let the driver rotate freely.

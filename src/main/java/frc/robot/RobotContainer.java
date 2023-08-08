@@ -588,11 +588,12 @@ public class RobotContainer {
       ()-> getYellowSwitchStatus()
     ));
     // operatorB.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)));
-    operatorB.whileTrue(new ConditionalCommand(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this)),
+   /* operatorB.whileTrue(new ConditionalCommand(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMIDINTAKESIDE, elbow, shoulder, intakespinner, this)),
       new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCOREMID, 60, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCOREMID, elbow, shoulder, intakespinner, this)),
       ()-> getYellowSwitchStatus()
     ));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
+    */
     operatorX.onTrue(new UnjamWrist(intake, intakespinner, this));
     operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
  
