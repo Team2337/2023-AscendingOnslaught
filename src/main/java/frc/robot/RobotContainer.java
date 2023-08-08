@@ -565,7 +565,7 @@ public class RobotContainer {
     JoystickButton operatorStart = new JoystickButton(operatorController, XboxController.Button.kStart.value);
     Trigger unjamTrigger = new Trigger(() -> intakespinner.jammed);
 
-    unjamTrigger.onTrue(new UnjamWrist(intake, intakespinner, this));
+    //unjamTrigger.onTrue(new UnjamWrist(intake, intakespinner, this));
     triggerOperatorRight.whileTrue(new IntakeCommand(this::getGamepiece, this::getSilverSwitchStatus, (LEDState x) -> setLEDState(x), intake));
     triggerOperatorRight.whileTrue(new ConditionalCommand( 
       new ArmSetpointWithIntake(Constants.Arm.ArmPosition.SUBSTATIONPICKUP, this::getGamepiece, elbow, shoulder, intakespinner), 
@@ -594,12 +594,12 @@ public class RobotContainer {
     ));
     operatorA.whileTrue(new ArmSetpointShoulder(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this).andThen(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORELOW, elbow, shoulder, intakespinner, this)));
     */
-    operatorX.onTrue(new UnjamWrist(intake, intakespinner, this));
-    operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
+    //operatorX.onTrue(new UnjamWrist(intake, intakespinner, this));
+    //operatorPOVRight.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.SCORESIDEPICKUPLOW, elbow, shoulder, intakespinner, this));
  
-    operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
+    //operatorStart.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELEFALLINGCONE, elbow, shoulder, intakespinner, this));
 
-    operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
+    //operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
     //operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
     //operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
