@@ -45,6 +45,7 @@ import frc.robot.commands.arm.intake.IntakeCommand;
 import frc.robot.commands.arm.intake.IntakeHoldPosition;
 import frc.robot.commands.arm.intake.IntakeUnjam;
 import frc.robot.commands.arm.intake.OuttakeCommand;
+import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerAdjustment;
 import frc.robot.commands.arm.intakeSpinner.IntakeSpinnerUnwind;
 import frc.robot.commands.arm.wakaWaka.wakaWakaDefaultDrive;
 import frc.robot.commands.arm.wakaWaka.wakaWakaHoldRollers;
@@ -601,8 +602,8 @@ public class RobotContainer {
 
     //operatorBack.whileTrue(new ArmSetpointCommand(Constants.Arm.ArmPosition.TELESTANDINGCONE, elbow, shoulder, intakespinner, this));
 
-    //operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
-    //operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    operatorPOVUp.onTrue(new IntakeSpinnerAdjustment(intakespinner, Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
+    operatorPOVDown.onTrue(new IntakeSpinnerAdjustment(intakespinner, -Constants.Arm.WRIST_ANGLE_ADJUSTMENT));
     
     operatorRightStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cone)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cone))));
     operatorLeftStick.onTrue(new InstantCommand(()-> setGamePiece(GamePiece.Cube)).andThen(new InstantCommand(() -> setLEDState(LEDState.Cube))));
