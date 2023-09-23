@@ -70,7 +70,7 @@ public class PeriodicRelocalizeCartesian extends VisionCommand {
           );
           //TODO: Check units here.  I think we are mixing ms and sec.
           drivetrain.addVisionMeasurement(pose, Timer.getFPGATimestamp() - ((Constants.Vision.IMAGE_PROCESSING_LATENCY_MS + vision.getLatency(color) + 2) / 1000));
-        System.out.println("counting " + relocalizationCounter + " " + visionPoseX + " " + visionPoseY + " " + visionRotation);
+        //System.out.println("counting " + relocalizationCounter + " " + visionPoseX + " " + visionPoseY + " " + visionRotation);
         }
       }
       relocalizationCounter = -1;

@@ -60,15 +60,15 @@ public final class Constants {
   private static Constants instance;
 
   public static final class DashboardLogging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean AUTO = false;
-    public static final boolean ELBOW = true;
+    public static final boolean ELBOW = false;
     public static final boolean DRIVETRAIN = false;
     public static final boolean HEADING = false;
     public static final boolean INTAKE = false;
     public static final boolean INTAKESPINNER = true;
     public static final boolean PDH = false;
-    public static final boolean SHOULDER = true;
+    public static final boolean SHOULDER = false;
     public static final boolean SWERVE = false;
     public static final boolean VISION = false;
   }
@@ -521,7 +521,7 @@ public final class Constants {
 
     public static final double WRIST_ANGLE_ADJUSTMENT = 10.0;
     public static final double ELBOW_LIMIT = 155;
-    
+    public static final double IntakeSpinnerOffset = 11;
     
     // Comp Arm
     public enum ArmPosition {
